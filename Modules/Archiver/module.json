@@ -1,0 +1,13 @@
+{
+    "name": "Archiver",
+    "alias": "archiver",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Archiver\\Providers\\ArchiverServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

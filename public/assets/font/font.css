@@ -1,0 +1,8 @@
+@font-face {
+  font-family: Vazir;
+  src: url("./vazir-font-v29.1.0/Farsi-Digits/Vazir-Medium-FD.ttf");
+}
+
+body {
+  font-family: Vazir, sans-serif !important;
+}

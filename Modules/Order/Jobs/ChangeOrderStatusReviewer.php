@@ -1,0 +1,115 @@
+<?php
+
+namespace Modules\Order\Jobs;
+
+use Illuminate\Bus\Queueable;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
+use Modules\Order\Entities\OrderChangeStatusJobManager;
+
+class ChangeOrderStatusReviewer implements ShouldQueue
+{
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    /**
+     * Create a new job instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        //
+    }
+
+    /**
+     * Execute the job.
+     *
+     * @return void
+     */
+    public function handle()
+    {
+        $reviewer_uuid = Str::random(10);
+        Log::info("ChangeOrderStatusReviewer CronJob started with uuid=$reviewer_uuid");
+        $todayJobs = OrderChangeStatusJobManager::query()
+            ->whereDate('run_time', '=', now()->format('Y-m-d'))
+            ->orderBy('run_time', 'desc')
+            ->get();
+
+        $masterJob = $todayJobs->where('is_master', '=', true)->first();
+        if ($todayJobs->count() == 0 || !$masterJob) {
+            Log::info("ChangeOrderStatusReviewer CronJob uuid=$reviewer_uuid: no job runs today. so we call ChangeOrderStatusInNewProcess job to run. and also we call Reviewer job after 7 minutes too");
+            ChangeOrderStatusInNewProcess::dispatch(); // call main job
+            ChangeOrderStatusReviewer::dispatch()->delay(now()->addMinutes(7)); // call reviewer job
+            return; // kill this job
+        }
+
+        // check last job
+        $denyJobs =
+            $todayJobs
+                ->whereIn('status', OrderChangeStatusJobManager::STATUSES_DENY_NEW_CRONJOB)
+                ->sortBy('run_time');
+        if ($denyJobs) {
+            foreach ($denyJobs as $denyJob) {
+                if (now()->diffInSeconds($denyJob->run_time) <= 300) { /* every CronJob have 5 minutes time to do its works */
+                    if ($denyJob->status != OrderChangeStatusJobManager::STATUS_DONE) {
+                        // there is a CronJob that is working. we should continue the process and run this job 5 minutes later
+                        ChangeOrderStatusReviewer::dispatch()->delay(now()->addMinutes(5));
+                        Log::info("ChangeOrderStatusReviewer CronJob uuid=$reviewer_uuid: another ChangeOrderStatusInNewProcess job with uuid=$denyJob->cron_job_uuid is running. so we don't do anything. it's run_time is for less than 5 minutes ago. we call ChangeOrderStatusReviewer for 5 minutes later");
+                        return; // we don't call main job. just kill this job
+                    }
+                } else {
+                    $denyJob->status = OrderChangeStatusJobManager::STATUS_FAILED;
+                    $denyJob->save();
+                }
+            }
+        }
+        // ============================================================================
+        // if some fields has not finished we should call main job and continue process
+        $masterAllOrderIds = json_decode($masterJob->all_order_ids);
+        $all_order_ids = $masterAllOrderIds;
+        if ($masterJob->order_ids_done) {
+            $all_order_ids = array_diff($masterAllOrderIds, json_decode($masterJob->order_ids_done));
+        }
+
+        // those jobs that are not master and also are not this job
+        $notMasters = OrderChangeStatusJobManager::query()
+            ->whereDate('run_time', '=', now()->format('Y-m-d'))
+            ->where('is_master', '=', false)
+            ->get();
+
+        if ($notMasters) {
+            foreach ($notMasters as $job) {
+                if ($job->order_ids_done) {
+                    $all_order_ids = array_diff($all_order_ids, json_decode($job->order_ids_done));
+                }
+            }
+        }
+
+        $lastJob = $todayJobs->sortByDesc('run_time')->first();
+        if (count(array_values($all_order_ids)) > 0) {
+            // update the last job status = need_another
+            $lastJob->status = OrderChangeStatusJobManager::STATUS_NEED_ANOTHER;
+            $lastJob->save();
+            // run main job and run this job
+            ChangeOrderStatusInNewProcess::dispatch();
+            ChangeOrderStatusReviewer::dispatch()->delay(now()->addMinutes(7));
+            Log::info("ChangeOrderStatusReviewer CronJob uuid=$reviewer_uuid: reviewer founded some order_ids that are not done so we run ChangeOrderStatusInNewProcess CronJob again and also reviewer after 7 minutes");
+            return; // kill this job
+        }
+
+        $lastJob->status = OrderChangeStatusJobManager::STATUS_COMPLETED;
+        $lastJob->save();
+
+        Log::info("ChangeOrderStatusReviewer CronJob uuid=$reviewer_uuid: FINISHED -- CronJobs runs successfully. we call PendingMessagesSenderJob and PendingNotificationSenderJob twice with 5 minutes delay");
+        // call PendingMessagesSenderJob now
+        PendingMessagesSenderJob::dispatch();
+        PendingMessagesSenderJob::dispatch()->delay(now()->addMinutes(5));
+        // call PendingNotificationSenderJob now
+        PendingNotificationSenderJob::dispatch();
+        PendingNotificationSenderJob::dispatch()->delay(now()->addMinutes(5));
+    }
+}
