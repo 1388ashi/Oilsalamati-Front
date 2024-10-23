@@ -28,6 +28,8 @@ class HomeServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->registerViews();
+        $this->registerConfig();
 //        if (AppServiceProvider::$runningInConsole) {
 //            $this->loadMigrationsFrom(module_path($this->moduleName, 'Database/Migrations'));
 //        }

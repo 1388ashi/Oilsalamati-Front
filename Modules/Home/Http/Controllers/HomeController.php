@@ -3,7 +3,6 @@
 namespace Modules\Home\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\Core\Classes\CoreSettings;
 use Modules\Home\Entities\SiteView;
@@ -13,8 +12,10 @@ use Modules\Home\Services\HomeService;
 class HomeController extends Controller
 {
     #درخواست های هوم جدا شدند
-    public function index():JsonResponse
+    public function index()
     {
+        return view('home::home');
+
         SiteView::store(); // count views
         $homeService = new HomeService();
         $response = $homeService->getHomeData();
