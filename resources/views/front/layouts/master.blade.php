@@ -18,7 +18,7 @@
 			@include('front.layouts.includes.mobile-menu')
 			
       <div id="page-content">
-        <div class="page-header text-center">
+        <div class="page-header text-center mt-0">
           <div class="container">
             <div class="row align-items-center">
               <div class="col-12 col-sm-12 col-md-12 col-lg-12">
@@ -27,9 +27,7 @@
             </div>
           </div>
         </div>
-        <div class="container">
-          @yield('content')
-        </div>
+        @yield('content')
       </div>
       
 			@include('front.layouts.includes.footer')

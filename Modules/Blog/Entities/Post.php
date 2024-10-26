@@ -5,6 +5,7 @@ namespace Modules\Blog\Entities;
 use Cviebrock\EloquentSluggable\Sluggable;
 use CyrildeWit\EloquentViewable\Contracts\Viewable;
 use CyrildeWit\EloquentViewable\InteractsWithViews;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Comment\Entities\Commentable;
 use Modules\Comment\Entities\HasComment;
@@ -49,7 +50,10 @@ class Post extends Model implements Sortable, HasMedia, HasComment, Viewable
     {
         return $this->belongsToMany(Product::class, 'post_product', 'post_id', 'product_id');
     }
-
+    public function countComment(): Int
+    {
+        return $this->comments()->count();
+    }
     public function scopePublished($query)
     {
         $query->where('status', static::STATUS_PUBLISHED)

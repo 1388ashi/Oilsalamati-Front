@@ -15,6 +15,6 @@ class PostCategoryController extends Controller
             ->filters()
             ->get(['id', 'name', 'slug']);
 
-        return response()->success('', compact('postCategories'));
+        return view('post::front.post-category', compact('postCategories'));
     }
 }

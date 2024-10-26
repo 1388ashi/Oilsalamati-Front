@@ -20,6 +20,7 @@ class PostController extends Controller
 {
     public function index($category_id = null)
     {
+        $sortBy = request('sortBy');
         $posts = Post::published()
             ->with(['category' => function ($query) {
                 $query->select(['id', 'name', 'slug']);
@@ -36,13 +37,27 @@ class PostController extends Controller
             })->when($category_id, function ($query) use ($category_id) {
                 $query->where('post_category_id', $category_id);
             })
-            ->select(['id', 'title', 'summary', 'slug', 'special', 'created_at', 'post_category_id','published_at'])
+            ->when($sortBy, function ($query) use ($sortBy) {  
+                switch ($sortBy) {  
+                    case 'special':  
+                        $query->where('special', 1);  
+                    break;  
+                    case 'most-comments':  
+                        // $query->mostComment();  
+                    break;  
+                    case 'new':  
+                        $query->orderBy('pin', 'desc')->orderBy('created_at', 'desc');  
+                    break;  
+                }  
+            })
+            ->when(!$sortBy, function ($query) {  
+                $query->orderBy('pin', 'desc');
+                $query->orderBy('created_at', 'desc');  
+            })
+            ->select(['id', 'title', 'summary', 'slug', 'special', 'created_at', 'post_category_id', 'published_at']) 
 //            ->withCount('views')
             ->filters()
-            ->orderBy('pin', 'desc')
-            ->orderBy('created_at', 'desc')
-            ->paginate(9);
-
+            ->paginate(6);
         $data = [
             'posts' => $posts
         ];
@@ -69,15 +84,14 @@ class PostController extends Controller
                 $data['tags'] = Tag::query()->whereIn('id', $tagIds)->get();
             }
         }
-
-        return response()->success('', $data);
+        return view('blog::front.index', compact('data'));
     }
 
     public function show($id)
     {
         $user = auth()->user();
         $getPost = Post::query()->published()->with([
-            'products' => function ($query) {
+            'category','products' => function ($query) {
                 return $query->select(Product::SELECTED_COLUMNS_FOR_FRONT);
             }
         ])->findOrFail($id);
@@ -101,7 +115,7 @@ class PostController extends Controller
             ->inRandomOrder()->take(3)->get();
 
         $lastPost  = Post::query()->select(['id', 'title', 'slug', 'created_at'])->published()
-            ->where('id', '!=', $getPost->id)/*->withCount('views')*/->latest()->take(10)->get();
+            ->where('id', '!=', $getPost->id)/*->withCount('views')*/->latest()->take(3)->get();
         $banner = Advertise::getForHome();
 
         $post = [
@@ -112,14 +126,14 @@ class PostController extends Controller
             'user' => $user,
             'banner' => $banner
         ];
-
-        return response()->success('', compact('post'));
+        
+        return view('blog::front.show', compact('post'));
     }
 
 
 
 
-    public function byCategory($category_id): \Illuminate\Http\JsonResponse
+    public function byCategory($category_id)
     {
         return $this->index($category_id);
     }

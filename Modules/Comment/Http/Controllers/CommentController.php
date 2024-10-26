@@ -4,6 +4,7 @@ namespace Modules\Comment\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\Model;
+use Modules\Blog\Entities\Post;
 use Modules\Comment\Entities\Comment;
 use Modules\Comment\Http\Requests\CommentStoreRequest;
 use Modules\Core\Helpers\Helpers;
@@ -18,7 +19,7 @@ class CommentController extends Controller
         return response()->success('', compact('comments'));
     }
 
-    public function store(Model $model, CommentStoreRequest $request)
+    public function store(Post $post, CommentStoreRequest $request)
     {
         // ممکنه نال باشه
         $parent = Comment::active()->find($request->parent_id);
@@ -26,12 +27,16 @@ class CommentController extends Controller
             return response()->error('امکان پاسخگویی به جواب وجود ندارد', [], 400);
         }
         if ($request->has('name') && $request->has('email')) {
-            $comment = $model->comment(request()->all(), null, $parent);
+            $comment = $post->comment(request()->all(), null, $parent);
         } else {
-            $comment = $model->comment(request()->all(), Helpers::getAuthenticatedUser(), $parent);
+            $comment = $post->comment(request()->all(), Helpers::getAuthenticatedUser(), $parent);
         }
         $comment->setRelation('children', collect());
 
-        return response()->success('نظر با موفقیت ثبت شده و پس از تایید نمایش داده خواهد شد', ['comment' => $comment]);
+        $data = [
+            'status' => 'success',
+            'message' => 'نظر با موفقیت ثبت شده و پس از تایید نمایش داده خواهد شد'
+        ];
+        return redirect()->back()->with($data);
     }
 }

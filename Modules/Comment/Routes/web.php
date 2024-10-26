@@ -13,3 +13,4 @@ Route::webSuperGroup('admin', function () {
     Route::delete('/{comment}', [CommentController::class, 'destroy'])->name('destroy')->middleware('permission:delete_comment');
   });
 });
+Route::post('comments/{post}',[Modules\Comment\Http\Controllers\CommentController::class, 'store'])->name('comments.store');
