@@ -103,13 +103,14 @@ use Modules\Product\Http\Controllers\Customer\ProductController as CustomerProdu
 use Modules\Product\Http\Controllers\Front\CompareController;
 use Modules\Product\Http\Controllers\Front\PPCController;
 
-Route::webSuperGroup("front", function () {
-    Route::get('products/search', [AllProductController::class, 'search'])->name('products.search');
-    Route::get('products', [AllProductController::class, 'index'])->name('products.index');
-    Route::get('products/compare', [CompareController::class, 'index'])->name('product.compare');
-    Route::get('products/compare/search', [CompareController::class, 'search'])->name('product.compare.search');
-    Route::get('products/{product}', [AllProductController::class, 'show'])->name('product.show');
-}, []);
+    Route::prefix('/products')->name('products.')->group(function() {
+        Route::get('/search', [AllProductController::class, 'search'])->name('search');
+        Route::get('/', [AllProductController::class, 'index'])->name('index');
+        Route::get('/compare', [CompareController::class, 'index'])->name('compare');
+        Route::get('/compare/search', [CompareController::class, 'search'])->name('compare.search');
+        Route::get('/{product}', [AllProductController::class, 'show'])->name('show');
+    });
+    
 
 Route::post('torob/products', [PPCController::class, 'torob']);
 Route::get('emalls/products', [PPCController::class, 'emalls']);
