@@ -8,6 +8,8 @@ use Illuminate\Pagination\Paginator;
 use Modules\Category\Entities\Category;
 use Modules\Core\Entities\Permission;
 use Illuminate\Support\Facades\Gate;
+use Modules\Home\Services\BaseService;
+use Modules\Home\Services\HomeService;
 use Modules\Setting\Entities\Setting;
 
 class AppServiceProvider extends ServiceProvider
@@ -44,6 +46,19 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+
+        view()->composer('front.layouts.master', function ($view) {
+
+            $baseService = new BaseService();
+            $response = $baseService->getBaseRouteCacheData();
+            
+			$view->with([
+				'categories' =>  $response['categories'],
+				'settings' =>  $response['settings'],
+				'special_categories' =>  $response['special_categories'],
+			]);
+		});
+
         Gate::before(function ($user, $ability) {
             return $user->hasRole('super_admin') ? true : null;
         });

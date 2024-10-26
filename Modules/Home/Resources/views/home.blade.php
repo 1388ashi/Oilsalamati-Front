@@ -1,4 +1,19 @@
 @extends('front.layouts.master')
+
+@section('title')
+	<title>صفحه اصلی</title>
+@endsection
+
 @section('content')
-    <a href="">arshia</a>
+
+@include('home::includes.sliders')
+@include('home::includes.special-categories')
+@include('home::includes.most-sale')
+@include('home::includes.new-products')
+@include('home::includes.banner')
+@include('home::includes.packages')
+@include('home::includes.most-visited')
+@include('home::includes.posts')
+@include('home::includes.services')
+
 @endsection

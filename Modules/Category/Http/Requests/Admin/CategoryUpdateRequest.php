@@ -14,13 +14,13 @@ class CategoryUpdateRequest extends FormRequest
     {
         return [
             'title'                => 'required|string|min:1',
-            'banner_link'          => 'nullable|string|min:1' ,
+            // 'banner_link'          => 'nullable|string|min:1' ,
             'en_title'             => 'nullable|string|min:1',
             'description'          => 'nullable|string' ,
             'parent_id'            => 'nullable|exists:categories,id' ,
-            'status'               => 'required|boolean' ,
-            'special'              => 'required|boolean' ,
-            'show_in_home'           => 'nullable|boolean' ,
+            'status'               => 'nullable|boolean' ,
+            'special'              => 'nullable|boolean' ,
+            'show_in_home'         => 'nullable|boolean' ,
             'meta_title'           => 'nullable|string' ,
             'meta_description'     => 'nullable|string' ,
             'attribute_ids'        => 'nullable|array',
@@ -36,7 +36,8 @@ class CategoryUpdateRequest extends FormRequest
     {
         $this->merge([
             'special' => $this->input('special') ?: false,
-            'show_in_home' => $this->input('show_in_home') ?: false
+            'show_in_home' => $this->input('show_in_home') ?: false,
+            'status' => $this->input('status') ?: false
         ]);
     }
 

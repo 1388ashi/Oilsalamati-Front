@@ -34,23 +34,22 @@
                             @forelse($sliders as $slider)
                                 @php($group = $slider->group)
                                 <tr>
-                                    <td class="text-x`center"><i class="fe fe-move glyphicon-move text-dark"></i></td>
+                                    <td class="text-center"><i class="fe fe-move glyphicon-move text-dark"></i></td>
                                     <td class="font-weight-bold">{{ $loop->iteration }}</td>
                                     <td>{{ $slider->title }}</td>
                                     <input type="hidden" value="{{ $slider->id }}" name="orders[]">
                                     <input type="hidden" value="{{ $group }}" name="group">
                                     <td class="text-center">
-                                        -
-                                    </td>
-                                    {{-- @if ($slider->image->url)
-                                    <td class="text-center">
-                                        <a href="{{ $slider->image->url }}" target="_blank">
-                                            <div class="bg-light pb-1 pt-1 img-holder img-show w-100" style="max-height: 60px; border-radius: 4px;">
-                                                <img src="{{ $slider->image->url }}" style="height: 50px;" alt="{{ $slider->image->url }}">
-                                            </div>
-                                        </a>
-                                    </td>
-                                    @endif --}}
+                                        @if ($slider->image)
+                                            <a href="{{ $slider->image->url }}" target="_blank">
+                                                <div class="bg-light pb-1 pt-1 img-holder img-show w-100" style="max-height: 60px; border-radius: 4px;">
+                                                    <img src="{{ $slider->image->url }}" style="height: 50px;" alt="{{ $slider->image->url }}">
+                                                </div>
+                                            </a>
+                                        @else
+                                            -
+                                        @endif
+                                        </td>
                                     <td>@include('core::includes.status', ['status' => $slider->status])</td>
                                     <td>{{ verta($slider->created_at)->format('Y/m/d H:i') }}</td>
                                     <td>

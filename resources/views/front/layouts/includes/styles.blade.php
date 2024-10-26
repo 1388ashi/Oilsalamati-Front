@@ -1,10 +1,8 @@
-<link href="{{ asset('assets/font/font.css') }}" rel="stylesheet"/>
-<link href="{{ asset('assets/plugins/sweet-alert/sweetalert.css') }}" rel="stylesheet">
-<link href="{{ asset('assets/plugins/sweet-alert/jquery.sweet-modal.min.css') }}" rel="stylesheet" >
 <link href="{{ asset('front/assets/images/favicon.png') }}" rel="shortcut icon" />
 <link href="{{ asset('front/assets/css/plugins.css') }}" rel="stylesheet" />
 <link href="{{ asset('front/assets/css/style-min.css') }}" rel="stylesheet" />
 <link href="{{ asset('front/assets/css/responsive.css') }}" rel="stylesheet" />
+<link href="{{asset('assets/font/font.css')}}" rel="stylesheet"/>
 
 <style>
   @page {

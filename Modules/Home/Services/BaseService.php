@@ -16,7 +16,7 @@ use Modules\Setting\Entities\Setting;
 
 class BaseService
 {
-    public function getBaseRouteCacheData($baseItems):array {
+    public function getBaseRouteCacheData():array {
         if (Cache::has("BaseRouteData"))
             return Cache::get("BaseRouteData");
         // MENU =======================================================
