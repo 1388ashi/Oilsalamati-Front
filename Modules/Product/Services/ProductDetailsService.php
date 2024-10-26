@@ -266,7 +266,7 @@ class ProductDetailsService extends CacheServiceInterface
             $discount = $flash->discount;
             $discountType =  $flash->discount_type;
             $appliedDiscountType = 'flash';
-        } elseif ($product->discount && $product->discount_until >= now()) {
+        } elseif (!in_array($product->discount, [0, '0', null])  && $product->discount_until >= now()) {
             $discount = $product->discount;
             $discountType = $product->discount_type;
             $appliedDiscountType = 'product';

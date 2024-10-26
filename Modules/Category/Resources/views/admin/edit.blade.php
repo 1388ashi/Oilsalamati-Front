@@ -32,8 +32,7 @@
                             <label for="en_title" class="control-label"> عنوان: <span
                                     class="text-danger">&starf;</span></label>
                             <input type="text" id="en_title" class="form-control" name="en_title"
-                                placeholder="عنوان را وارد کنید" value="{{ old('en_title', $category->en_title) }}" required
-                                autofocus />
+                                placeholder="عنوان را وارد کنید" value="{{ old('en_title', $category->en_title) }}"/>
                             <span class="text-muted-dark mt-2 mr-1 font-weight-bold fs-11">عنوان را حتما به <span
                                     class="text-danger">انگیلیسی</span> وارد کنید!</span>
                         </div>
@@ -132,18 +131,15 @@
                     <div class="col-12">
                         <div class="form-group">
                             <label class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" name="status" value="1"
-                                    {{ old('status', $category->status) == 1 ? 'checked' : null }} />
+                                <input type="checkbox" class="custom-control-input" name="status" value="1" @if (old('status', $category->status)) checked @endif />
                                 <span class="custom-control-label">وضعیت</span>
                             </label>
                             <label class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" name="special" value="1"
-                                    {{ old('special', $category->special) == 1 ? 'checked' : null }} />
+                                <input type="checkbox" class="custom-control-input" name="special" value="1" @if (old('status', $category->special)) checked @endif />
                                 <span class="custom-control-label">ویژه</span>
                             </label>
                             <label class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" name="show_in_home" value="1"
-                                    {{ old('show_in_home', $category->show_in_home) == 1 ? 'checked' : null }} />
+                                <input type="checkbox" class="custom-control-input" name="show_in_home" value="1" @if (old('status', $category->show_in_home)) checked @endif />
                                 <span class="custom-control-label">نمایش محصولات در صفحه اصلی</span>
                             </label>
                         </div>
@@ -153,7 +149,7 @@
                 <div class="row">
                     <div class="col">
                         <div class="text-center">
-                            <button class="btn btn-primary" type="submit">ثبت و ذخیره</button>
+                            <button class="btn btn-warning" type="submit">بروزرسانی</button>
                         </div>
                     </div>
                 </div>

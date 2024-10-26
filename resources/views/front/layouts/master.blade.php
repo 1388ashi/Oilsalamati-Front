@@ -1,17 +1,15 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html class="no-js" lang="en">
 	<head>
 		
 		@include('front.layouts.includes.meta-tags')
+		@yield('title')
 		@include("front.layouts.includes.styles")
-
-		<title>@yield('title', config('app.name'))</title>
-
 		@yield("styles")
 
 	</head>
 
-	<body class="template-product product-layout1">
+	<body class="template-index index-demo1">
     <div class="page-wrapper">
       
 			@include('front.layouts.includes.header')

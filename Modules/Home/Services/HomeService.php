@@ -3,56 +3,39 @@
 namespace Modules\Home\Services;
 
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Request;
-use JetBrains\PhpStorm\ArrayShape;
 use Modules\Advertise\Entities\Advertise;
-use Modules\Attribute\Entities\Attribute;
 use Modules\Blog\Entities\Post;
-use Modules\Brand\Entities\Brand;
 use Modules\Cart\Classes\CartFromRequest;
 use Modules\Category\Entities\Category;
-use Modules\Color\Entities\Color;
 use Modules\Core\Classes\CoreSettings;
 use Modules\Core\Entities\Media;
-use Modules\Core\Helpers\Helpers;
 use Modules\Core\Services\Cache\CacheServiceInterface;
 use Modules\Core\Services\Media\MediaDisplay;
-use Modules\Core\Services\NotificationService;
-use Modules\Customer\Entities\Customer;
 use Modules\Customer\Entities\ValidCustomer;
-use Modules\FAQ\Entities\FAQ;
-use Modules\Flash\Entities\Flash;
 use Modules\Home\Entities\BeforeAfterImage;
 use Modules\Instagram\Entities\Instagram;
-use Modules\Invoice\Entities\Payment;
-use Modules\Menu\Entities\MenuItem;
-use Modules\Order\Entities\OrderItem;
 use Modules\Product\Entities\Product;
 use Modules\Product\Entities\Recommendation;
 use Modules\Product\Services\ProductsCollectionService;
-use Modules\Product\Services\ProductService;
-use Modules\Setting\Entities\Setting;
 use Modules\Slider\Entities\Slider;
-//use Shetabit\Shopit\Modules\Home\Services\HomeService as BaseHomeService;
 
 class HomeService extends CacheServiceInterface
 {
-    private array $productSelectedColumns = Product::SELECTED_COLUMNS_FOR_FRONT;
-    private array $productAppends = Product::APPENDS_LIST_FOR_FRONT;
+    private $productSelectedColumns = Product::SELECTED_COLUMNS_FOR_FRONT;
+    private $productAppends = Product::APPENDS_LIST_FOR_FRONT;
 
     protected function constructNeedId(): bool { return false; }
     public function cacheCreator($model_id = null) :void {
+
         $coreSetting = app(CoreSettings::class);
         $homeItems = $coreSetting->get('home.front');
 
         foreach ($homeItems as $homeItem => $inputs) {
-            $this->cacheData[$homeItem] = $this->{$homeItem}($inputs);
+            if ($inputs['enabled']) {
+                $this->cacheData[$homeItem] = $this->{$homeItem}($inputs);
+            }
         }
+        
         Cache::put(self::getCacheName(), $this->cacheData, $coreSetting->get('home.front_cache_time'));
     }
 
@@ -64,22 +47,18 @@ class HomeService extends CacheServiceInterface
         return $this->cacheData[$item];
     }
 
-    private function post($inputs):array
+    private function post($inputs)
     {
-        return Post::query()->with('category')
-            ->orderBy('pin', 'desc')
+        return Post::query()
+            ->select(['id', 'title', 'summary', 'published_at'])
             ->where('is_magazine', 0)
-//            ->withCount('views')
             ->published()
-            ->latest($inputs['latestBy'])->take($inputs['take'])->get()->map(function ($item) {
-                $item->makeHidden(['body']);
-                $item->setAppends(['views_count']);
-                return $item;
-//                return $item->makeHidden(['body']);
-            })->toArray();
+            ->latest($inputs['latestBy'])
+            ->take($inputs['take'])
+            ->get();
     }
 
-    private function magazine($inputs):array
+    private function magazine($inputs)
     {
         return Post::query()->with('category')
             ->orderBy('pin', 'desc')
@@ -93,44 +72,29 @@ class HomeService extends CacheServiceInterface
                 $item->setAppends(['views_count']);
                 return $item;
 //                return $item->makeHidden(['body']);
-            })->toArray();
+            });
     }
 
-    private function sliders($inputs):array
+    private function sliders($inputs)
     {
         return Slider::query()
             ->latest('order')
             ->active()
-            ->get()
-            ->toArray();
+            ->where('group', 'header')
+            ->take($inputs['take'])
+            ->get();
     }
 
-    private function advertise($inputs): array
+    private function advertise($inputs)
     {
         return Advertise::getForHome();
     }
 
-//    private function mostSales($inputs)
-//    {
-
-//        return (count($recommendation) != 0) ? Helpers::removeVarieties($recommendation->toArray()) : Helpers::cacheRemember('home_most_sales', 300, function () use ($take) {
-//            $mostSaleProducts = OrderItem::query()->latest(\DB::raw('SUM(quantity)'))->groupBy('product_id')
-//                ->selectRaw('DISTINCT product_id')->take($take)->get()->pluck('product_id');
-//
-//            if (count($mostSaleProducts) === 0) {
-//                return [];
-//            }
-//            return Helpers::removeVarieties(Product::query()->orderByRaw('FIELD(id, ' . implode(", ", $mostSaleProducts->toArray()) . ')')
-//                ->with(['categories', 'activeFlash', 'varieties'])
-//                ->available(true)->take($take)->get()->toArray());
-//        });
-//    }
-
-    private function instagram():array {
+    private function instagram() {
         return Instagram::getInstagramPosts();
     }
 
-    private function suggestions($inputs):array {
+    private function suggestions($inputs) {
         $recommendation_suggestion = Recommendation::query()->where('group_name','suggestions')->first();
 
         if (!$recommendation_suggestion || !$recommendation_suggestion->status) return [];
@@ -145,11 +109,10 @@ class HomeService extends CacheServiceInterface
             $product->setAppends($this->productAppends);
             $suggestion->product = $product;
         }
-        return $suggestions->toArray();
+        return $suggestions;
     }
 
-
-    private function newProducts($inputs):array
+    private function newProducts($inputs)
     {
         $products = Product::where('new_product_in_home', 1)
             ->select($this->productSelectedColumns)
@@ -158,12 +121,10 @@ class HomeService extends CacheServiceInterface
         foreach ($products as $product) {
             $product->setAppends($this->productAppends);
         }
-        return $products->toArray();
+        return $products;
     }
 
-
-
-    private function freeShippingProducts($inputs):array
+    private function freeShippingProducts($inputs)
     {
         $free_shipping_products = Product::query()
             ->select($this->productSelectedColumns)
@@ -176,7 +137,7 @@ class HomeService extends CacheServiceInterface
             $product->setAppends($this->productAppends);
         }
 
-        return $free_shipping_products->toArray();
+        return $free_shipping_products;
     }
 
     private function homeBoxCreator($databaseHomeBox)
@@ -192,7 +153,7 @@ class HomeService extends CacheServiceInterface
         return $databaseHomeBox;
     }
 
-    private function homeBoxes($inputs):array
+    private function homeBoxes($inputs)
     {
         $databaseHomeBoxes = Recommendation::query()->where('group_name','home')->active()->orderBy('priority', 'asc')->get();
         if (!$databaseHomeBoxes) return [];
@@ -215,8 +176,7 @@ class HomeService extends CacheServiceInterface
         return $homeBoxes;
     }
 
-
-    private function mostSales($inputs):array
+    private function mostSales($inputs)
     {
         $sortListByMostSales = (new ProductsCollectionService())->getSortList('mostSales');
         $productIds = array_slice($sortListByMostSales, 0, $inputs['take']);
@@ -224,10 +184,10 @@ class HomeService extends CacheServiceInterface
         foreach ($products as $product) {
             $product->setAppends($this->productAppends);
         }
-        return $products->toArray();
+        return $products;
     }
 
-    private function mostDiscount($inputs):array
+    private function mostDiscount($inputs)
     {
         $sortListByMostSales = (new ProductsCollectionService())->getSortList('mostDiscount');
         $productIds = array_slice($sortListByMostSales, 0, $inputs['take']);
@@ -235,11 +195,10 @@ class HomeService extends CacheServiceInterface
         foreach ($products as $product) {
             $product->setAppends($this->productAppends);
         }
-        return $products->toArray();
+        return $products;
     }
 
-
-    private function mostVisited($inputs):array
+    private function mostVisited($inputs)
     {
         $sortListByMostSales = (new ProductsCollectionService())->getSortList('mostVisited');
         $productIds = array_slice($sortListByMostSales, 0, $inputs['take']);
@@ -247,11 +206,10 @@ class HomeService extends CacheServiceInterface
         foreach ($products as $product) {
             $product->setAppends($this->productAppends);
         }
-        return $products->toArray();
+        return $products;
     }
 
-
-    private function beniBox($inputs):array
+    private function beniBox($inputs)
     {
         $products = Product::query()
             ->select(array_merge($this->productSelectedColumns, ['discount_until']))
@@ -264,10 +222,10 @@ class HomeService extends CacheServiceInterface
         foreach ($products as $product) {
             $product->setAppends($this->productAppends);
         }
-        return $products->toArray();
+        return $products;
     }
 
-    private function isPackage($inputs):array
+    private function isPackage($inputs)
     {
         $products = Product::query()
             ->select($this->productSelectedColumns)
@@ -278,10 +236,10 @@ class HomeService extends CacheServiceInterface
         foreach ($products as $product) {
             $product->setAppends($this->productAppends);
         }
-        return $products->toArray();
+        return $products;
     }
 
-    public function beforeAfterImages($inputs):array
+    public function beforeAfterImages($inputs)
     {
         $row = BeforeAfterImage::where('type','before')->where('enabled',1)->orderBy('id','desc')->get();
 
@@ -332,11 +290,31 @@ class HomeService extends CacheServiceInterface
         return $list;
     }
 
-    public function validCustomers($inputs):array {
+    public function validCustomers($inputs) {
         return ValidCustomer::query()
             ->latest('id')
             ->active()
-            ->get()->toArray();
+            ->get();
+    }
+
+    private function categories($inputs) 
+    {
+        return Category::query()
+            ->with('children')
+            ->active()
+            ->orderBy('priority', 'DESC')
+            ->parents()
+            ->get();
+    }
+
+    public function specialCategories($inputs)
+    {
+        return Category::query()
+            ->take($inputs['take'])
+            ->special()
+            ->active()
+            ->latest('id')
+            ->get();
     }
 
 

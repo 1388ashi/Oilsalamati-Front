@@ -138,17 +138,18 @@ class CategoryController extends Controller
     public function update(CategoryUpdateRequest $request, $id)
     {
         $category = Category::query()->find($id);
-        $category->fill($request->validated());
+        $category->fill($request->all());
+
         if ($request->hasFile('image')) {
-            $category->addImage($request->image);
+            $category->updateFiles($request->image, 'images');
         }
-        if ($request->hasFile('icon')) {
-            $category->addIcon($request->icon);
+            if ($request->hasFile('icon')) {
+            $category->updateFiles($request->icon, 'icons');
         }
 
         $category->attributes()->sync($request->attribute_ids);
         $category->specifications()->sync($request->specification_ids);
-        $category->brands()->sync($request->brand_ids);
+        // $category->brands()->sync($request->brand_ids);
 
         $category->save();
         ActivityLogHelper::updatedModel('دسته بندی بروز شد', $category);

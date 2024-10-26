@@ -66,14 +66,14 @@ class SliderController extends Controller
     {
         $slider = Slider::findOrFail($sliderId);
         if ($request->linkable_id) {
-            $slider->link = null;
+          $slider->link = null;
         }
         $slider->update($request->all());
-        $slider->updateFiles($request->images, 'image');
-        $slider->load('media');
+        $slider->updateFiles($request->image, 'main');
         ActivityLogHelper::updatedModel('اسلایدر بروز شد', $slider);
-
+        
         if (request()->header('Accept') == 'application/json') {
+          $slider->load('media');
           return response()->success('اسلایدر با موفقیت بروز شد', ['slider' => $slider]);
         }
         return redirect()->route('admin.sliders.groups.index',$slider->group)

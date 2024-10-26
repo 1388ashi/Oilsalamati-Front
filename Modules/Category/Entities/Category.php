@@ -46,7 +46,7 @@ class Category extends Model implements HasMedia, HasParent
         'priority',
         'level',
         'show_in_home',
-        'banner_link'
+        // 'banner_link'
     ];
 
     public function coupons()

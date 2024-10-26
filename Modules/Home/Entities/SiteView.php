@@ -17,7 +17,7 @@ class SiteView extends Model
 {
     use HasDefaultFields;
 
-     protected $connection='extra';
+    //  protected $connection='extra';
 
     public array $defaults = ['count' => 0];
 
