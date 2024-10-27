@@ -92,7 +92,7 @@ Route::webSuperGroup('admin', function () {
 
 
     Route::get('category-product-sort-index/{category}/', 'CategoryProductSortController@index')->name('category.product.sort.index')->hasPermission('order-product');
-    \Illuminate\Support\Facades\Route::resource('category-product-sort', 'CategoryProductSortController')->except(['index']);//->hasPermission('order-product');
+    Route::resource('category-product-sort', 'CategoryProductSortController')->except(['index']);//->hasPermission('order-product');
 });
 
 
@@ -115,10 +115,10 @@ use Modules\Product\Http\Controllers\Front\PPCController;
 Route::post('torob/products', [PPCController::class, 'torob']);
 Route::get('emalls/products', [PPCController::class, 'emalls']);
 
-Route::superGroup("customer", function () {
-    Route::post('products/{product}/listen', 'ListenChargeController@store')->name('products.listen');
-    Route::delete('products/{product}/unlisten', 'ListenChargeController@destroy')->name('products.unlisten');
-    Route::get('favorites', [CustomerProductController::class, 'indexFavorites'])->name('favorites.indexFavorites');
-    Route::post('products/{product}/favorite', [CustomerProductController::class, 'addToFavorites'])->name('product.addToFavorites');
-    Route::delete('products/{product}/favorite', [CustomerProductController::class, 'deleteFromFavorites'])->name('product.deleteFromFavorites');
-});
+// Route::superGroup("customer", function () {
+//     Route::post('products/{product}/listen', 'ListenChargeController@store')->name('products.listen');
+//     Route::delete('products/{product}/unlisten', 'ListenChargeController@destroy')->name('products.unlisten');
+//     Route::get('favorites', [CustomerProductController::class, 'indexFavorites'])->name('favorites.indexFavorites');
+//     Route::post('products/{product}/favorite', [CustomerProductController::class, 'addToFavorites'])->name('product.addToFavorites');
+//     Route::delete('products/{product}/favorite', [CustomerProductController::class, 'deleteFromFavorites'])->name('product.deleteFromFavorites');
+// });

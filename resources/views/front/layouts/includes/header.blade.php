@@ -39,7 +39,7 @@
     <div class="row">
       <!--Logo-->
       <div class="logo col-5 col-sm-3 col-md-3 col-lg-2 align-self-center">
-        <a class="logoImg" href="index.html">
+        <a class="logoImg" href="/">
           <img
             src="{{asset('front/assets/images/logo.png')}}"
             alt="قالب  چند منظوره هما"
@@ -56,7 +56,7 @@
           <ul id="siteNav" class="site-nav medium center">
             <li><a href="/">صفحه اصلی </a></li>
             <li class="lvl1 parent dropdown">
-              <a href="{{ route('front.categories.index') }}">دسته بندی محصولات <i class="icon anm anm-angle-down-l"></i></a>
+              <a>دسته بندی محصولات <i class="icon anm anm-angle-down-l"></i></a>
               <ul class="dropdown">
                 @foreach ($categories as $category)
                   <li>
@@ -79,8 +79,9 @@
                 @endforeach
               </ul>
             </li>
-            <li class=""><a href="#">درباره ما </a></li>
-            <li class=""><a href="#">تماس ما </a></li>
+            <li><a href="{{ route('posts.index') }}">وبلاگ </a></li>
+            <li><a href="#">درباره ما </a></li>
+            <li><a href="#">تماس ما </a></li>
           </ul>
         </nav>
       </div>
@@ -90,7 +91,7 @@
         <!--جستجو-->
         <div class="search-parent iconset">
           <div class="site-search" title="جستجو">
-            <a href="#;" class="search-icon clr-none" data-bs-toggle="offcanvas" data-bs-target="#search-drawer" ><i class="hdr-icon icon anm anm-search-l"></i></a>
+            <a class="search-icon clr-none" data-bs-toggle="offcanvas" data-bs-target="#search-drawer" ><i class="hdr-icon icon anm anm-search-l"></i></a>
           </div>
           <div class="search-drawer offcanvas offcanvas-top" tabindex="-1" id="search-drawer">
             <div class="container">
@@ -104,8 +105,8 @@
                   <div class="d-flex searchField">
                     <div class="search-category"></div>
                     <div class="input-box d-flex fl-1">
-                      <input type="text" class="input-text" placeholder="جستجوی محصولات..." value="" />
-                      <button type="submit" class="action search d-flex-justify-center btn rounded-start-0">
+                      <input type="text" class="input-text" placeholder="جستجوی محصولات..." id="SearchProductInput"/>
+                      <button type="button" class="action search d-flex-justify-center btn rounded-start-0">
                         <i class="icon anm anm-search-l"></i>
                       </button>
                     </div>
@@ -114,81 +115,22 @@
 
                   <!--جستجوی محصولات-->
                   <div class="search-products">
-                    <ul class="items g-2 g-md-3 row row-cols-lg-4 row-cols-md-3 row-cols-sm-2">
+                    <ul class="items g-2 g-md-3 row row-cols-lg-4 row-cols-md-3 row-cols-sm-2" id="ProductSearchBox">
                       <li class="item vala w-100 text-center text-muted d-none">شما هیچ موردی در جستجوی خود ندارید.</li>
-                      <li class="item">
+                      <li class="item d-none" id="ProductSearchItem">
                         <div class="mini-list-item d-flex align-items-center w-100 clearfix">
                           <div class="mini-image text-center">
-                            <a class="item-link" href="product-layout1.html" >
-                              <img
-                                class="blur-up lazyload"
-                                data-src="{{asset('front/assets/images/products/product1-120x170.jpg')}}"
-                                src="{{asset('front/assets/images/products/product1-120x170.jpg')}}"
-                                alt="تصویر"
-                                title="محصول"
-                                width="120"
-                                height="170"
-                              />
+                            <a class="item-link">
+                              <img id="ProductSearchImage" class="blur-up lazyload" width="120" height="170"/>
                             </a>
                           </div>
                           <div class="me-3 details text-right">
                             <div class="product-name">
-                              <a class="item-title" href="product-layout1.html" >پیراهن کوبایی آکسفورد</a>
+                              <a class="item-title" id="ProductSearchTitle"></a>
                             </div>
                             <div class="product-price">
-                              <span class="old-price">114.00 تومان </span><span class="price">99.00 تومان </span>
-                            </div>
-                            <div class="product-review d-flex align-items-center justify-content-start"></div>
-                          </div>
-                        </div>
-                      </li>
-                      <li class="item">
-                        <div class="mini-list-item d-flex align-items-center w-100 clearfix">
-                          <div class="mini-image text-center">
-                            <a class="item-link" href="product-layout1.html" >
-                              <img
-                                class="blur-up lazyload"
-                                data-src="{{asset('front/assets/images/products/product2-120x170.jpg')}}"
-                                src="{{asset('front/assets/images/products/product2-120x170.jpg')}}"
-                                alt="تصویر"
-                                title="محصول"
-                                width="120"
-                                height="170"
-                              />
-                            </a>
-                          </div>
-                          <div class="me-3 details text-right">
-                            <div class="product-name">
-                              <a class="item-title" href="product-layout1.html">درپوش کاف</a>
-                            </div>
-                            <div class="product-price">
-                              <span class="price">128.00 تومان </span>
-                            </div>
-                            <div class="product-review d-flex align-items-center justify-content-start"></div>
-                          </div>
-                        </div>
-                      </li>
-                      <li class="item">
-                        <div class="mini-list-item d-flex align-items-center w-100 clearfix">
-                          <div class="mini-image text-center">
-                            <a class="item-link" href="product-layout1.html" >
-                              <img
-                                class="blur-up lazyload"
-                                data-src="{{asset('front/assets/images/products/product3-120x170.jpg')}}"
-                                src="{{asset('front/assets/images/products/product3-120x170.jpg')}}"
-                                alt="تصویر"
-                                title="محصول"
-                                width="120"
-                                height="170"
-                              />
-                            </a>
-                          </div>
-                          <div class="me-3 details text-right">
-                            <div class="product-name">
-                              <a class="item-title" href="product-layout1.html">پیراهن یقه فلانل</a>
-                            </div>
-                            <div class="product-price">
-                              <span class="price">99.00 تومان </span>
+                              <span class="old-price" id="ProductSearchOldPrice"></span>
+                              <span class="price" id="ProductSearchPrice"></span>
                             </div>
                             <div class="product-review d-flex align-items-center justify-content-start"></div>
                           </div>

@@ -13,7 +13,7 @@
 					<div class="blog-article zoomscal-hov">
 						<div class="blog-img">
 
-							<a class="featured-image zoom-scal" href="#">
+							<a class="featured-image zoom-scal" href="{{ route('posts.show', $post->id) }}">
 								<img
 									class="blur-up lazyload"
 									data-src="{{ asset($post->image->url) }}"
@@ -47,7 +47,7 @@
 		</div>
 
 		<div class="view-collection text-center mt-4 mt-md-5">
-			<a href="#" class="btn btn-secondary btn-lg">مشاهده همه وبلاگ</a>
+			<a href="{{ route('posts.index') }}" class="btn btn-secondary btn-lg">مشاهده همه وبلاگ</a>
 		</div>
 
 	</div>

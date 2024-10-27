@@ -3,7 +3,7 @@
 		<div class="collection-slider-5items gp15 arwOut5 hov-arrow" dir="ltr">
 			@foreach ($response['specialCategories'] as $category)
 				<div class="category-item zoomscal-hov">
-					<a href="#" class="category-link clr-none">
+					<a href="{{ route('products.index', ['category_id' => $category->id]) }}" class="category-link clr-none">
 						<div class="zoom-scal zoom-scal-nopb rounded-3">
 							<img
 								class="blur-up lazyload"
@@ -11,7 +11,6 @@
 								src="{{ asset($category->image->url) }}"
 								alt="{{ $category->title }}"
 								title="{{ $category->title }}"
-								style="min-height: 230px;"
 								width="365"
 								height="365"
 							/>

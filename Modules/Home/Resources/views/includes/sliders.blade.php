@@ -1,5 +1,5 @@
 <section class="slideshow slideshow-wrapper">
-	<div class="container container-1330">
+	<div class="container">
 		<div class="row">
 
 			<div class="col-12 col-sm-12 col-md-12 col-lg-8">
