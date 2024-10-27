@@ -7,6 +7,7 @@ use CyrildeWit\EloquentViewable\Contracts\Viewable;
 use CyrildeWit\EloquentViewable\InteractsWithViews;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Modules\Comment\Entities\Comment;
 use Modules\Comment\Entities\Commentable;
 use Modules\Comment\Entities\HasComment;
 //use Modules\Core\Entities\BaseModel;
@@ -236,7 +237,10 @@ class Post extends Model implements Sortable, HasMedia, HasComment, Viewable
     {
         return config('blog.status_color.' . $this->attributes['status']);
     }
-
+    public function comments()  
+    {  
+        return $this->hasMany(Comment::class, 'commentable_id')->where('commentable_type', Post::class);  
+    } 
     public function isDeletable(): bool
     {
         return true;

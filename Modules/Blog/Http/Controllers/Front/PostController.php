@@ -21,47 +21,49 @@ class PostController extends Controller
     public function index($category_id = null)
     {
         $sortBy = request('sortBy');
-        $posts = Post::published()
-            ->with(['category' => function ($query) {
-                $query->select(['id', 'name', 'slug']);
-            }])->when($tagName = request('tag'), function ($query) use ($tagName) {
-                $query->whereHas('tags', function ($query) use ($tagName) {
-                    $query->where('name', $tagName);
-                });
-            })->when($categoryName = request('category'), function ($query) use ($categoryName) {
-                $query->whereHas('category', function ($query) use ($categoryName) {
-                    $query->where('name', $categoryName);
-                });
-            })->when(request('title'), function ($query) {
-                $query->where('title', 'LIKE', "%" . request('title') ."%");
-            })->when($category_id, function ($query) use ($category_id) {
-                $query->where('post_category_id', $category_id);
-            })
-            ->when($sortBy, function ($query) use ($sortBy) {  
-                switch ($sortBy) {  
-                    case 'special':  
-                        $query->where('special', 1);  
+        $posts = Post::published()  
+        ->with(['category' => function ($query) {  
+            $query->select(['id', 'name', 'slug']);  
+        }])  
+        ->withCount('comments') // محاسبه تعداد کامنت‌ها  
+        ->when($tagName = request('tag'), function ($query) use ($tagName) {  
+            $query->whereHas('tags', function ($query) use ($tagName) {  
+                $query->where('name', $tagName);  
+            });  
+        })  
+        ->when($categoryName = request('category'), function ($query) use ($categoryName) {  
+            $query->whereHas('category', function ($query) use ($categoryName) {  
+                $query->where('name', $categoryName);  
+            });  
+        })  
+        ->when(request('title'), function ($query) {  
+            $query->where('title', 'LIKE', "%" . request('title') ."%");  
+        })  
+        ->when($category_id, function ($query) use ($category_id) {  
+            $query->where('post_category_id', $category_id);  
+        })  
+        ->when($sortBy, function ($query) use ($sortBy) {  
+            switch ($sortBy) {  
+                case 'special':  
+                    $query->where('special', 1);  
                     break;  
-                    case 'most-comments':  
-                        // $query->mostComment();  
+                case 'most-comments':  
+                    $query->orderBy('comments_count', 'desc'); // مرتب کردن بر اساس تعداد کامنت‌ها  
                     break;  
-                    case 'new':  
-                        $query->orderBy('pin', 'desc')->orderBy('created_at', 'desc');  
+                case 'new':  
+                    $query->orderBy('pin', 'desc')->orderBy('created_at', 'desc');  
                     break;  
-                }  
-            })
-            ->when(!$sortBy, function ($query) {  
-                $query->orderBy('pin', 'desc');
-                $query->orderBy('created_at', 'desc');  
-            })
-            ->select(['id', 'title', 'summary', 'slug', 'special', 'created_at', 'post_category_id', 'published_at']) 
-//            ->withCount('views')
-            ->filters()
-            ->paginate(6);
+            }  
+        })  
+        ->when(!$sortBy, function ($query) {  
+            $query->orderBy('pin', 'desc')->orderBy('created_at', 'desc');  
+        })  
+        ->filters()  
+        ->paginate(6);
+
         $data = [
             'posts' => $posts
         ];
-
         if (!request('posts_only')) {
 //            $mostViews = BlogService::getMostViews();
             $category  = PostCategory::query()->active()->get();

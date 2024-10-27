@@ -12,6 +12,7 @@ use Modules\Core\Helpers\Helpers;
 use Modules\Product\Entities\Product;
 use Modules\Product\Services\ProductsCollectionService;
 use Modules\Product\Services\ProductSearchService;
+use Modules\ProductComment\Entities\ProductComment;
 use Modules\ProductQuestion\Entities\ProductQuestion;
 
 //use Modules\Product\Services\ProductService;
@@ -88,7 +89,7 @@ class ProductController extends Controller
         return response()->success('لیست تمامی محصولات',
             compact('products', 'priceFilter', 'pageCount','allProductsCount'));
     }
-    public function show($id): JsonResponse
+    public function show($id)
     {
         /* todo: fix it. load product from service. and also add questions. we should send categories and brands to the ProductDetailsService */
         /** @var $product Product */
@@ -116,8 +117,12 @@ class ProductController extends Controller
             }])
 //            ->filters()
             ->get();
-
-        return response()->success('', compact('product', 'relatedProducts','relatedProducts1','productQuestions'));
+            $averageStar = ProductComment::where('product_id', $product->id)  
+            ->where('status', 'approved')  
+            ->avg('rate');  
+            $averageStar = round($averageStar);
+            
+        return view('product::front.show',compact('averageStar','product', 'relatedProducts','relatedProducts1','productQuestions'));
     }
 
     public function search()

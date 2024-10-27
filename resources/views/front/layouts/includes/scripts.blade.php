@@ -1,5 +1,8 @@
 <script src="{{ asset('front/assets/js/plugins.js') }}"></script>
-<script src="{{ asset('assets/plugins/jquery/jquery.min.js') }}"></script>
+<script src="{{ asset('front/assets/plugins/jquery/jquery.min.js') }}"></script>
+<script src="{{ asset('front/assets/js/vendor/jquery.elevatezoom.js') }}"></script>
+<script src="{{ asset('front/assets/js/main.js') }}"></script>
+<script src="{{ asset('front/assets/js/vendor/photoswipe.min.js') }}"></script>
 
 
 <script>

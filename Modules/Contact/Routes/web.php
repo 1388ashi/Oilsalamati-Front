@@ -8,3 +8,9 @@ Route::webSuperGroup('admin', function () {
   Route::patch('/contacts/answer', [ContactController::class,'answer'])->name('contacts.answer');
   Route::delete('/contacts/delete/{contact}', [ContactController::class,'destroy'])->name('contacts.destroy');
 });
+Route::prefix('/contacts')->name('contacts.')->group(function() {
+  Route::post('/', [Modules\Contact\Http\Controllers\Customer\ContactController::class,'store'])->name('store');
+  // Route::get('/contacts', [Modules\Contact\Http\Controllers\Customer\ContactController::class,'index'])->name('index');
+  Route::get('/', [Modules\Contact\Http\Controllers\All\ContactController::class,'index'])->name('index');
+});
+// Route::get('contacts/{contact}', [CustomerContactController::class,'show']);

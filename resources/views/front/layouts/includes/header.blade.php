@@ -80,7 +80,7 @@
               </ul>
             </li>
             <li class=""><a href="#">درباره ما </a></li>
-            <li class=""><a href="#">تماس ما </a></li>
+            <li class=""><a href="{{route('contacts.index')}}">تماس با ما </a></li>
           </ul>
         </nav>
       </div>

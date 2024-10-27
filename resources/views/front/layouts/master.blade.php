@@ -9,7 +9,7 @@
 
 	</head>
 
-	<body class="template-index index-demo1">
+	<body class="template-product product-layout1">
     <div class="page-wrapper">
       
 			@include('front.layouts.includes.header')

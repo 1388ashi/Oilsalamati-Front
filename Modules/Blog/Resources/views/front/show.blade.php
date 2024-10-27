@@ -1,6 +1,6 @@
 @extends('front.layouts.master')
 @section('content')
-<x-front.breadcrumb :items="[['route_link' => 'posts','title' => 'وبلاگ'],['title' => 'جزئیات وبلاگ']]" />
+<x-front.breadcrumb :items="[['route_link' => 'posts.index','title' => 'وبلاگ'],['title' => 'جزئیات وبلاگ']]" />
 
 <div class="container">
     <div class="row">
@@ -191,7 +191,7 @@
                                 </div>  
                             </div>  
                             <div class="row">  
-                                <div class="col-12 col-sm-12 col-md-12 col-lg-12">  
+                                <div class="col-12">  
                                     <div class="form-group">  
                                         <label for="commentMessage" class="d-none">پیام</label>  
                                         <textarea rows="5" id="commentMessage" name="body" placeholder="نوشتن نظر" required>{{ old('body') }}</textarea>  
@@ -199,7 +199,7 @@
                                 </div>  
                             </div>  
                             <div class="row">  
-                                <div class="col-12 col-sm-12 col-md-12 col-lg-12">  
+                                <div class="col-12">  
                                     <input type="submit" class="btn btn-lg" value="ارسال نظر" />  
                                 </div>  
                             </div>  
@@ -215,40 +215,40 @@
 </div>
 @endsection
 @section('scripts')
-    <script>
-        $(document).ready(function() {  
-            $('#commentForm').on('submit', function(e) {  
-                e.preventDefault();
+<script>  
+    $(document).ready(function() {  
+        $('#commentForm').on('submit', function(e) {  
+            e.preventDefault();  
 
-                var submitBtn = $(this).find('input[type="submit"]'); 
+            var submitBtn = $(this).find('input[type="submit"]');   
 
-                $.ajax({  
-                    url: $(this).attr('action'), 
-                    type: 'POST',
-                    data: $(this).serialize(), 
-                    success: function(response) {  
-                        $('#statusAlert').show(); 
-                        submitBtn.attr('disabled', true);  
-                        $('#commentForm')[0].reset();  
+            $.ajax({  
+                url: $(this).attr('action'),   
+                type: 'POST',  
+                data: $(this).serialize(),   
+                success: function(response) {  
+                    $("#statusAlert").removeClass("d-none");  
 
-                        // setTimeout(function() {  
-                        //         $('#statusAlert').fadeOut();
-                        // }, 5000); 
-                    },  
-                    error: function(xhr) {  
-                        if (xhr.status === 422) {  
-                            var errors = xhr.responseJSON.errors;  
-                            var errorMessage = '';  
-                            for (var key in errors) {  
-                                errorMessage += errors[key].join(', ') + '\n';  
-                            }  
-                            alert(errorMessage);  
-                        } else {  
-                            alert('مشکلی پیش آمده است. لطفاً دوباره تلاش کنید.');  
+                    $('#commentForm')[0].reset();  
+
+                    setTimeout(function() {  
+                        $('#statusAlert').fadeOut();  
+                    }, 10000);   
+                },  
+                error: function(xhr) {  
+                    if (xhr.status === 422) {  
+                        var errors = xhr.responseJSON.errors;  
+                        var errorMessage = '';  
+                        for (var key in errors) {  
+                            errorMessage += errors[key].join(', ') + '\n';  
                         }  
+                        alert(errorMessage);  
+                    } else {  
+                        alert('مشکلی پیش آمده است. لطفاً دوباره تلاش کنید.');  
                     }  
-                });  
+                }  
             });  
         });  
-        </script>
+    });  
+</script>  
 @endsection

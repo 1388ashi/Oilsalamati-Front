@@ -2,6 +2,7 @@
 
 namespace Modules\Contact\Http\Controllers\All;
 
+use Modules\Setting\Entities\Setting;
 use Shetabit\Shopit\Modules\Contact\Http\Controllers\All\ContactController as BaseContactController;
 
 use Illuminate\Http\JsonResponse;
@@ -12,13 +13,18 @@ use Modules\Core\Helpers\Helpers;
 
 class ContactController extends Controller
 {
-    private $repository;
+    // private $repository;
 
-    public function __construct(Repository $repository)
+    // public function __construct(Repository $repository)
+    // {
+    //     $this->repository = $repository;
+    // }
+    public function index()
     {
-        $this->repository = $repository;
-    }
+        $settings = Setting::query()->where('private', false)->where('group','site')->groupBy('id')->get()->toArray();
 
+        return view('contact::front.index',compact('settings'));
+    }
     /**
      * Store a newly created resource in storage.
      * @param ContactRequest $request

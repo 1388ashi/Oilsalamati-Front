@@ -33,10 +33,6 @@ class CommentController extends Controller
         }
         $comment->setRelation('children', collect());
 
-        $data = [
-            'status' => 'success',
-            'message' => 'نظر با موفقیت ثبت شده و پس از تایید نمایش داده خواهد شد'
-        ];
-        return redirect()->back()->with($data);
+        return response()->json(['status' => 'success']);    
     }
 }
