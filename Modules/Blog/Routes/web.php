@@ -27,8 +27,9 @@ Route::webSuperGroup('admin', function () {
     Route::delete('/{post}', [PostController::class, 'destroy'])->name('destroy')->middleware('permission:delete_post');
   });
 });
+
   Route::get('/post-categories', [FrontPostCategoryController::class, 'index'])->name('postCategories');
-  Route::get('/posts', [FrontPostController::class, 'index'])->name('posts');
+  Route::get('/posts', [FrontPostController::class, 'index'])->name('posts.index');
   Route::get('/posts/category/{category_id}', [FrontPostController::class, 'byCategory'])->name('category.posts');
   Route::get('/posts/{id}', [FrontPostController::class, 'show'])->name('posts.show');
 

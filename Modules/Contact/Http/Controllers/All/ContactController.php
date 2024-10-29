@@ -19,6 +19,12 @@ class ContactController extends Controller
     // {
     //     $this->repository = $repository;
     // }
+    public function aboutUs()
+    {
+        $settings = Setting::query()->where('private', false)->where('group','site')->groupBy('id')->get()->toArray();
+
+        return view('contact::front.about-us',compact('settings'));
+    }
     public function index()
     {
         $settings = Setting::query()->where('private', false)->where('group','site')->groupBy('id')->get()->toArray();

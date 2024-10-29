@@ -1,7 +1,24 @@
 @extends('front.layouts.master')
+@section('body_class') template-product product-layout1 @endsection
 @section('content')
-<x-front.breadcrumb :items="[['route_link' => 'products.index','title' => 'محصولات'],['title' => 'جزئیات محصول']]" />
-
+<div class="page-header mt-0 py-3">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="breadcrumbs">
+                    <a href="/" title="Back to the home page">صفحه اصلی</a>
+                    <a href="{{route('products.index')}}" title="Back to the home page">
+                        <i class="icon anm anm-angle-left-l"></i>
+                        محصولات</a>
+                    <span class="main-title fw-bold">
+                        <i class="icon anm anm-angle-left-l"></i>
+                        جزئیات محصول
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="container">
 <!--Product Content-->
 <div class="product-single">
@@ -39,7 +56,7 @@
                 class="btn btn-primary prlightbox"
                 data-bs-toggle="tooltip"
                 data-bs-placement="top"
-                title="Zoom Image"
+                title="زوم کردن"
                 ><i class="icon anm anm-expand-l-arrows"></i
             ></a>
             </div>
@@ -191,9 +208,8 @@
                 @endfor  
                 <span class="caption me-2">24 بررسی ها</span>
                 </div>
-                <a class="reviewLink d-flex-center" href="#reviews"
-                >یک نظر بنویسید</a
-                >
+                <a class="reviewLink d-flex-center" href="#reviews">یک نظر بنویسید</a>
+
             </div>
             <!-- End Product Reviews -->
             <!-- Product Info -->
@@ -228,13 +244,13 @@
                     }  
                 }  
             @endphp  
-            @if ($product->discount)
+          @if ($product->discount)
             <div class="product-price d-flex-center my-3">
-                <span class="price old-price">{{ formatPrice($product->unit_price) }}</span><span class="price">99 هزار</span>
+                <span class="price old-price" id="price">{{ formatPrice($product->unit_price) }}</span><span class="price">99 هزار</span>
             </div>
             @else
             <div class="product-price d-flex-center my-3">
-                <span class="price">{{ formatPrice($product->unit_price) }}</span>
+                <span class="price" id="price">{{ formatPrice($product->unit_price) }}</span>
             </div>
             @endif
         </div>
@@ -256,7 +272,7 @@
                 @php
                     $class = $variety->store_balance > 1 ? 'available' : ($variety->store_balance === 0 || is_null($variety->store_balance) ? 'soldout' : '');
                 @endphp
-                <li class="swatch x-large {{$class}} {{$loo`p->first ? 'active' : ''}}">
+                <li class="swatch x-large {{$class}} {{$loop->first ? 'active' : ''}}">
                 <img
                     src="{{ asset('front/assets/images/products/product1-1-80x.jpg') }}"
                     alt="تصویر"
@@ -289,21 +305,22 @@
             <ul
                 class="variants-size size-swatches d-flex-center pt-1 clearfix"
             >
-                @foreach ($product->varieties_showcase['attributes'][0]['modelDetails'] as $item)
-                @php
-                    $variety = Modules\Product\Entities\Variety::find($item['myAvailableVarietyIds'][0]);
-                    $class = $variety->store_balance > 1 ? 'available' : ($variety->store_balance === 0 || is_null($variety->store_balance) ? 'soldout' : '');
-                @endphp
-                
-                <li class="swatch x-large {{ $class }}">  
-                    <span  
-                        class="swatchLbl"  
-                        data-bs-toggle="tooltip"  
-                        data-bs-placement="top"  
-                        title="{{ $item['value'] }}"  
-                    >{{ $item['value'] }}</span>  
-                </li>  
-                @endforeach
+            @if ($product->varieties_showcase['attributes'])
+                @foreach ($product->varieties_showcase['attributes'][0]['modelDetails'] as $item)  
+                    @php  
+                        $variety = Modules\Product\Entities\Variety::find($item['myAvailableVarietyIds'][0]);  
+                        $class = $variety->store_balance > 1 ? 'available' : ($variety->store_balance === 0 || is_null($variety->store_balance) ? 'soldout' : '');  
+                    @endphp  
+                    <li class="swatch x-large {{ $class }}" data-item-value="{{ $item['value'] }}" data-item-price="{{ $variety['price'] }}">  
+                        <span  
+                            class="swatchLbl"  
+                            data-bs-toggle="tooltip"  
+                            data-bs-placement="top"  
+                            title="{{ $item['value'] }}"  
+                        >{{ $item['value'] }}</span>  
+                    </li>  
+                @endforeach 
+                @endif
                 {{-- <li class="swatch x-large available active">
                 <span
                     class="swatchLbl"
@@ -351,8 +368,8 @@
             <!-- Product Quantity -->
             <div class="product-form-quantity d-flex-center">
                 <div class="qtyField">
-                    <a class="qtyBtn minus" href="#;"
-                    ><i class="icon anm anm-minus-r"></i
+                    <a class="qtyBtn minus"
+                    ><i style="cursor: pointer" class="icon anm anm-minus-r"></i
                     ></a>
                     <input
                     type="text"
@@ -360,7 +377,7 @@
                     value="1"
                     class="product-form-input qty"
                     />
-                    <a class="qtyBtn plus" href="#;"><i class="icon anm anm-plus-r"></i></a>
+                    <a class="qtyBtn plus"><i style="cursor: pointer" class="icon anm anm-plus-r"></i></a>
                 </div>
             </div>
             <!-- End Product Quantity -->
@@ -385,19 +402,6 @@
             @endif
             </div>
         </div>
-        {{-- <p class="infolinks d-flex-center justify-content-between">
-            <a class="text-link wishlist" href="wishlist-style1.html"
-            ><i class="icon anm anm-heart-l ms-2"></i>
-            <span>افزودن به فهرست آرزوها</span>
-            </a>
-        </p>
-        <p class="infolinks d-flex-center justify-content-between">
-            <a class="text-link compare" href="compare-style1.html"
-            ><i class="icon anm anm-sync-ar ms-2"></i>
-            <span>افزودن به مقایسه</span>
-            </a>
-        </p> --}}
-        <!-- End Product Info link -->
         </form>
         <!-- End Product Form -->
         <!-- Social Sharing -->
@@ -452,7 +456,7 @@
         <a class="tablink">مشخصات</a>
     </li>
 
-    <li id="reviews" rel="reviews"><a class="tablink">بررسی ها</a></li>
+    <li rel="reviews"><a class="tablink">بررسی ها</a></li>
     </ul>
 
     <div class="tab-container">
@@ -507,20 +511,20 @@
         <div class="col-12 col-sm-12 col-md-12 col-lg-6 mb-4">
             <div class="ratings-main">
             <div class="avg-rating d-flex-center mb-3">
-                <h4 class="avg-mark">5.0</h4>
+                <h4 class="avg-mark">{{$averageStar}}</h4>
                 <div class="avg-content me-3">
                 <p class="text-rating">میانگین امتیاز</p>
                 <div class="ratings-full product-review">
-                    <a class="reviewLink d-flex-center" href="#reviews"
-                    ><i class="icon anm anm-star"></i
-                    ><i class="icon anm anm-star"></i
-                    ><i class="icon anm anm-star"></i
-                    ><i class="icon anm anm-star"></i
-                    ><i class="icon anm anm-star-o"></i
-                    ><span class="caption me-2"
-                        >24 رتبه بندی ها</span
-                    ></a
-                    >
+                    <a class="reviewLink d-flex-center" href="#reviews">
+                        @php($maxStars = 5)  
+                        @for ($i = 0; $i < $maxStars; $i++)  
+                            @if ($i < $averageStar)  
+                                <i class="icon anm anm-star"></i>
+                            @else  
+                                <i class="icon anm anm-star-o"></i> 
+                            @endif  
+                        @endfor  
+                    </a>
                 </div>
                 </div>
             </div>
@@ -529,6 +533,7 @@
             <div class="spr-reviews">
             <h3 class="spr-form-title">نظرات مشتریان</h3>
             <div class="review-inner">
+                @foreach ($product->productComments as $comments)
                 <div class="spr-review d-flex w-100">
                 <div class="spr-review-profile flex-shrink-0">
                     <img
@@ -547,29 +552,28 @@
                     <div
                         class="title-review d-flex align-items-center justify-content-between"
                     >
-                        <h5
-                        class="spr-review-header-title text-transform-none mb-0"
-                        >
-                        النور پنا
+                        <h5 class="spr-review-header-title text-transform-none mb-0">
+                        {{$comments->creator->first_name || $comments->creator->last_name ? $comments->creator->first_name . ' ' . $comments->creator->last_name : '...' }}
                         </h5>
-                        <span class="product-review spr-starratings m-0"
-                        ><span class="reviewLink"
-                            ><i class="icon anm anm-star"></i
-                            ><i class="icon anm anm-star"></i
-                            ><i class="icon anm anm-star"></i
-                            ><i class="icon anm anm-star"></i
-                            ><i class="icon anm anm-star"></i></span
-                        ></span>
+                        <span class="product-review spr-starratings m-0">
+                            <span class="reviewLink">
+                                @php($maxStars = 5)  
+                                @for ($i = 0; $i < $maxStars; $i++)  
+                                    @if ($i < $comments->rate)  
+                                        <i class="icon anm anm-star"></i>  <!-- ستاره پر -->  
+                                    @else  
+                                        <i class="icon anm anm-star-o"></i> <!-- ستاره خالی -->  
+                                    @endif  
+                                @endfor  
+                            </span>
+                        </span>
+                        </div>
                     </div>
+                    <b class="head-font">{{$comments->title}}</b>
+                    <p class="spr-review-body">{{$comments->body}}</p>
                     </div>
-                    <b class="head-font">کیفیت خوب و بالا</b>
-                    <p class="spr-review-body">
-                    تنوع‌های زیادی از معابر در دسترس است، اما اکثریت
-                    آن‌ها به نوعی با استفاده از طنز تزریقی دچار تغییر
-                    شده‌اند.
-                    </p>
                 </div>
-                </div>
+                @endforeach
                 <div class="spr-review d-flex w-100">
                 <div class="spr-review-profile flex-shrink-0">
                     <img
@@ -616,94 +620,42 @@
         </div>
 
         <div class="col-12 col-sm-12 col-md-12 col-lg-6 mb-4">
-            <form
-            method="post"
-            action="#"
-            class="product-review-form new-review-form"
-            >
-            <h3 class="spr-form-title">نظری بنویسید</h3>
-            <p>آدرس ایمیل شما منتشر نخواهد شد. فیلدهای الزامی با *</p>
-            علامت گذاری شده اند
-            <fieldset class="row spr-form-contact">
-                <div class="col-sm-6 spr-form-contact-name form-group">
-                <label class="spr-form-label" for="nickname"
-                    >نام <span class="required">*</span></label
-                >
-                <input
-                    class="spr-form-input spr-form-input-text"
-                    id="nickname"
-                    type="text"
-                    name="name"
-                    required
-                />
+            <form id="commentForm" action="{{ route('product-comments.store') }}" class="product-review-form new-review-form" method="post">
+                @csrf
+                <div id="statusAlert" class="alert alert-success d-none">
+                    نظر با موفقیت ثبت شده و پس از تایید نمایش داده خواهد شد
                 </div>
-                <div class="col-sm-6 spr-form-contact-email form-group">
-                <label class="spr-form-label" for="email"
-                    >پست الکترونیک
-                    <span class="required">*</span></label
-                >
-                <input
-                    class="spr-form-input spr-form-input-email"
-                    id="email"
-                    type="email"
-                    name="email"
-                    required
-                />
-                </div>
-                <div class="col-sm-6 spr-form-review-title form-group">
-                <label class="spr-form-label" for="review"
-                    >عنوان را مرور کن
-                </label>
-                <input
-                    class="spr-form-input spr-form-input-text"
-                    id="review"
-                    type="text"
-                    name="review"
-                />
-                </div>
-                <div class="col-sm-6 spr-form-review-rating form-group">
-                <label class="spr-form-label">رتبه بندی</label>
-                <div class="product-review pt-1">
-                    <div class="review-rating">
-                    <a href="#;"
-                        ><i class="icon anm anm-star-o"></i></a
-                    ><a href="#;"
-                        ><i class="icon anm anm-star-o"></i></a
-                    ><a href="#;"
-                        ><i class="icon anm anm-star-o"></i></a
-                    ><a href="#;"
-                        ><i class="icon anm anm-star-o"></i></a
-                    ><a href="#;"
-                        ><i class="icon anm anm-star-o"></i
-                    ></a>
+                <h3 class="spr-form-title">نظری بنویسید</h3>
+                <fieldset class="row spr-form-contact">
+                    <div class="col-sm-6 spr-form-review-title form-group">
+                        <label class="spr-form-label" for="review">عنوان</label>
+                        <input class="spr-form-input spr-form-input-text" id="review" type="text" name="title" />
                     </div>
+                    <div class="col-sm-6 spr-form-review-rating form-group">
+                        <label class="spr-form-label">رتبه بندی</label>
+                        <div class="product-review pt-1">
+                            <div class="review-rating">
+                                @for ($i = 0; $i < 5; $i++)
+                                    <span class="star" style="cursor: pointer" data-value="{{ $i + 1 }}">
+                                        <i class="icon anm anm-star-o"></i>
+                                    </span>
+                                @endfor
+                            </div>
+                            <input type="hidden" name="rate" id="rating" value="0">
+                            <input type="hidden" name="product_id" value="{{ $product->id }}">
+                            <input type="hidden" name="show_customer_name" value="1">
+                        </div>
+                    </div>
+                    <div class="col-12 spr-form-review-body form-group">
+                        <label class="spr-form-label" for="message">توضیحات</label>
+                        <div class="spr-form-input">
+                            <textarea class="spr-form-input spr-form-input-textarea" id="message" name="body" rows="3"></textarea>
+                        </div>
+                    </div>
+                </fieldset>
+                <div class="spr-form-actions clearfix">
+                    <input type="submit" class="btn btn-primary spr-button spr-button-primary" value="ارسال نظر" />
                 </div>
-                </div>
-                <div class="col-12 spr-form-review-body form-group">
-                <label class="spr-form-label" for="message"
-                    >بدنه بررسی
-                    <span
-                    class="spr-form-review-body-charactersremaining"
-                    >(1500) کاراکتر باقی مانده است</span
-                    ></label
-                >
-                <div class="spr-form-input">
-                    <textarea
-                    class="spr-form-input spr-form-input-textarea"
-                    id="message"
-                    name="message"
-                    rows="3"
-                    ></textarea>
-                </div>
-                </div>
-            </fieldset>
-            <div class="spr-form-actions clearfix">
-                <input
-                type="submit"
-                class="btn btn-primary spr-button spr-button-primary"
-                value="ارسال بررسی"
-                />
-            </div>
             </form>
         </div>
         </div>
@@ -768,10 +720,188 @@
     </div>
 </div>
 </div>
+<section class="section product-slider pb-0">
+    <div class="container">
+        <div class="section-header">
+            <h2>فروش برتر این هفته</h2>
+        </div>
+        <div class="grid-products product-slider-4items gp15 arwOut5 hov-arrow" style="height: 400px;" dir="ltr">
+            @foreach ($relatedProducts1 as $product)
+            <div class="item col-item">
+                <div class="product-box">
+                    <div class="product-image">
+                        <!-- شروع تصویر محصول -->
+                        <a href="{{route('products.show',$product->id)}}" class="product-img">
+                            <img
+                                class="primary blur-up lazyload"
+                                data-src="{{asset('front/assets/images/products/cosmetic-product1.jpg')}}"
+                                src="{{asset('assets/images/products/cosmetic-product1.jpg')}}"
+                                alt="محصول"
+                                title="محصول"
+                                width="625"
+                                height="703"
+                            />
+                            <img
+                                class="hover blur-up lazyload"
+                                data-src="{{asset('assets/images/products/cosmetic-product1-1.jpg')}}"
+                                src="{{asset('assets/images/products/cosmetic-product1-1.jpg')}}"
+                                alt=" محصول"
+                                title="محصول"
+                                width="625"
+                                height="703"
+                            />
+                        </a>
+                        @php($finalPrice = $product->major_final_price)
+                        @php($hasDiscount = $finalPrice->discount_price > 0 ? true : false)
+                        <div class="product-labels">
+                            @if ($finalPrice->discount_type === 'percentage')
+                                <span class="lbl on-sale">{{ $finalPrice->discount . '%' }} تخفیف</span>
+                            @elseif($finalPrice->discount_type)
+                                <span class="lbl on-sale">{{ number_format($finalPrice->discount_price) . ' تومان' }} تخفیف</span>
+                            @endif
+                        </div>
+                        <!-- برچسب محصول نهایی -->
+                    </div>
+                    <div class="product-details text-center">
+                        <!-- نام محصول -->
+                        <div class="product-name">
+                        <a href="{{route('products.show',$product->id)}}">{{$product->title}}</a>
+                        </div>
+                        <!-- نام محصول نهایی -->
+                        <!-- قیمت محصول -->
+                        <div class="product-price">
+                            @if ($hasDiscount)
+                                <span class="price old-price">{{ number_format($finalPrice->amount) }} تومان </span>
+                            @endif
+                            <span class="price">{{ number_format($finalPrice->amount) }} تومان </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endforeach
+        </div>
+    </div>
+</section>
+<div id="loginModal" style="display: none;">
+    <div>  
+        <p>لطفاً وارد حساب کاربری خود شوید.</p>  
+        <button onclick="closeModal()">بستن</button>  
+    </div>  
+</div> 
 @endsection
 @section('scripts')
+<script src="{{ asset('front/assets/js/vendor/jquery.elevatezoom.js') }}"></script>
+<script src="{{ asset('front/assets/js/vendor/photoswipe.min.js') }}"></script>
     <script>
+        function formatPrice(price) {  
+            if (price >= 1000000) {  
+                return Math.floor(price / 1000000) + ' میلیون تومان';  
+            } else if (price >= 1000) {  
+                return Math.floor(price / 1000) + ' هزار تومان';  
+            } else {  
+                return price + ' تومان';  
+            }  
+        }  
+        document.addEventListener('DOMContentLoaded', function() {  
+            const swatchItems = document.querySelectorAll('.swatch');  
+            swatchItems.forEach(item => {  
+                item.addEventListener('click', function() {  
+                    const itemValue = this.getAttribute('data-item-value');  
+                    const itemPrice = this.getAttribute('data-item-price');  
+                    document.getElementById('price').innerText = formatPrice(itemPrice);  
+                    console.log(`Selected: ${itemValue}, Price: ${itemPrice}`);  
+                });  
+            });  
+        });  
         $(document).ready(function () {
+            //check login customer
+            $('#commentForm').on('submit', function(event) {
+            event.preventDefault();
+
+            $.ajax({
+                url: '{{route('checkLogin-customer')}}',
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': $('input[name="_token"]').val(), // ارسال توکن CSRF
+                },
+                data: JSON.stringify({ data: $('#data').val() }),
+                success: function(response) {
+                    if (!response.logged_in) { // اگر کاربر لاگین نکرده بود
+                        $('#loginModal').show();
+                    } else {
+                        // ادامه درخواست اگر کاربر لاگین کرده بود
+                        console.log('داده ارسال شده:', response);
+                    }
+                },
+                error: function(error) {
+                    console.error('Error:', error);
+                }
+            });
+        });
+
+        function closeModal() {
+            $('#loginModal').hide();
+        }
+            //star
+            const $stars = $('.star');
+            const $ratingInput = $('#rating');
+
+            $stars.on('mouseover', function() {
+                const index = $(this).data('value');
+                $stars.each(function(i) {
+                    $(this).html(i < index ? '<i class="icon anm anm-star"></i>' : '<i class="icon anm anm-star-o"></i>');
+                });
+                $ratingInput.val(index);
+            });
+
+            $stars.on('mouseout', function() {
+                const currentRating = parseFloat($ratingInput.val());
+                $stars.each(function(i) {
+                    $(this).html(i < currentRating ? '<i class="icon anm anm-star"></i>' : '<i class="icon anm anm-star-o"></i>');
+                });
+            });
+
+            $stars.each(function() {
+                $(this).on('click', function() {
+                    const ratingValue = $(this).data('value');
+                    $stars.each(function(i) {
+                        $(this).html(i < ratingValue ? '<i class="icon anm anm-star"></i>' : '<i class="icon anm anm-star-o"></i>');
+                    });
+                });
+            });
+            // $('#commentForm').on('submit', function(e) {  
+            //     e.preventDefault();  
+
+            //     var submitBtn = $(this).find('input[type="submit"]');   
+
+            //     $.ajax({  
+            //         url: $(this).attr('action'),   
+            //         type: 'POST',  
+            //         data: $(this).serialize(),   
+            //         success: function(response) {  
+            //             $("#statusAlert").removeClass("d-none");  
+
+            //             $('#commentForm')[0].reset();  
+
+            //             setTimeout(function() {  
+            //                 $('#statusAlert').fadeOut();  
+            //             }, 10000);   
+            //         },  
+            //         error: function(xhr) {  
+            //             if (xhr.status === 422) {  
+            //                 var errors = xhr.responseJSON.errors;  
+            //                 var errorMessage = '';  
+            //                 for (var key in errors) {  
+            //                     errorMessage += errors[key].join(', ') + '\n';  
+            //                 }  
+            //                 alert(errorMessage);  
+            //             } else {  
+            //                 alert('مشکلی پیش آمده است. لطفاً دوباره تلاش کنید.');  
+            //             }  
+            //         }  
+            //     });  
+            // });  
             function product_zoom() {
                 $(".zoompro").elevateZoom({
                     gallery: "gallery",

@@ -8,3 +8,4 @@ Route::webSuperGroup('admin', function () {
     Route::post('/login' , [AuthController::class, 'webLogin'])->name('webLogin');
     Route::post('/webLogout', [AuthController::class, 'webLogout'])->name('webLogout');
 }, []);
+Route::post('/check-login', [AuthController::class, 'checkLogin'])->name('checkLogin-customer');  

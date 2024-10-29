@@ -11,3 +11,4 @@ Route::webSuperGroup('admin', function () {
 		Route::post('/', [ProductCommentController::class, 'assignStatus'])->name('assign-status')->middleware('permission:modify_productComment');
 	});
 });
+Route::post('/product-comments', [Modules\ProductComment\Http\Controllers\Customer\ProductCommentController::class,'store'])->name('product-comments.store');

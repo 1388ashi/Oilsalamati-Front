@@ -4,6 +4,8 @@
 	<title>صفحه اصلی</title>
 @endsection
 
+@section('body_class') template-index index-demo1 @endsection
+
 @section('content')
 
 @include('home::includes.sliders')

@@ -3,25 +3,22 @@
 namespace Modules\Product\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Modules\Category\Services\CategoriesCollectionService;
 use Modules\Core\Classes\CoreSettings;
 use Modules\Core\Helpers\Helpers;
-//use Modules\Core\Http\Controllers\BaseRouteController;
+use Modules\Home\Http\Controllers\HomeController;
+use Modules\Home\Services\BaseService;
+use Modules\Home\Services\HomeService;
 use Modules\Product\Entities\Product;
 use Modules\Product\Services\ProductsCollectionService;
 use Modules\Product\Services\ProductSearchService;
 use Modules\ProductComment\Entities\ProductComment;
 use Modules\ProductQuestion\Entities\ProductQuestion;
 
-//use Modules\Product\Services\ProductService;
-//use phpDocumentor\Reflection\Types\True_;
-//use Shetabit\Shopit\Modules\Product\Http\Controllers\Front\ProductController as BaseProductController;
-
 class ProductController extends Controller
 {
-    public function index(): JsonResponse
+    public function index()
     {
         $is_search = false;
         if (request()->has('searchKeyWord') && request()->searchKeyWord) $is_search = true;
@@ -85,9 +82,27 @@ class ProductController extends Controller
             $product->makeHidden('short_description');
         }
 
+        if (request()->header('Accept') === 'application/json') {
+            return response()->success('لیست تمامی محصولات',compact('products', 'priceFilter', 'pageCount','allProductsCount'));
+        }
 
-        return response()->success('لیست تمامی محصولات',
-            compact('products', 'priceFilter', 'pageCount','allProductsCount'));
+        $homeController = new HomeController();
+        $specialCategories = $homeController->getItemFromName('specialCategories');
+        $categories = $homeController->getItemFromName('categories');
+        $colors = (new BaseService)->getBaseRouteCacheData()['colors'];
+
+        $response = [
+            'products' => $products,
+            'priceFilter' => $priceFilter,
+            'pagination' => $pagination,
+            'pageCount' => $pageCount,
+            'allProductsCount' => $allProductsCount,
+            'specialCategories' => $specialCategories,
+            'categories' => $categories,
+            'colors' => $colors,
+        ];
+
+        return view('product::front.index', compact('response'));  
     }
     public function show($id)
     {
@@ -121,7 +136,7 @@ class ProductController extends Controller
             ->where('status', 'approved')  
             ->avg('rate');  
             $averageStar = round($averageStar);
-            
+
         return view('product::front.show',compact('averageStar','product', 'relatedProducts','relatedProducts1','productQuestions'));
     }
 
@@ -147,7 +162,7 @@ class ProductController extends Controller
             ->sortBy(function ($product) use ($productIdsSearchResult) {
                 return array_search($product->id, $productIdsSearchResult) !== false ? array_search($product->id, $productIdsSearchResult) : PHP_INT_MAX;
             })
-            ->take(app(CoreSettings::class)->get('product.searchPerPage'))
+            ->take(20)
             ->values();
 
 //        if ($c = request('c')) {

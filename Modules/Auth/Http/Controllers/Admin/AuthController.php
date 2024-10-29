@@ -12,6 +12,10 @@ use Modules\Core\Classes\CoreSettings;
 
 class AuthController extends Controller
 {
+    public function checkLogin(Request $request)  
+    {  
+        return response()->json(['logged_in' => false]);  
+    } 
     public function showLoginForm() {
         // if(auth()->guard('admin')->user()) {
         //     return redirect()->route('admin.dashboard');

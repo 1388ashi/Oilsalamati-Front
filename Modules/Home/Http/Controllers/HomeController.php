@@ -44,6 +44,11 @@ class HomeController extends Controller
     return view('home::home', compact('response'));
   }
 
+  public function getItemFromName($itemName)
+  {
+    return $this->{$itemName}();
+  }
+
   private function isPackage()
   {
     $products = Product::query()

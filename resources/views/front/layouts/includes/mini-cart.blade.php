@@ -29,8 +29,8 @@
           <a class="product-image rounded-0" href="product-layout1.html">
             <img
               class="rounded-0 blur-up lazyload"
-              data-src="assets/images/products/cart-product-img1.jpg"
-              src="assets/images/products/cart-product-img1.jpg"
+              data-src="{{asset('front/assets/images/products/cart-product-img1.jpg')}}"
+              src="{{asset('front/assets/images/products/cart-product-img1.jpg')}}"
               alt="product"
               title="محصول"
               width="120"
@@ -64,8 +64,8 @@
           <a class="product-image rounded-0" href="product-layout1.html">
             <img
               class="rounded-0 blur-up lazyload"
-              data-src="assets/images/products/cart-product-img2.jpg"
-              src="assets/images/products/cart-product-img2.jpg"
+              data-src="{{asset('front/assets/images/products/cart-product-img2.jpg')}}"
+              src="{{asset('front/assets/images/products/cart-product-img2.jpg')}}"
               alt="product"
               title="محصول"
               width="120"

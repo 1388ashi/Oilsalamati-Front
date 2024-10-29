@@ -1,6 +1,24 @@
 @extends('front.layouts.master')
+@section('body_class') blog-page blog-details-page @endsection
 @section('content')
-<x-front.breadcrumb :items="[['route_link' => 'posts.index','title' => 'وبلاگ'],['title' => 'جزئیات وبلاگ']]" />
+<div class="page-header mt-0 py-3">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="breadcrumbs">
+                    <a href="/" title="Back to the home page">صفحه اصلی</a>
+                    <a href="{{route('products.index')}}" title="Back to the home page">
+                        <i class="icon anm anm-angle-left-l"></i>
+                        وبلاگ</a>
+                    <span class="main-title fw-bold">
+                        <i class="icon anm anm-angle-left-l"></i>
+                        جزئیات وبلاگ
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="container">
     <div class="row">
@@ -212,7 +230,7 @@
         </div>
         <!--پایان محتوای وبلاگ-->
     </div>
-</div>
+</div> 
 @endsection
 @section('scripts')
 <script>  

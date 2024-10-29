@@ -10,7 +10,7 @@
 			<div class="item col-item">
 				<div class="product-box">
 					<div class="product-image">
-						<a href="product-layout1.html" class="product-img">
+						<a href="{{ route('products.show', $product->id) }}" class="product-img">
 
 							<img
 								class="primary blur-up lazyload"
@@ -51,7 +51,7 @@
 					<div class="product-details text-center">
 
 						<div class="product-name">
-							<a href="#">{{ $product->title }}</a>
+							<a href="{{ route('products.show', $product->id) }}">{{ $product->title }}</a>
 						</div>
 
 						<div class="product-price">
@@ -68,7 +68,7 @@
 		</div>
 
 		<div class="view-collection text-center mt-4 mt-md-5 mb-md-5">
-			<a href="#"class="btn btn-outline-secondary btn-lg">مشاهده همه</a>
+			<a href="{{ route('products.index') }}" class="btn btn-outline-secondary btn-lg">مشاهده همه</a>
 		</div>
 
 	</div>

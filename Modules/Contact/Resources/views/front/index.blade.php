@@ -1,6 +1,21 @@
 @extends('front.layouts.master')
+@section('body_class') contact-page contact-style1-page @endsection
 @section('content')
-<x-front.breadcrumb :items="[['route_link' => 'home','title' => 'صفحه اصلی'],['title' => 'تماس با ما']]" />
+<div class="page-header mt-0 py-3">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="breadcrumbs">
+                    <a href="/" title="Back to the home page">صفحه اصلی</a>
+                    <span class="main-title fw-bold">
+                        <i class="icon anm anm-angle-left-l"></i>
+                        تماس با ما
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="container contact-style1">
     <div class="contact-form-details section pt-0">
