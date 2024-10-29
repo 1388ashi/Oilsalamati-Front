@@ -15,30 +15,25 @@ use Modules\Setting\Entities\Setting;
 
 class CartController extends Controller
 {
-    public function index(): JsonResponse
+    public function index()
     {
         $messages = [];
-        $user = \Auth::user();
+        // $user = \Auth::user();
+        $user = Customer::query()->find(auth('customer')->user()->id);
         /**
-         * @var $user Customer
+         * @var Customer $user
          */
         $carts = $user->carts;
-
-//        $showWarning = request('show_warning' , 'false');
-//        if ($showWarning == 1) {
-//            $messages = (new WarningMessageCartService($carts))->checkAll();
-//        }
-        // گرفتن رزور های فعال
-//        $reservations = Order::isActiveReserved()->where('customer_id', $user->id)->get()->map(function ($order) {
-//            $order->setAttribute('total_total_quantity', $order->getTotalTotalQuantity());
-//            return $order;
-//        });
         $carts_showcase = $user->get_carts_showcase($carts);
-        foreach ($carts ?? [] as $cart)
-            $cart->getReadyForFront();
 
+        if (request()->header('Accept') === 'application/json') {
+            foreach ($carts ?? [] as $cart)
+                $cart->getReadyForFront();
 
-        return response()->success('سبد خرید شما', compact('carts_showcase', 'carts','messages'/*, 'reservations'*/));
+            return response()->success('سبد خرید شما', compact('carts_showcase', 'carts','messages'/*, 'reservations'*/));
+        }
+
+        return view('cart::front.index', compact('carts_showcase', 'carts','messages'));
     }
 
     public function checkFreeShipping()

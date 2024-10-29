@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Modules\Auth\Http\Requests\Customer\CustomerLoginRequest;
@@ -15,7 +16,6 @@ use Modules\Auth\Http\Requests\Customer\CustomerResetPasswordRequest;
 use Modules\Auth\Http\Requests\Customer\CustomerSendTokenRequest;
 use Modules\Auth\Http\Requests\Customer\CustomerVerifyRequest;
 use Modules\Cart\Classes\CartFromRequest;
-use Modules\Core\Classes\CoreSettings;
 use Modules\Core\Helpers\Helpers;
 use Modules\Core\Services\NotificationService;
 use Modules\Customer\Entities\Customer;
@@ -24,10 +24,15 @@ use Modules\Customer\Events\SmsVerify;
 use Modules\Newsletters\Entities\UsersNewsletters;
 use Modules\Setting\Entities\Setting;
 use Shetabit\Shopit\Modules\Auth\Http\Controllers\Customer\AuthController as BaseAuthController;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Validation\ValidationException;
+use Modules\Core\Rules\IranMobile;
+
 class AuthController extends BaseAuthController
 {
+
+    public function showLoginForm() {
+        return view('auth::front.login');
+    }
+
     public function registerLogin(CustomerRegisterLoginRequest $request): JsonResponse
     {
         $key = Setting::getFromName('smsBomberKey');
@@ -210,6 +215,38 @@ class AuthController extends BaseAuthController
         ];
 
         return response()->success('ثبت نام با موفقیت انجام شد', compact('data'));
+    }
+
+    public function webLogin(Request $request)
+    {  
+        $request->merge([
+            'password' => 123456
+        ]);
+        
+        $credentials = $request->validate([
+            'mobile' => ['required', 'digits:11', new IranMobile()],
+            'password' => ['required', 'min:3']
+        ]);
+
+        $customer = Customer::where('mobile', $request->mobile)->first();
+        if (!$customer /* || !Hash::check($request->password, $customer->password) */) {
+            $status = 'danger';
+            $message = 'نام کاربری یا رمز عبور نادرست است';
+            return redirect()->back()->with(['status' => $status, 'message' => $message]);
+        }
+
+        if (Auth::guard('customer')->attempt($credentials, true)) {
+
+            $request->session()->regenerate();
+            Auth::login($customer);
+
+            return redirect()->route('home');
+
+        }else {
+            $status = 'danger';
+            $message = 'نام کاربری یا رمز عبور نادرست است';
+            return redirect()->back()->with(['status' => $status, 'message' => $message]);
+        }
     }
 
 

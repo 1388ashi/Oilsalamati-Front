@@ -15,12 +15,17 @@
 
     function searchProducts(value) {
         $.ajax({
-            url: '{{ route('products.search') }}',
+            url: '{{ route("products.search") }}',
             type: 'GET',
             data: {
                 q: value
             },
             success: function(response) {
+
+                if (response.data.products.length == 0) {
+                    $("#ProductSearchBox").append('<li class="item vala w-100 text-center text-muted">شما هیچ موردی در جستجوی خود ندارید.</li>'); 
+                    return;
+                }
 
                 const products = response.data.products;
                 const ProductSearchItem = $('#ProductSearchItem');
