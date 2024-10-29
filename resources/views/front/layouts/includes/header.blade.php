@@ -80,7 +80,7 @@
               </ul>
             </li>
             <li><a href="{{ route('posts.index') }}">وبلاگ </a></li>
-            <li><a  href="{{route('about-us.index')}}">درباره ما </a></li>
+            <li><a  href="{{route('about-us')}}">درباره ما </a></li>
             <li><a href="{{route('contacts.index')}}">تماس ما </a></li>
           </ul>
         </nav>
