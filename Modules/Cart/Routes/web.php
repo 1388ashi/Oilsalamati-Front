@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Modules\Cart\Http\Controllers\Customer\CartController as CustomerCartController;
 
-Route::prefix('/cart')->name('cart.')->group(function () {
+Route::prefix('/cart')->name('cart.')->middleware('auth')->group(function () {
   Route::get('/', [CustomerCartController::class, 'index'])->name('index');
   Route::post('/add/{variety}', [CustomerCartController::class, 'add'])->name('add');
   Route::delete('/{cart}', [CustomerCartController::class, 'remove'])->name('remove');

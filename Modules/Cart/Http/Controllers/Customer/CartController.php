@@ -4,25 +4,23 @@ namespace Modules\Cart\Http\Controllers\Customer;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
 use Modules\Cart\Entities\Cart;
 use Modules\Cart\Http\Requests\Admin\CartStoreRequest;
 use Modules\Cart\Http\Requests\Admin\CartUpdateRequest;
-use Modules\Cart\Services\WarningMessageCartService;
 use Modules\Customer\Entities\Customer;
 use Modules\Product\Entities\Variety;
 use Modules\Setting\Entities\Setting;
-//use Shetabit\Shopit\Modules\Cart\Http\Controllers\Customer\CartController as BaseCartController;
+use Modules\Shipping\Entities\Shipping;
+use Modules\Shipping\Services\ShippingCollectionService;
 
 class CartController extends Controller
 {
     public function index()
     {
         $messages = [];
-        // $user = \Auth::user();
-        $user = Customer::query()->find(auth('customer')->user()->id);
-        /**
-         * @var Customer $user
-         */
+        /** @var Customer $user */
+        $user = auth('customer')->user();
         $carts = $user->carts;
         $carts_showcase = $user->get_carts_showcase($carts);
 
@@ -33,7 +31,9 @@ class CartController extends Controller
             return response()->success('سبد خرید شما', compact('carts_showcase', 'carts','messages'/*, 'reservations'*/));
         }
 
-        return view('cart::front.index', compact('carts_showcase', 'carts','messages'));
+        $shippings = (new ShippingCollectionService)->getActiveShippings();
+
+        return view('cart::front.index', compact(['carts_showcase', 'carts', 'messages', 'user', 'shippings']));
     }
 
     public function checkFreeShipping()
@@ -111,7 +111,6 @@ class CartController extends Controller
         return response()->success('محصول موفقیت به سبد خرید اضافه شد', compact('newCart','carts_showcase','carts'));
     }
 
-
     public function update(CartUpdateRequest $request, $id)
     {
         $icart = Cart::find($id);
@@ -159,22 +158,29 @@ class CartController extends Controller
         );
     }
 
-
-
-
-
-    // came from vendor ================================================================================================
     public function remove(Cart $cart)
     {
         $cart->delete();
 
-        $user = \Auth::guard('customer-api')->user();
+        if (request()->header('Accept') === 'application/json') {
+            /** @var Customer $user */
+            $user = Auth::guard('customer-api')->user();
+        }else {
+            $user = Auth::guard('customer')->user();
+        }
+
         $carts = $user->carts;
         $carts_showcase = $user->get_carts_showcase($carts);
-        foreach ($carts as $cart) $cart->getReadyForFront();
+        
+        if (request()->header('Accept') === 'application/json') {
+            foreach ($carts as $cart) $cart->getReadyForFront();
 
-        return response()->success('محصول با موفقیت از سبد حذف شد', compact('carts', 'carts_showcase'));
+            return response()->success('محصول با موفقیت از سبد حذف شد', compact('carts', 'carts_showcase'));
+        }
+
+        return redirect()->back()->with([
+            'success' => 'محصول با موفقیت از سبد حذف شد'
+        ]);
     }
-
 
 }

@@ -1042,7 +1042,7 @@
             $('.tabs-listing .slick-slider').slick('refresh');
         });
     }
-    slider_refresh();
+    // slider_refresh();
 
 
     /*-----------------------------------
@@ -1497,7 +1497,7 @@
             });
         });
     }
-    checkout_tabs();
+    // checkout_tabs();
 
 
 })(jQuery);

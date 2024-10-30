@@ -19,7 +19,6 @@ class AddressStoreRequest extends FormRequest
      */
     public function rules()
     {
-        $customerId = \Auth::guard('customer-api')->user();
         $coreSetting = app(CoreSettings::class);
 
         return [

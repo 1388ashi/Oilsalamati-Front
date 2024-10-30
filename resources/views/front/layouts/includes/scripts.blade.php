@@ -1,5 +1,7 @@
 <script src="{{ asset('front/assets/js/plugins.js') }}"></script>
 <script src="{{ asset('front/assets/js/main.js') }}"></script>
+<script src="{{ asset('front/assets/custom/custom.js') }}"></script>
+<script src="{{ asset('front/assets/custom/sweetalert.min.js') }}"></script>
 
 <script>
     let typingTimer;

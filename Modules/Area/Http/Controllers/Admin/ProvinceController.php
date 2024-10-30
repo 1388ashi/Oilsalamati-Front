@@ -71,4 +71,12 @@ class ProvinceController extends Controller
     }
     return redirect()->back()->with('success', 'استان با موفقیت حذف شد.');
   }
+
+  public function getAllProvinces()
+  {
+    $provinces = Province::select(['id', 'name'])->orderBy('name')->active()->get()->toArray();
+
+    return response()->success('لیست تمام استان ها', compact('provinces'));
+  }
+
 }
