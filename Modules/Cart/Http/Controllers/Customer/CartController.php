@@ -62,9 +62,14 @@ class CartController extends Controller
         return response()->success('ارسال رایگان', compact('has_free_shipping'));
     }
 
-    public function add(CartStoreRequest $request, $varietyId): JsonResponse
+    public function add(CartStoreRequest $request, $id): JsonResponse
     {
-        $varietyInCart = \Auth::user()->carts()->where('variety_id', $request->variety->id)->first();
+        $request->variety = Variety::query()->with('product.activeFlash')->whereKey($request->variety_id)->firstOrFail();
+        $user = \Auth::guard('customer')->user();  
+        if (!$user) {  
+            throw new \Exception('User not authenticated.');
+        }  
+        $varietyInCart = $user->carts()->where('variety_id', $request->variety->id)->first(); 
         $default_max_limit = Setting::getFromName('default_product_max_limit') ? Setting::getFromName('default_product_max_limit') : 1000;
 
         if ($varietyInCart){
@@ -118,13 +123,13 @@ class CartController extends Controller
             ]);
         }
 
-        $newCart = Cart::addToCart($request->input('quantity'), $request->variety, \Auth::user());
-        $user = \Auth::guard('customer-api')->user();
+        $newCart = Cart::addToCart($request->input('quantity'), $variety, \Auth::guard('customer')->user());
         $carts = $user->carts;
         $carts_showcase = $user->get_carts_showcase($carts);
         foreach ($carts ?? [] as $cart) $cart->getReadyForFront();
 
-        return response()->success('محصول موفقیت به سبد خرید اضافه شد', compact('newCart','carts_showcase','carts'));
+        return response()->json(['carts' => $carts , 'message' => 'محصول با موفقیت به سبد خرید اضافه شد ']);    
+
     }
 
     public function update(CartUpdateRequest $request, $id)

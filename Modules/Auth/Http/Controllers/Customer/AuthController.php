@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Routing\Controller;
 use Modules\Auth\Http\Requests\Customer\CustomerLoginRequest;
 use Modules\Auth\Http\Requests\Customer\CustomerRegisterLoginRequest;
 use Modules\Auth\Http\Requests\Customer\CustomerRegisterRequest;
@@ -26,20 +27,45 @@ use Modules\Setting\Entities\Setting;
 use Shetabit\Shopit\Modules\Auth\Http\Controllers\Customer\AuthController as BaseAuthController;
 use Modules\Core\Rules\IranMobile;
 
-class AuthController extends BaseAuthController
+class AuthController extends Controller
 {
-
     public function showLoginForm() {
         return view('auth::front.login');
     }
-
-    public function registerLogin(CustomerRegisterLoginRequest $request): JsonResponse
-    {
+    public function isRegister(CustomerRegisterLoginRequest $request){
         $key = Setting::getFromName('smsBomberKey');
-        $value = Setting::getFromName('smsBomberValue');
+        $value = Setting::getFromName('smsBomberValue');    
 
         if (!$request->has($key) || $request->{$key} != $value) {
-            throw Helpers::makeValidationException('خطا در تایید کد کپچا');
+            $status = 'danger';
+            $message = 'خطا در تایید کد کپچا';
+            return redirect()->back()->with(['status' => $status, 'message' => $message]);
+        }
+        try {
+                $customer = Customer::where('mobile', $request->mobile)->first();
+                if ($customer && !$customer->isActive()) {
+                    $status = 'danger';
+                    $message = 'حساب شما غیر فعال است. لطفا با پشتیبانی تماس حاصل فرمایید.';
+                    return redirect()->back()->with(['status' => $status, 'message' => $message]);
+                }
+                $status = ($customer && $customer->password) ? 'login' : 'register';
+                if ($status === 'register') {
+                    return view('auth::front.register');
+                }
+        } catch(\Exception $exception) {
+            Log::error($exception->getTraceAsString());
+            return redirect()->back()->with(['status' => 'danger', 'message' => 'مشکلی در برنامه بوجود آمده است. لطفا با پشتیبانی تماس بگیرید:'. $exception->getMessage()]);
+        }
+    }    
+    public function registerLogin(CustomerRegisterLoginRequest $request)
+    {
+        $key = Setting::getFromName('smsBomberKey');
+        $value = Setting::getFromName('smsBomberValue');    
+
+        if (!$request->has($key) || $request->{$key} != $value) {
+            $status = 'danger';
+            $message = 'خطا در تایید کد کپچا';
+            return redirect()->back()->with(['status' => $status, 'message' => $message]);
         }
 //        $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
 //            'secret' => config('services.recaptcha.secret_key'),
@@ -56,36 +82,37 @@ class AuthController extends BaseAuthController
         try {
             $customer = Customer::where('mobile', $request->mobile)->first();
             if ($customer && !$customer->isActive()) {
-                return response()->error('حساب شما غیر فعال است. لطفا با پشتیبانی تماس حاصل فرمایید.');
+                $status = 'danger';
+                $message = 'حساب شما غیر فعال است. لطفا با پشتیبانی تماس حاصل فرمایید.';
+                return redirect()->back()->with(['status' => $status, 'message' => $message]);
             }
             $status = ($customer && $customer->password) ? 'login' : 'register';
             if ($status === 'register') {
                 if (env('APP_ENV') != 'local') {
                     $result = event(new SmsVerify($request->mobile));
+                    
+                    return view('auth::front.register');
                     if ($result[0]['status'] != 200) {
-                        return response()->error('ارسال کدفعال سازی ناموفق بود.لطفا دوباره تلاش کنید', null);
+                        $status = 'danger';
+                        $message = 'ارسال کد فعال سازی ناموفق بود.لطفا دوباره تلاش کنید';
+                        return redirect()->back()->with(['status' => $status, 'message' => $message]);
                     }
                 } else {
-                    // در صورتی که از سیستم لوکال استفاده شود فقط توکن ایجاد می شود که مثدار آن 12345 است
                     SmsToken::create([
                         'mobile' => $request->mobile,
                         'token' => 12345, //random_int(10000, 99999),
                         'expired_at' => Carbon::now()->addHours(240),
                         'verified_at' => now()
                     ]);
+                    return view('auth::front.register',compact($request->mobile));
                 }
             }
-
             $mobile = $request->mobile;
 
-            return response()->success('بررسی وضعیت ثبت نام مشتری' , compact('status', 'mobile'));
-        } catch(Exception $exception) {
+            return view('auth::front.sms',compact($mobile)); 
+        } catch(\Exception $exception) {
             Log::error($exception->getTraceAsString());
-            return response()->error(
-                'مشکلی در برنامه بوجود آمده است. لطفا با پشتیبانی تماس بگیرید: ' . $exception->getMessage(),
-                $exception->getTrace(),
-                500
-            );
+            return redirect()->back()->with(['status' => 'danger', 'message' => 'مشکلی در برنامه بوجود آمده است. لطفا با پشتیبانی تماس بگیرید:'. $exception->getMessage()]);
         }
     }
 
@@ -249,7 +276,17 @@ class AuthController extends BaseAuthController
         }
     }
 
+    public function webRegisterLogin() {
+        
+        return view('auth::front.register-login');
+    }
+    public function webLogout(Request $request) {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
+        return redirect()->route('home','با موفقیت خارج شدید');
+    }
 
 
     // came from vendor ================================================================================================

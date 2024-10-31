@@ -4,6 +4,7 @@ namespace Modules\Product\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 use Modules\Category\Services\CategoriesCollectionService;
 use Modules\Core\Classes\CoreSettings;
 use Modules\Core\Helpers\Helpers;

@@ -167,7 +167,7 @@
             data-bs-toggle="offcanvas"
             data-bs-target="#minicart-drawer"
             ><i class="hdr-icon icon anm anm-cart-l"></i
-            ><span class="cart-count">2</span></a
+            ><span id="num-cart-count" class="cart-count">0</span></a
           >
         </div>
         <!--پایان Minicart-->

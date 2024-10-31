@@ -24,13 +24,15 @@ class CartStoreRequest extends FormRequest
     protected function passedValidation()
     {
         $varietyId = Helpers::getModelIdOnPut('variety');
-        $this->variety = Variety::query()->with('product.activeFlash')->whereKey($varietyId)->firstOrFail();
+        $this->variety = Variety::query()->with('product.activeFlash')->whereKey($this->variety_id)->firstOrFail();
         if ($this->variety->quantity == null || $this->variety->quantity == 0){
             throw Helpers::makeValidationException('تنوع مورد نظر ناموجود است');
         }
-        // چک کنبم اگر از قبل تو سبد خریدش وجود داشت با اون چک کنیم
-        $this->alreadyInCart = \Auth::user()->carts()->where('variety_id', $this->variety->id)->first();
-        // ممکنه نال باشه پس صفر بجاش بذاز
+        $user = \Auth::guard('customer')->user();  
+        if (!$user) {  
+            throw new \Exception('User not authenticated.');
+        }  
+        $this->alreadyInCart = $user->carts()->where('variety_id', $this->variety->id)->first(); 
         if ($this->quantity + ($this->alreadyInCart ? $this->alreadyInCart->quantity : 0) > $this->variety->quantity){
             throw Helpers::makeValidationException(' از تنوع مورد نظر فقط ' . $this->variety->quantity . " {$this->variety->product->unit->symbol} " . "موجود است ");
         }

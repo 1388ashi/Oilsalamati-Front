@@ -13,12 +13,13 @@ class ProductCommentController extends Controller
 {
     public function store(ProductCommentStoreRequest $request , ProductComment $productComment): JsonResponse
     {
+        $user = \Auth::guard('customer')->user();
         $productComment->fill($request->except('status'));
-        $productComment->creator()->associate(auth()->user());
+        $productComment->creator()->associate($user);
         $productComment->product()->associate($request->product_id);
         $productComment->save();
 
-        return response()->success('دیدگاه با موفقیت ثبت شد.', compact('productComment'));
+        return response()->json(['status' => 'success']);    
     }
 
 
