@@ -6,20 +6,16 @@
     border-radius: 8px; 
     padding: 20px;
 }  
-
 .modal-header {  
     border-bottom: none;   
 }  
-
 .modal-body {  
     padding: 20px;
 }  
-
 .btn-auth {  
     background-color: #007bff;
     border-color: #007bff;
 }  
-
 .mt-3 {  
     margin-top: 15px; 
 }  
@@ -406,8 +402,8 @@
             @if($product->status == 'available')
             <button  
                 type="button"
-                {{-- data-bs-toggle="offcanvas"
-                data-bs-target="#minicart-drawer" --}}
+                data-bs-toggle="offcanvas"
+                data-bs-target="#minicart-drawer"
                 name="add"  
                 class="btn btn-secondary product-form-cart-submit">  
                 <span>افزودن به سبد</span>  
@@ -425,67 +421,58 @@
             </div>
         </div>
     </form>
-    <div id="alertVarietyDanger" class="alert alert-danger d-none">
-        ویژگی را انتخاب کنید.
-    </div>
-        <div class="modal fade" id="loginModalProduct" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">  
-            <div class="modal-dialog modal-md" role="document">  
-                <div class="modal-content">  
-                    <div class="modal-header">  
-                        <h5 class="modal-title font-weight-bold">لطفاً وارد حساب کاربری خود شوید.</h5>  
-                        <button type="button" class="close" id="closeButtonProduct1" aria-label="Close">  
-                            <span aria-hidden="true">&times;</span>  
-                        </button>  
-                    </div>  
-                    <div class="modal-body text-center">  
-                        <a href="{{ route('customer.showLoginForm') }}" class="btn btn-primary btn-auth">ورود به حساب کاربری</a>  
-                        <button type="button" class="btn btn-outline-danger" id="closeButtonProduct2">بستن</button>  
+            <div class="modal fade" id="loginModalProduct" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">  
+                <div class="modal-dialog modal-md" role="document">  
+                    <div class="modal-content">  
+                        <div class="modal-header">  
+                            <h5 class="modal-title font-weight-bold">لطفاً وارد حساب کاربری خود شوید.</h5>  
+                            <button type="button" class="close" id="closeButtonProduct1" aria-label="Close">  
+                                <span aria-hidden="true">&times;</span>  
+                            </button>  
+                        </div>  
+                        <div class="modal-body text-center">  
+                            <a href="{{ route('customer.showLoginForm') }}" class="btn btn-primary btn-auth">ورود به حساب کاربری</a>  
+                            <button type="button" class="btn btn-outline-danger" id="closeButtonProduct2">بستن</button>  
+                        </div>  
                     </div>  
                 </div>  
-            </div>  
+            </div>
+            <div class="social-sharing d-flex-center mt-2 lh-lg">
+                <span class="sharing-lbl fw-600">اشتراک گذاری:</span>
+                <a
+                    href="#"
+                    class="d-flex-center btn btn-link btn--share share-facebook"
+                    ><i class="icon anm anm-facebook-f"></i
+                    ><span class="share-title">فیس بوک</span></a
+                >
+                <a
+                    href="#"
+                    class="d-flex-center btn btn-link btn--share share-twitter"
+                    ><i class="icon anm anm-twitter"></i
+                    ><span class="share-title">توئیت</span></a
+                >
+                <a
+                    href="#"
+                    class="d-flex-center btn btn-link btn--share share-pinterest"
+                    ><i class="icon anm anm-pinterest-p"></i>
+                    <span class="share-title">آن را پین کنید</span></a
+                >
+                <a
+                    href="#"
+                    class="d-flex-center btn btn-link btn--share share-linkedin"
+                    ><i class="icon anm anm-linkedin-in"></i
+                    ><span class="share-title">Linkedin</span></a
+                >
+                <a
+                    href="#"
+                    class="d-flex-center btn btn-link btn--share share-email"
+                    ><i class="icon anm anm-envelope-l"></i
+                    ><span class="share-title">ایمیل</span></a
+                >
+            </div>
         </div>
-        <!-- End Product Form -->
-        <!-- Social Sharing -->
-        <div class="social-sharing d-flex-center mt-2 lh-lg">
-            <span class="sharing-lbl fw-600">اشتراک گذاری:</span>
-            <a
-                href="#"
-                class="d-flex-center btn btn-link btn--share share-facebook"
-                ><i class="icon anm anm-facebook-f"></i
-                ><span class="share-title">فیس بوک</span></a
-            >
-            <a
-                href="#"
-                class="d-flex-center btn btn-link btn--share share-twitter"
-                ><i class="icon anm anm-twitter"></i
-                ><span class="share-title">توئیت</span></a
-            >
-            <a
-                href="#"
-                class="d-flex-center btn btn-link btn--share share-pinterest"
-                ><i class="icon anm anm-pinterest-p"></i>
-                <span class="share-title">آن را پین کنید</span></a
-            >
-            <a
-                href="#"
-                class="d-flex-center btn btn-link btn--share share-linkedin"
-                ><i class="icon anm anm-linkedin-in"></i
-                ><span class="share-title">Linkedin</span></a
-            >
-            <a
-                href="#"
-                class="d-flex-center btn btn-link btn--share share-email"
-                ><i class="icon anm anm-envelope-l"></i
-                ><span class="share-title">ایمیل</span></a
-            >
-        </div>
-        <!-- End Social Sharing -->
-    </div>
     </div>
 </div>
-<!--Product Content-->
-
-<!--Product Tabs-->
 <div class="tabs-listing section pb-0">
     <ul
     class="product-tabs style1 list-unstyled d-flex-wrap d-flex-justify-center d-none d-md-flex"
@@ -624,9 +611,6 @@
         <div class="col-12 col-sm-12 col-md-12 col-lg-6 mb-4">
             <form id="commentForm" action="{{ route('product-comments.store') }}" method="post" class="product-review-form new-review-form">  
                 @csrf  
-                <div id="statusAlert" class="alert alert-success d-none">  
-                    نظر با موفقیت ثبت شده و پس از تایید نمایش داده خواهد شد.  
-                </div>  
                 <div id="statusDanger" class="alert alert-danger d-none">  
                     خطا در ثبت نظر.  
                 </div>  
@@ -808,8 +792,6 @@
 
 @endsection
 @section('scripts')
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>  
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>  
 <script src="{{ asset('front/assets/js/vendor/jquery.elevatezoom.js') }}"></script>
 <script src="{{ asset('front/assets/js/vendor/photoswipe.min.js') }}"></script>
     <script>
@@ -853,79 +835,72 @@
                 var selectedValue = document.getElementById("varietyValue").value;
                 var title = document.getElementById("title").value;
                 var selectedQuantity = document.getElementById("quantity").value;
-                // var selectedValue = $this.data('item-value');  
-                // var selectedPrice = $this.data('item-price');  
                 $('#variety_id').val(selectedId);  
-
-                // productData.varieties = {  
-                //     title: title,
-                //     quantity: selectedQuantity,
-                //     price: selectedPrice,
-                //     value: selectedValue  
-                // };   
             });  
 
-            // function setCookie(name, value) {  
-            //     document.cookie = name + "=" + encodeURIComponent(value) + "; path=/;";  
-            //     console.log(`کوکی ذخیره شد: ${name} = ${value}`);  
-            // }  
 
-            // let productData = {  
-            //     mainImage: '{{ asset('front/assets/images/products/product1-1-80x.jpg') }}',  
-            //     discount: 12000,  
-            //     varieties: {}   
-            // };  
+            $('.product-form-cart-submit').on('click', function(event) {
+                event.preventDefault();
+                let isLoggedIn = @json(auth()->user());
+                
+                if (!isLoggedIn) {
+                    $('#loginModalProduct').modal('show');
+                } else {
+                    let variety_id = $('#variety_id').val();
+                    let varietyQuantity = $('#quantity').val();
+                    let titleProduct = $('#title').text();
+                    let productImage = '{{ asset('front/assets/images/products/product1-1-80x.jpg') }}';
+                    let varietyValue = $('#varietyValue').val();
+                    let varietyPrice = $('#price').text();
 
-            $('.product-form-cart-submit').on('click', function(event) {  
-                event.preventDefault();  
-                let isLoggedIn = @json(auth()->user());  
-                if (!isLoggedIn) {  
-                    $('#loginModalProduct').modal('show');  
-                } else {  
-                    let variety_id = $('#variety_id').val();  
-                    let quantity = $('#quantity').val();   
+                    $.ajax({
+                        url: `{{ route('cart.add') }}/${variety_id}`,
+                        type: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        },
+                        data: {
+                            variety_id: variety_id,
+                            quantity: varietyQuantity,
+                        },
+                        success: function(response) {
+                            console.log(response);
+                            let productData = getCookie('productData');
+                            productData = productData ? JSON.parse(decodeURIComponent(productData)) : [];
 
-                    console.log(`تنوع انتخاب شده: ${variety_id}, تعداد: ${quantity}`);
+                            let existingProduct = productData.find(product => product.variety_id === variety_id);
+                            if (existingProduct) {
+                                existingProduct.variety_quantity = parseInt(existingProduct.variety_quantity) + parseInt(varietyQuantity);
+                            } else {
+                                productData.push({
+                                    variety_id: variety_id,
+                                    variety_quantity: varietyQuantity,
+                                    title_product: titleProduct,
+                                    product_image: productImage,
+                                    variety_value: varietyValue,
+                                    variety_price: varietyPrice,
+                                    carts: response.carts
+                                });
+                            }
+                            document.cookie = `productData=${encodeURIComponent(JSON.stringify(productData))}; path=/;`;
+                            console.log(document.cookie);
+                            Swal.fire({
+                                icon: "success",
+                                text: response.message
+                            });
+                        },
 
-                    if (!variety_id) {  
-                        $("#alertVarietyDanger").removeClass("d-none");  
-                        setTimeout(function() {  
-                            $('#alertVarietyDanger').fadeOut();  
-                        }, 12000);    
-                    } else {  
-                        // productData.quantity = quantity;
-                        // setCookie('productData', JSON.stringify(productData));  
-
-                        $.ajax({  
-                            url: `{{ route('cart.add') }}/${variety_id}`,  
-                            type: 'POST',  
-                            headers: {  
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}',  
-                            },  
-                            data: {  
-                                variety_id: variety_id,  
-                                quantity: quantity,  
-                            },  
-                            success: function(response) {  
-                                console.log('فرم با موفقیت ارسال شد:', response);   
-                                $("#productAlert").removeClass("d-none");  
-
-                                setTimeout(function() {  
-                                    $('#productAlert').fadeOut();  
-                                }, 10000);  
-                            },  
-                            error: function(error) {  
-                                console.log('خطا در ارسال:', error);  
-                                $("#productDanger").removeClass("d-none");  
-
-                                setTimeout(function() {  
-                                    $('#productDanger').fadeOut();  
-                                }, 12000);    
-                            }  
-                        });  
-                    }  
-                }  
+                        error: function(error) {
+                            console.log(error);
+                            Swal.fire({
+                                icon: "error",
+                                text: error.message
+                            });
+                        }
+                    });
+                }
             });
+
             $('.spr-button-primary').on('click', function(event) {  
                 event.preventDefault(); 
 
@@ -948,19 +923,17 @@
                         },  
                         data: formData,  
                         success: function(response) {  
-                            $("#statusAlert").removeClass("d-none");
                             $('#commentForm')[0].reset();
-
-                            setTimeout(function() {  
-                                $('#statusAlert').fadeOut(); 
-                            }, 10000);  
+                            Swal.fire({  
+                                icon: "success",  
+                                text: "نظر با موفقیت ثبت شد و پس از تایید نمایش داده خواهد شد."  
+                            });
                         },  
                         error: function(error) {  
-                            $("#statusDanger").removeClass("d-none"); 
-
-                            setTimeout(function() {  
-                                $('#statusDanger').fadeOut();  
-                            }, 12000);    
+                            Swal.fire({  
+                                icon: "error",  
+                                text: "خطا در ثبت نظر."  
+                            });    
                         }  
                     });  
                 }  

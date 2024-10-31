@@ -89,4 +89,12 @@ class CityController extends Controller
 
     return redirect()->back()->with('success', 'شهر با موفیت حذف شد.');
   }
+
+  public function getAllCities()
+  {
+    $cities = City::select(['id', 'name', 'province_id'])->orderBy('name')->active()->get()->toArray();
+
+    return response()->success('لیست تمام شهر ها', compact('cities'));
+  }
+
 }

@@ -138,7 +138,7 @@
                                         </div>
                                         <div class="flex-grow-1 comment-content">
                                             <div class="comment-user d-flex-center justify-content-between">
-                                                <div class="comment-author fw-600">{{$comment->name}}</div>
+                                                <div class="comment-author fw-600">{{$comment->name ?: '...'}}</div>
                                                     <div class="comment-date opacity-75">
                                                         <time datetime="2023-01-02"
                                                         >{{verta($comment->created_at)->format('%d %B %Y')}}
@@ -251,31 +251,17 @@
                     type: 'POST',  
                     data: $(this).serialize(),   
                     success: function(response) {  
-                        $("#statusAlert").removeClass("d-none");  
-
                         $('#commentForm')[0].reset();  
-
-                        setTimeout(function() {  
-                            $('#statusAlert').fadeOut();  
-                        }, 10000);   
+                        Swal.fire({  
+                            icon: "success",  
+                            text: "نظر با موفقیت ثبت شد و پس از تایید نمایش داده خواهد شد."  
+                        });
                     },  
                     error: function(xhr) {  
-                        if (xhr.status === 422) {  
-                            var errors = xhr.responseJSON.errors;  
-                            var errorMessage = '';  
-                            for (var key in errors) {  
-                                errorMessage += errors[key].join(', ') + '\n';  
-                            }  
-                            $("#statusAlert").removeClass("d-none");  
-
-                            setTimeout(function() {  
-                                $('#statusAlert').fadeOut();  
-                            }, 12000);   
-                        } else {  
-                            setTimeout(function() {  
-                                $('#statusAlert').fadeOut();  
-                            }, 12000);  
-                        }  
+                        Swal.fire({  
+                            icon: "error",  
+                            text: "خطا در ثبت نظر."  
+                        });
                     }  
                 });  
             }

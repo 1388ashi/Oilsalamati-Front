@@ -5,6 +5,7 @@ use Modules\Customer\Http\Controllers\Admin\AddressController;
 use Modules\Customer\Http\Controllers\Admin\CustomerController;
 use Modules\Customer\Http\Controllers\Admin\ValidCustomerController;
 use Modules\Customer\Http\Controllers\Admin\WithdrawController;
+use Modules\Customer\Http\Controllers\Customer\ProfileController;
 
 Route::webSuperGroup('admin', function () {
 
@@ -43,4 +44,21 @@ Route::webSuperGroup('admin', function () {
   Route::resource('addresses', 'AddressController')->only(['store', 'update']);
   Route::delete('/addresses/delete/{customer_id}/{address_id}', [AddressController::class, 'destroy'])->name('addresses.destroy');
   Route::get('/get-cities', [AddressController::class, 'getCities'])->name('getCity');
+});
+
+Route::webSuperGroup('customer', function () {
+  //profile
+  Route::get('/get-balance', [ProfileController::class, 'walletBalance'])->name('profile.balance');
+  Route::get('/profile', [ProfileController::class, 'edit'])->name('profile');
+  Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+  Route::put('/profile/image', [ProfileController::class, 'uploadImage'])->name('profile.uploadImage');
+  //password
+  Route::put('/password', [ProfileController::class, 'changePassword'])->name('password');
+  //address
+  Route::apiResource('addresses', 'AddressController')->only(['index','store', 'update', 'destroy']);
+  //wallet
+  Route::post('/deposit', [ProfileController::class, 'depositWallet'])->name('profile.deposit');
+  Route::apiResource('/withdraws', 'WithdrawController')->only(['index', 'store']);
+  Route::post('/withdraws/{withdraw}/cancel', [WithdrawController::class, 'cancel'])->name('withdraws.cancel');
+  Route::post('/transactions', [ProfileController::class, 'transactionsWallet'])->name('profile.transactionsWallet');
 });

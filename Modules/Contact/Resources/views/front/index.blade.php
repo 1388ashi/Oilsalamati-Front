@@ -30,96 +30,100 @@
                 </div>
 
                 <form action="{{route('contacts.store')}}" method="post" id="contact-form" class="contact-form">
+                    @csrf
+                    <input type="hidden" name="_wreixcf14135vq2av54" value="تهران">
+                    <input type="hidden" name="cn8dsada032" value="ایران">
+                    <input type="hidden" name="customer_id" value="{{auth()->user()->id}}">
                     <div class="form-row">
-                    <div class="col-12 col-sm-12 col-md-6 col-lg-6">
-                        <div class="form-group">
-                        <input
-                            type="text"
-                            id="ContactFormName"
-                            name="name"
-                            class="form-control"
-                            placeholder="نام"
-                            value="{{old('name')}}"
-                        />
-                        <span class="error_msg" id="name_error"></span>
-                        </div>
-                    </div>
-                    <div class="col-12 col-sm-12 col-md-6 col-lg-6">
-                        <div class="form-group">
-                        <input
-                            type="email"
-                            id="ContactFormEmail"
-                            name="email"
-                            class="form-control"
-                            placeholder="ایمیل"
-                        />
-                        <span class="error_msg" id="email_error"></span>
-                        </div>
-                    </div>
-                    </div>
-                    <div class="form-row">
-                    <div class="col-12 col-sm-12 col-md-6 col-lg-6">
-                        <div class="form-group">
-                        <input
-                            class="form-control"
-                            type="tel"
-                            id="ContactFormPhone"
-                            name="phone_number"
-                            pattern="[0-9\-]*"
-                            placeholder="شماره تلفن"
-                            value="{{old('phone_number')}}"
-                        />
-                        </div>
-                    </div>
-                    <div class="col-12 col-sm-12 col-md-6 col-lg-6">
-                        <div class="form-group">
-                        <input
-                            type="text"
-                            id="ContactSubject"
-                            name="subject"
-                            class="form-control"
-                            placeholder="عنوان"
-                            value="{{old('subject')}}"
-                        />
-                        <span class="error_msg" id="subject_error"></span>
-                        </div>
-                    </div>
-                    </div>
-                    <div class="form-row">
-                    <div class="col-12 col-sm-12 col-md-12 col-lg-12">
-                        <div class="form-group">
-                        <textarea
-                            id="ContactFormMessage"
-                            name="body"
-                            class="form-control"
-                            rows="5"
-                            placeholder="پیام"
-                            value="{{old('body')}}"
-                        ></textarea>
-                        <span class="error_msg" id="message_error"></span>
-                        </div>
-                    </div>
-                    </div>
-                    <div class="form-row">
-                    <div class="col-12 col-sm-12 col-md-12 col-lg-12">
-                        <div class="form-group mailsendbtn mb-0 w-100">
-                        <input
-                            class="btn btn-lg"
-                            type="submit"
-                            name="contactus"
-                            value="ارسال پیام"
-                        />
-                        <div class="loading">
-                            <img
-                            class="img-fluid"
-                            src="assets/images/icons/ajax-loader.gif"
-                            alt="منتظر بمانید"
-                            width="16"
-                            height="16"
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                            <div class="form-group">
+                            <input
+                                type="text"
+                                id="ContactFormName"
+                                name="name"
+                                class="form-control"
+                                placeholder="نام"
+                                value="{{old('name')}}"
                             />
+                            <span class="error_msg" id="name_error"></span>
+                            </div>
                         </div>
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                            <div class="form-group">
+                            <input
+                                type="email"
+                                id="ContactFormEmail"
+                                name="email"
+                                class="form-control"
+                                placeholder="ایمیل"
+                            />
+                            <span class="error_msg" id="email_error"></span>
+                            </div>
                         </div>
                     </div>
+                    <div class="form-row">
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                            <div class="form-group">
+                            <input
+                                class="form-control"
+                                type="tel"
+                                id="ContactFormPhone"
+                                name="phone_number"
+                                pattern="[0-9\-]*"
+                                placeholder="شماره تلفن"
+                                value="{{old('phone_number')}}"
+                            />
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                            <div class="form-group">
+                            <input
+                                type="text"
+                                id="ContactSubject"
+                                name="subject"
+                                class="form-control"
+                                placeholder="عنوان"
+                                value="{{old('subject')}}"
+                            />
+                            <span class="error_msg" id="subject_error"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                            <div class="form-group">
+                            <textarea
+                                id="ContactFormMessage"
+                                name="body"
+                                class="form-control"
+                                rows="5"
+                                placeholder="پیام"
+                                value="{{old('body')}}"
+                            ></textarea>
+                            <span class="error_msg" id="message_error"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                            <div class="form-group mailsendbtn mb-0 w-100">
+                                <input
+                                    class="btn btn-lg"
+                                    type="submit"
+                                    name="contactus"
+                                    value="ارسال پیام"
+                                />
+                                <div class="loading">
+                                    <img
+                                    class="img-fluid"
+                                    src="assets/images/icons/ajax-loader.gif"
+                                    alt="منتظر بمانید"
+                                    width="16"
+                                    height="16"
+                                    />
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </form>
                 <div class="response-msg"></div>
@@ -251,7 +255,58 @@
                 </div>
             </div>
         </div>
+        <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">  
+            <div class="modal-dialog modal-md" role="document">  
+                <div class="modal-content">  
+                    <div class="modal-header">  
+                        <h5 class="modal-title font-weight-bold">لطفاً وارد حساب کاربری خود شوید.</h5>  
+                        <button type="button" class="close" id="closeButton" aria-label="Close">  
+                            <span aria-hidden="true">&times;</span>  
+                        </button>  
+                    </div>  
+                    <div class="modal-body text-center">  
+                        <a href="{{ route('customer.showLoginForm') }}" class="btn btn-primary btn-auth">ورود به حساب کاربری</a>  
+                        <button type="button" class="btn btn-outline-danger" id="closeButton2">بستن</button>  
+                    </div>  
+                </div>  
+            </div>  
+        </div>
     </div>
 <!-- پایان نقشه تماس -->
 </div>
+
+@endsection
+@section('scripts')
+<script>  
+    $(document).ready(function() {  
+        $('#contact-form').on('submit', function(e) {  
+            e.preventDefault();  
+            let isLoggedIn = @json(auth()->user());  
+            if (!isLoggedIn) {  
+                $('#loginModal').modal('show');  
+            }else{
+                var submitBtn = $(this).find('input[type="submit"]');   
+
+                $.ajax({  
+                    url: $(this).attr('action'),   
+                    type: 'POST',  
+                    data: $(this).serialize(),   
+                    success: function(response) {  
+                        $('#contact-form')[0].reset();  
+                        Swal.fire({  
+                            icon: "success",  
+                            text: "پیام شما با موفقیت ثبت شد."  
+                        });
+                    },  
+                    error: function(xhr) {  
+                        Swal.fire({  
+                            icon: "error",  
+                            text: "خطا در ثبت پیام."  
+                        });
+                    }  
+                });  
+            }
+        });  
+    });  
+</script>  
 @endsection
