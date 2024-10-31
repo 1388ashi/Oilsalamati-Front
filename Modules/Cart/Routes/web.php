@@ -5,7 +5,7 @@ use Modules\Cart\Http\Controllers\Customer\CartController as CustomerCartControl
 
 Route::prefix('/cart')->name('cart.')->group(function () {
   Route::get('/', [CustomerCartController::class, 'index'])->name('index');
-  Route::post('/add/{variety}', [CustomerCartController::class, 'add'])->name('add');
+  Route::post('/add/{id?}', [CustomerCartController::class, 'add'])->name('add');  
   Route::delete('/{cart}', [CustomerCartController::class, 'remove'])->name('remove');
   Route::put('/{cart}', [CustomerCartController::class, 'update'])->name('update');
 });

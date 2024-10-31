@@ -18,6 +18,7 @@
 </div>
 <div class="container">
     <div class="row">
+
         <div class="col-12 col-sm-12 col-md-12 col-lg-3 blog-sidebar sidebar sidebar-bg">
             <div class="sidebar-tags sidebar-sticky clearfix">
                 <div class="sidebar-widget clearfix categories">

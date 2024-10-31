@@ -23,8 +23,6 @@ class ProductCommentController extends Controller
                 }
             });
 
-        return response()->success('', [
-            'comment' => ProductCommentResource::collection($comment)
-        ]);
+        return response()->json(['status' => 'success']);    
     }
 }

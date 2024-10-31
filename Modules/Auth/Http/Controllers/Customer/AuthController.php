@@ -28,7 +28,6 @@ use Modules\Core\Rules\IranMobile;
 
 class AuthController extends BaseAuthController
 {
-
     public function showLoginForm() {
         return view('auth::front.login');
     }
@@ -249,7 +248,13 @@ class AuthController extends BaseAuthController
         }
     }
 
+    public function webLogout(Request $request) {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
+        return redirect()->route('home','با موفقیت خارج شدید');
+    }
 
 
     // came from vendor ================================================================================================

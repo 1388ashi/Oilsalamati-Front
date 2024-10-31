@@ -187,7 +187,10 @@
                     <!-- پایان نظرات وبلاگ -->
                     <!-- فرم نظرات وبلاگ -->
                     <div id="statusAlert" class="alert alert-success d-none">  
-                        نظر با موفقیت ثبت شده و پس از تایید نمایش داده خواهد شد  
+                        نظر با موفقیت ثبت شده و پس از تایید نمایش داده خواهد شد.
+                    </div>  
+                    <div id="statusDanger" class="alert alert-danger d-none">  
+                        مشکلی پیش آمده دوباره تلاش کنید. 
                     </div>  
                     
                     <div class="formFeilds comment-form form-vertical">  
@@ -237,35 +240,45 @@
     $(document).ready(function() {  
         $('#commentForm').on('submit', function(e) {  
             e.preventDefault();  
+            let isLoggedIn = @json(auth()->user());  
+            if (!isLoggedIn) {  
+                $('#loginModalProduct').modal('show');  
+            }else{
+                var submitBtn = $(this).find('input[type="submit"]');   
 
-            var submitBtn = $(this).find('input[type="submit"]');   
+                $.ajax({  
+                    url: $(this).attr('action'),   
+                    type: 'POST',  
+                    data: $(this).serialize(),   
+                    success: function(response) {  
+                        $("#statusAlert").removeClass("d-none");  
 
-            $.ajax({  
-                url: $(this).attr('action'),   
-                type: 'POST',  
-                data: $(this).serialize(),   
-                success: function(response) {  
-                    $("#statusAlert").removeClass("d-none");  
+                        $('#commentForm')[0].reset();  
 
-                    $('#commentForm')[0].reset();  
+                        setTimeout(function() {  
+                            $('#statusAlert').fadeOut();  
+                        }, 10000);   
+                    },  
+                    error: function(xhr) {  
+                        if (xhr.status === 422) {  
+                            var errors = xhr.responseJSON.errors;  
+                            var errorMessage = '';  
+                            for (var key in errors) {  
+                                errorMessage += errors[key].join(', ') + '\n';  
+                            }  
+                            $("#statusAlert").removeClass("d-none");  
 
-                    setTimeout(function() {  
-                        $('#statusAlert').fadeOut();  
-                    }, 10000);   
-                },  
-                error: function(xhr) {  
-                    if (xhr.status === 422) {  
-                        var errors = xhr.responseJSON.errors;  
-                        var errorMessage = '';  
-                        for (var key in errors) {  
-                            errorMessage += errors[key].join(', ') + '\n';  
+                            setTimeout(function() {  
+                                $('#statusAlert').fadeOut();  
+                            }, 12000);   
+                        } else {  
+                            setTimeout(function() {  
+                                $('#statusAlert').fadeOut();  
+                            }, 12000);  
                         }  
-                        alert(errorMessage);  
-                    } else {  
-                        alert('مشکلی پیش آمده است. لطفاً دوباره تلاش کنید.');  
                     }  
-                }  
-            });  
+                });  
+            }
         });  
     });  
 </script>  

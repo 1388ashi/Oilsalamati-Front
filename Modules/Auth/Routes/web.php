@@ -13,5 +13,5 @@ Route::webSuperGroup('admin', function () {
 Route::webSuperGroup('customer', function () {
     Route::get('/login', [CustomerAuthController::class, 'showLoginForm'])->name('showLoginForm');
     Route::post('/login' , [CustomerAuthController::class, 'webLogin'])->name('login');
+    Route::post('/logout' , [CustomerAuthController::class, 'webLogout'])->name('logout');
 }, []);
-Route::post('/check-login', [AuthController::class, 'checkLogin'])->name('checkLogin-customer');  
