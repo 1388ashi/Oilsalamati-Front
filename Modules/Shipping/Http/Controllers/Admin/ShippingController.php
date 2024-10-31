@@ -13,10 +13,14 @@ use Illuminate\View\View;
 use Modules\Admin\Classes\ActivityLogHelper;
 use Modules\Area\Entities\City;
 use Modules\Area\Entities\Province;
+use Modules\Customer\Entities\Address;
+use Modules\Customer\Entities\Customer;
 use Modules\Shipping\Entities\Shipping;
 use Modules\Shipping\Http\Requests\Admin\ShippingCityAssignRequest;
 use Modules\Shipping\Http\Requests\Admin\ShippingStoreRequest;
 use Modules\Shipping\Http\Requests\Admin\ShippingUpdateRequest;
+use Modules\Shipping\Services\ShippingCalculatorService;
+use Modules\Shipping\Services\ShippingCollectionService;
 
 class ShippingController extends Controller
 {
@@ -206,5 +210,24 @@ class ShippingController extends Controller
         $shippingRanges = $shipping->shippingRanges;
 
         return view('shipping::admin.shipping.ranges', compact('shippingRanges', 'shipping'));
+    }
+
+    public function getShippableForAddress($addresId) {
+
+        /** @var Customer $user */
+        $user = auth('customer')->user();
+
+        $address = $user->addresses()->where('id', $addresId)->first();
+        $shippings = (new ShippingCollectionService)->getShippableShippingsForAddress($address);
+
+        foreach ($shippings as $shipping) {
+            $calculatorService = new ShippingCalculatorService($address, $shipping, auth()->user(), $user->carts);
+            $response = $calculatorService->calculate();
+            if (is_array($response)) {
+                $shipping->calculated_response = $response;
+            }
+        }
+
+        return response()->success('', compact('shippings'));
     }
 }

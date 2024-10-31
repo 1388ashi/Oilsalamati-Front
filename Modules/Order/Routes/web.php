@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Modules\Order\Http\Controllers\Customer\OrderController as CustomerOrderController;
 use Modules\Order\Http\Controllers\Admin\OrderController;
 use Modules\Order\Http\Controllers\Admin\OrderGiftRangeController;
 use Modules\Order\Http\Controllers\Admin\ShippingExcelController;
@@ -44,4 +45,10 @@ Route::webSuperGroup('admin', function () {
     Route::post('/showcase', [OrderUpdaterServiceController::class, 'showcase'])->name('showcase');
   });
 
+});
+
+Route::webSuperGroup('customer', function() {
+  Route::prefix('orders')->name('orders.')->group(function() {
+    Route::post('/', [CustomerOrderController::class, 'store'])->name('store');
+  });
 });

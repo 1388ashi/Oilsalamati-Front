@@ -117,8 +117,8 @@
           <div id="coupon" class="coupon-dec">
             <p>کد تخفیف خود را وارد کنید.</p>
             <div class="input-group mb-0 d-flex">
-              <input id="coupon-code" required type="text" class="form-control" placeholder="کد تبلیغاتی/تخفیف"/>
-              <button class="coupon-btn btn btn-primary" type="submit">اعمال</button>
+              <input id="coupon-code" type="text" class="form-control" placeholder="کد تبلیغاتی/تخفیف"/>
+              <button class="coupon-btn btn btn-primary" id="coupon-code-button" type="button">اعمال</button>
             </div>
           </div>
         </div>

@@ -3,6 +3,7 @@
 namespace Modules\Order\Http\Requests\User;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Modules\Cart\Entities\Cart;
 use Modules\Core\Helpers\Helpers;
@@ -98,13 +99,18 @@ class OrderStoreRequest extends FormRequest
 // =====================================================================================================================
     private function getCustomer():Customer
     {
-        if (auth()->user() instanceof Customer)
-            return \Auth::guard('customer-api')->user();
+        if (auth()->user() instanceof Customer) {
+            if (request()->header('Accept') === 'application/json') {
+                return Auth::guard('customer-api')->user();
+            }else {
+                return Auth::guard('customer')->user();
+            }
+        }
 
         $this->validate([
             'customer_id' => 'required|integer|exists:customers,id',
         ]);
-        $customer = Customer::find($this->customer_id);
+        $customer = Customer::query()->find($this->customer_id);
         if (!$customer)
             throw Helpers::makeValidationException('مشتری اشتباه است');
         return $customer;

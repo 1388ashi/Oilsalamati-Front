@@ -7,6 +7,7 @@ use Modules\Shipping\Http\Controllers\Admin\ShippingRangeController;
 Route::webSuperGroup('admin', function () {
     Route::prefix('/shippings')->name('shippings.')->group(function () {
 
+        Route::get('/get-shippable/{address}', [ShippingController::class, 'getShippableForAddress'])->name('getShippableForAddress');
         Route::get('/', [ShippingController::class, 'index'])->name('index');
         Route::get('/create', [ShippingController::class, 'create'])->name('create');
         Route::post('/', [ShippingController::class, 'store'])->name('store');
@@ -26,4 +27,10 @@ Route::webSuperGroup('admin', function () {
 
     });
 
+});
+
+Route::webSuperGroup('customer', function() {
+    Route::prefix('/shippings')->name('shippings.')->group(function () {
+        Route::get('/get-shippable/{address}', [ShippingController::class, 'getShippableForAddress'])->name('getShippableForAddress');
+    });
 });
