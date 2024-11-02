@@ -43,5 +43,5 @@ Route::webSuperGroup('admin', function () {
     Route::put('/', [OrderUpdaterServiceController::class, 'applier'])->name('applier');
     Route::post('/showcase', [OrderUpdaterServiceController::class, 'showcase'])->name('showcase');
   });
-
+  
 });

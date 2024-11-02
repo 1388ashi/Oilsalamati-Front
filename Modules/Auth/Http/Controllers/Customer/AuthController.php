@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Routing\Controller;
 use Modules\Auth\Http\Requests\Customer\CustomerLoginRequest;
+use Modules\Auth\Http\Requests\Customer\CustomerLoginVerifyRequest;
 use Modules\Auth\Http\Requests\Customer\CustomerRegisterLoginRequest;
 use Modules\Auth\Http\Requests\Customer\CustomerRegisterRequest;
 use Modules\Auth\Http\Requests\Customer\CustomerResetPasswordRequest;
@@ -29,43 +30,42 @@ use Modules\Core\Rules\IranMobile;
 
 class AuthController extends Controller
 {
-    public function showLoginForm() {
-        return view('auth::front.login');
+    public function webSendSms($mobile,$type = null)
+    {  
+        if (env('APP_ENV') != 'local') {
+            $result = event(new SmsVerify($mobile));
+            
+            return redirect()->route('webSendSms',$mobile);
+            if ($result[0]['status'] != 200) {
+                $status = 'danger';
+                $message = 'ارسال کد فعال سازی ناموفق بود.لطفا دوباره تلاش کنید';
+                return redirect()->back()->with(['status' => $status, 'message' => $message]);
+            }
+        } else {
+            SmsToken::create([
+                'mobile' => $mobile,
+                'token' => 1234, //random_int(10000, 99999),
+                'expired_at' => Carbon::now()->addHours(240),
+                'verified_at' => now()
+            ]);
+        }
+        return view('auth::front.sms', compact('mobile','type'));  
     }
-    public function isRegister(CustomerRegisterLoginRequest $request){
-        $key = Setting::getFromName('smsBomberKey');
-        $value = Setting::getFromName('smsBomberValue');    
-
-        if (!$request->has($key) || $request->{$key} != $value) {
-            $status = 'danger';
-            $message = 'خطا در تایید کد کپچا';
-            return redirect()->back()->with(['status' => $status, 'message' => $message]);
-        }
-        try {
-                $customer = Customer::where('mobile', $request->mobile)->first();
-                if ($customer && !$customer->isActive()) {
-                    $status = 'danger';
-                    $message = 'حساب شما غیر فعال است. لطفا با پشتیبانی تماس حاصل فرمایید.';
-                    return redirect()->back()->with(['status' => $status, 'message' => $message]);
-                }
-                $status = ($customer && $customer->password) ? 'login' : 'register';
-                if ($status === 'register') {
-                    return view('auth::front.register');
-                }
-        } catch(\Exception $exception) {
-            Log::error($exception->getTraceAsString());
-            return redirect()->back()->with(['status' => 'danger', 'message' => 'مشکلی در برنامه بوجود آمده است. لطفا با پشتیبانی تماس بگیرید:'. $exception->getMessage()]);
-        }
-    }    
-    public function registerLogin(CustomerRegisterLoginRequest $request)
+    public function webSendSmsRegister($mobile)
+    {  
+        return view('auth::front.sms-register', compact('mobile'));  
+    }
+    public function registerLogin(CustomerRegisterLoginRequest $request,$mobile = null)
     {
         $key = Setting::getFromName('smsBomberKey');
         $value = Setting::getFromName('smsBomberValue');    
-
-        if (!$request->has($key) || $request->{$key} != $value) {
-            $status = 'danger';
-            $message = 'خطا در تایید کد کپچا';
-            return redirect()->back()->with(['status' => $status, 'message' => $message]);
+        
+        if(!$mobile){
+            if (!$request->has($key) || $request->{$key} != $value) {
+                $status = 'danger';
+                $message = 'خطا در تایید کد کپچا';
+                return redirect()->back()->with(['status' => $status, 'message' => $message]);
+            }
         }
 //        $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
 //            'secret' => config('services.recaptcha.secret_key'),
@@ -78,9 +78,10 @@ class AuthController extends Controller
 //            throw ValidationException::withMessages(['g-recaptcha-response' => 'خطا در تأیید کپچا، لطفاً دوباره امتحان کنید']);
 //        }
 
+        $mobile = $mobile ?: $request->mobile;
 
-        try {
-            $customer = Customer::where('mobile', $request->mobile)->first();
+        // try {
+            $customer = Customer::where('mobile', $mobile)->first();
             if ($customer && !$customer->isActive()) {
                 $status = 'danger';
                 $message = 'حساب شما غیر فعال است. لطفا با پشتیبانی تماس حاصل فرمایید.';
@@ -89,9 +90,9 @@ class AuthController extends Controller
             $status = ($customer && $customer->password) ? 'login' : 'register';
             if ($status === 'register') {
                 if (env('APP_ENV') != 'local') {
-                    $result = event(new SmsVerify($request->mobile));
+                    $result = event(new SmsVerify($mobile));
                     
-                    return view('auth::front.register');
+                    return redirect()->route('webSendSmsRegister',$mobile);
                     if ($result[0]['status'] != 200) {
                         $status = 'danger';
                         $message = 'ارسال کد فعال سازی ناموفق بود.لطفا دوباره تلاش کنید';
@@ -99,21 +100,36 @@ class AuthController extends Controller
                     }
                 } else {
                     SmsToken::create([
-                        'mobile' => $request->mobile,
-                        'token' => 12345, //random_int(10000, 99999),
+                        'mobile' => $mobile,
+                        'token' => 1234, //random_int(10000, 99999),
                         'expired_at' => Carbon::now()->addHours(240),
                         'verified_at' => now()
                     ]);
-                    return view('auth::front.register',compact($request->mobile));
+                    return redirect()->route('webSendSmsRegister',$mobile);
                 }
+            }else{
+                // if (env('APP_ENV') != 'local') {
+                //     $result = event(new SmsVerify($mobile));
+                    
+                //     return redirect()->route('webSendSms',$mobile);
+                //     if ($result[0]['status'] != 200) {
+                //         $status = 'danger';
+                //         $message = 'ارسال کد فعال سازی ناموفق بود.لطفا دوباره تلاش کنید';
+                //         return redirect()->back()->with(['status' => $status, 'message' => $message]);
+                //     }
+                // } else {
+                //     SmsToken::create([
+                //         'mobile' => $mobile,
+                //         'token' => 1234, //random_int(10000, 99999),
+                //         'expired_at' => Carbon::now()->addHours(240),
+                //         'verified_at' => now()
+                //     ]);
+                    return redirect()->route('customer.showLoginForm',$mobile);
             }
-            $mobile = $request->mobile;
-
-            return view('auth::front.sms',compact($mobile)); 
-        } catch(\Exception $exception) {
-            Log::error($exception->getTraceAsString());
-            return redirect()->back()->with(['status' => 'danger', 'message' => 'مشکلی در برنامه بوجود آمده است. لطفا با پشتیبانی تماس بگیرید:'. $exception->getMessage()]);
-        }
+        // } catch(\Exception $exception) {
+        //     Log::error($exception->getTraceAsString());
+        //     return redirect()->back()->with(['status' => 'danger', 'message' => 'مشکلی در برنامه بوجود آمده است. لطفا با پشتیبانی تماس بگیرید:'. $exception->getMessage()]);
+        // }
     }
 
     // If not registered use this - Second
@@ -190,9 +206,9 @@ class AuthController extends Controller
             );
         }
     }
-
+    
     // Fourth
-    public function register(CustomerRegisterRequest $request): JsonResponse
+    public function register(CustomerRegisterRequest $request)
     {
         /** @var Customer $customer */
         if (!($customer = Customer::query()->where('mobile', $request->mobile)->first())) {
@@ -228,57 +244,77 @@ class AuthController extends Controller
         // لازمه
         $customer->getBalanceAttribute();
         $customer = Customer::query()->whereKey($customer->id)->first();
+        // $request->session()->regenerate();
+        // Auth::login($customer);
 
-        $data = [
-            'access_token' => $token,
-            'token_type' => 'Bearer',
-            'cart_warnings' => $warnings,
-            'user' => $customer,
-            'carts' => $customer->carts()->get(),
-            'notifications' => [
-                'items' => $notificationService->get(),
-                'total_unread' => $notificationService->getTotalUnread()
-            ]
-        ];
-
-        return response()->success('ثبت نام با موفقیت انجام شد', compact('data'));
+        return view('auth::front.password',compact('customer'));
     }
-
-    public function webLogin(Request $request)
+    public function createPassword(Request $request){
+        $customer = Customer::query()->where('mobile',$request->mobile)->first();
+        $customer->update([
+            'password' => bcrypt($request->password)
+        ]);
+        return redirect()->route('home');
+        }
+    public function showLoginForm($mobile){
+        return view('auth::front.login',compact('mobile'));
+    }
+    public function webLogin(CustomerLoginVerifyRequest $request)  
     {  
-        $request->merge([
-            'password' => 123456
-        ]);
-        
-        $credentials = $request->validate([
-            'mobile' => ['required', 'digits:11', new IranMobile()],
-            'password' => ['required', 'min:3']
-        ]);
-
-        $customer = Customer::where('mobile', $request->mobile)->first();
-        if (!$customer /* || !Hash::check($request->password, $customer->password) */) {
-            $status = 'danger';
-            $message = 'نام کاربری یا رمز عبور نادرست است';
-            return redirect()->back()->with(['status' => $status, 'message' => $message]);
+        if ($request->password) {  
+            $request->smsToken->verified_at = now();  
+            $request->smsToken->save();  
+        }  
+        $customer = Customer::where('mobile',$request->mobile)->first();  
+        if ($request->type == 'login' && $customer) {  
+            return $this->handleLogin($request, $customer);  
+        }  
+        return redirect()->route('home');  
+    }  
+    
+    protected function handleLogin(Request $request, Customer $customer)  
+    {  
+        $credentials = $request->validate([  
+            'mobile' => 'required',  
+            'password' => 'nullable',  
+        ]);  
+    
+        if ($request->password && !Hash::check($request->password, $customer->password)) {  
+            return $this->redirectWithMessage('موبایل یا رمز عبور نادرست است', 'danger');  
+        }  
+    
+        $token = $customer->createToken('authToken')->plainTextToken;  
+    
+        $customer->load(['listenCharges', 'carts']);  
+        $notificationService = new NotificationService($customer);  
+        $notifications = [  
+            'items' => $notificationService->get(),  
+            'total_unread' => $notificationService->getTotalUnread(),  
+        ];  
+    
+        $data = [  
+            'access_token' => $token,  
+            'user' => $customer,  
+            'token_type' => 'Bearer',  
+            'notifications' => $notifications,  
+            'cart_warnings' => CartFromRequest::addToCartFromRequest($request),  
+            'carts' => $customer->carts,  
+        ];  
+    
+        Auth::login($customer);  
+        $request->session()->regenerate();  
+        if ($request->forget_password == 1) {
+            return redirect()->route('pageRestsPassword',$request->mobile);  
         }
-
-        if (Auth::guard('customer')->attempt($credentials, true)) {
-
-            $request->session()->regenerate();
-            Auth::login($customer);
-
-            return redirect()->route('home');
-
-        }else {
-            $status = 'danger';
-            $message = 'نام کاربری یا رمز عبور نادرست است';
-            return redirect()->back()->with(['status' => $status, 'message' => $message]);
-        }
+        return redirect()->route('home')->with($data);  
+    }  
+    protected function redirectWithMessage($message, $status)  
+    {  
+        return redirect()->back()->with(['status' => $status, 'message' => $message]);  
     }
 
-    public function webRegisterLogin() {
-        
-        return view('auth::front.register-login');
+    public function webRegisterLogin($mobile = null) {
+        return view('auth::front.register-login',compact('mobile'));
     }
     public function webLogout(Request $request) {
         Auth::logout();
@@ -333,15 +369,19 @@ class AuthController extends Controller
 
         return response()->success('خروج با موفقیت انجام شد');
     }
-
+    public function webResetPassword($mobile){
+        return view('auth::front.reset-password',compact('mobile'));
+    }
     public function resetPassword(CustomerResetPasswordRequest $request): JsonResponse
     {
-        $smsToken = SmsToken::where('mobile', $request->input('mobile'))->first();
-        if ($smsToken->token !== $request->input('sms_token')) {
-            throw Helpers::makeValidationException('توکن اشتباه است مججدا نلاش کنید');
+        if ($request->smsToken) {
+            $smsToken = SmsToken::where('mobile', $request->input('mobile'))->first();
+            if ($smsToken->token !== $request->input('sms_token')) {
+                throw Helpers::makeValidationException('توکن اشتباه است مججدا نلاش کنید');
+            }
         }
-        $customer = $request->customer;
-        $customer->update($request->only('password'));
+        $customer = Customer::where('mobile', $request  ->mobile)->first();
+        $customer->password = Hash::make($request->password);
 
         Helpers::actingAs($customer);
         $warnings = CartFromRequest::addToCartFromRequest($request);

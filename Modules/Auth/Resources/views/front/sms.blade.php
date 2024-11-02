@@ -6,7 +6,7 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="description" content="description">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>ورود</title>
+    <title>ورود | ثبت نام</title>
     <link rel="shortcut icon" href="{{asset('front/assets/images/favicon.png')}}" />
     <link rel="stylesheet" href="{{asset('front/assets/css/plugins.css')}}">
     <link rel="stylesheet" href="{{asset('front/assets/css/style-min.css')}}">
@@ -20,18 +20,18 @@
         height: 100vh;
         margin: 0; 
     }  
-    .container {  
-        height: 430px;
+    .container {
+        height: 450px;
         width: 350px;
         max-width: 400px;  
-        padding: 60px;  
+        padding: 40px;  
         background-color: white;  
         border-radius: 10px;  
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);  
     }  
     .logo {  
         text-align: center;  
-        margin-bottom: 30px;  
+        margin-bottom: 20px;  
     }  
     .btn-register {  
         width: 100%;  
@@ -47,10 +47,7 @@
     .text {  
         font-size: 13px;  
     }  
-    .edit-mobile{
-        font-size: 12px;  
-    }
-    .edit-mobile:hover {
+    .edit-mobile:hover {  
         color: #e96f84;  
     }  
 </style>   
@@ -58,7 +55,7 @@
     <div class="page-wrapper d-flex-justify-center">  
             <div class="container">  
                 <div class="row my-3 d-flex" style="flex-direction: column; align-items: center;">  
-                    <div class="logo d-flex-justify-center" style="align-items: center;">  
+                    <div class="logo d-flex-justify-center mt-1" style="align-items: center;">  
                         <img  
                             src="{{asset('front/assets/images/logo.png')}}"  
                             alt="قالب چند منظوره هما"  
@@ -69,26 +66,33 @@
                     </div>  
                     <x-alert-danger></x-alert-danger>
                     <x-alert-success></x-alert-success>
-                    <form action="{{ route('customer.login') }}" method="POST">
+                        <form action="{{ route('customer.login') }}" method="POST">
                         @csrf  
                         <input type="hidden" name="sdvssdfsdv" value="brthtyjuj7s">
-                        <input type="hidden" name="mobile" value="{{$mobile}}">
                         <input type="hidden" name="type" value="login">
+                        <input type="hidden" name="mobile" value="{{$mobile}}">
+                        @if (isset($type))
+                        <input type="hidden" name="forget_password" value="1">
+                        @endif
                         <div class="form-group mb-">  
-                            <strong for="">رمز عبور</strong>
-                            <input type="text" name="password" class="form-control input-register" placeholder="رمز عبور را وارد کنید"  required value="{{old('password')}}">  
+                            <strong for="">کد تایید را وارد کنید</strong>
+                            <p class="text mt-1">لطفا کد ارسال شده به شماره {{$mobile}} را وارد کنید.</p>
+                            <input type="text" name="sms_token" class="form-control input-register" placeholder="مثال: 1234"  required oninput="validateInput(this)" style="direction: ltr;" value="{{old('sms_token')}}">  
                             <p class="text-danger warning-text mt-1">این قسمت را خالی نگذارید</p>  
                         </div>  
+                        <div id="timer" class="text-center">02:00</div>  
+                        <a href="" onclick="document.getElementById('postForm').submit();" id="messageBox" class="btn btn-secondary btn-register mb-2" style="display: none">ارسال مجدد کد</a>
                         <button type="submit" class="btn btn-secondary btn-register mb-2">ورود</button>  
-                        <div class="d-flex justify-content-between mt-2">
-                            <a href="{{ route('webSendSms',$mobile) }}" class="edit-mobile">ورود با کد یکبار مصرف</a>  
-                            <p class="edit-mobile">|</p>  
-                            <a href="{{ route('webSendSms',[$mobile,'forget-password']) }}" class="edit-mobile">فراموشی رمز عبور</a>  
+                        <div class="d-flex-justify-center" style="align-items: center">
+                            <a href="{{ route('pageRegisterLogin',$mobile) }}" class="edit-mobile">ویرایش شماره</a>  
                         </div>
                     </form>  
                 </div>  
             </div>  
     </div>  
+    <form id="postForm" action="{{ route('registerLogin', $mobile) }}" method="POST" style="display: none;">
+        @csrf
+    </form>
     <script>  
         let seconds = 10;
 
@@ -109,6 +113,11 @@
             }  
         }, 1000);
         function validateInput(input) {  
+            if (input.value.length > 4) {  
+                input.value = input.value.slice(0, 4);
+            }  
+        }  
+        function validatePassword(input) {  
             if (input.value.length > 4) {  
                 input.value = input.value.slice(0, 4);
             }  

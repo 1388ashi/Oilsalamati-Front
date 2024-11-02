@@ -137,8 +137,9 @@ class ProductController extends Controller
             ->where('status', 'approved')  
             ->avg('rate');  
             $averageStar = round($averageStar);
+            $idProduct = $product->id;
 
-        return view('product::front.show',compact('averageStar','product', 'relatedProducts','relatedProducts1','productQuestions'));
+        return view('product::front.show',compact('idProduct','averageStar','product', 'relatedProducts','relatedProducts1','productQuestions'));
     }
 
     public function search()

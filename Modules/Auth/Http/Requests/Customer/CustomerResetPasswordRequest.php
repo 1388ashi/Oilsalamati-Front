@@ -22,7 +22,7 @@ class CustomerResetPasswordRequest extends FormRequest
         return [
             'mobile' => ['required', 'digits:11', new IranMobile()],
             'password' => ['required', Password::min(6), 'confirmed'],
-            'sms_token' => 'required'
+            'sms_token' => 'nullable'
         ];
     }
 
@@ -31,27 +31,29 @@ class CustomerResetPasswordRequest extends FormRequest
      */
     public function passedValidation()
     {
-        $customer = Customer::where('mobile', $this->mobile)->first();
-        if (! $customer) {
-            throw ValidationException::withMessages([
-                'mobile' => ['کاربری پیدا نشد!']
+        if ($this->sms_token) {
+            $customer = Customer::where('mobile', $this->mobile)->first();
+            if (! $customer) {
+                throw ValidationException::withMessages([
+                    'mobile' => ['کاربری پیدا نشد!']
+                ]);
+            }
+
+            //Check SMS token
+            $smsToken = SmsToken::where('mobile', $this->mobile)->first();
+            if (! $smsToken) {
+                throw ValidationException::withMessages([
+                    'mobile' => ['کاربری با این مشخصات پیدا نشد!']
+                ]);
+            } elseif (! $smsToken->verified_at) {
+                throw ValidationException::withMessages([
+                    'mobile' => ['شماره موبایل کاربر احراز نشده است.']
+                ]);
+            }
+
+            $this->merge([
+                'customer' => $customer
             ]);
         }
-
-        //Check SMS token
-        $smsToken = SmsToken::where('mobile', $this->mobile)->first();
-        if (! $smsToken) {
-            throw ValidationException::withMessages([
-                'mobile' => ['کاربری با این مشخصات پیدا نشد!']
-            ]);
-        } elseif (! $smsToken->verified_at) {
-            throw ValidationException::withMessages([
-                'mobile' => ['شماره موبایل کاربر احراز نشده است.']
-            ]);
-        }
-
-        $this->merge([
-            'customer' => $customer
-        ]);
     }
 }

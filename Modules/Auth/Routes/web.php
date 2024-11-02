@@ -11,10 +11,15 @@ Route::webSuperGroup('admin', function () {
 }, []);
 
 Route::webSuperGroup('customer', function () {
-    Route::get('/login', [CustomerAuthController::class, 'showLoginForm'])->name('showLoginForm');
+    Route::get('/login/{mobile}', [CustomerAuthController::class, 'showLoginForm'])->name('showLoginForm');
     Route::post('/login' , [CustomerAuthController::class, 'webLogin'])->name('login');
     Route::post('/logout' , [CustomerAuthController::class, 'webLogout'])->name('logout');
 }, []);
-Route::get('/register-login' , [CustomerAuthController::class, 'webRegisterLogin'])->name('pageRegisterLogin');
-Route::post('/register/customer' , [CustomerAuthController::class, 'registerLogin'])->name('registerLogin');
-Route::post('/register' , [CustomerAuthController::class, 'webLogin'])->name('login');
+Route::get('/register-login/{mobile?}' , [CustomerAuthController::class, 'webRegisterLogin'])->name('pageRegisterLogin');
+Route::post('/register/customer/{mobile?}' , [CustomerAuthController::class, 'registerLogin'])->name('registerLogin');
+Route::get('send-sms/{mobile}/{type?}', [CustomerAuthController::class, 'webSendSms'])->name('webSendSms');  
+Route::get('send-sms-register/{mobile}', [CustomerAuthController::class, 'webSendSmsRegister'])->name('webSendSmsRegister');  
+Route::post('/verify/customer' , [CustomerAuthController::class, 'register'])->name('register');
+Route::post('/password/customer' , [CustomerAuthController::class, 'createPassword'])->name('createPassword');
+Route::get('/forget-password/{mobile}' , [CustomerAuthController::class, 'webResetPassword'])->name('pageRestsPassword');
+Route::post('/forget-password' , [CustomerAuthController::class, 'resetPassword'])->name('resetPassword');

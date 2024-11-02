@@ -17,10 +17,12 @@
         display: flex;  
         justify-content: center;  
         align-items: center;  
-        height: 100vh; /* تمام ارتفاع صفحه */  
-        margin: 0; /* عدم وجود margin */  
+        height: 100vh;
+        margin: 0;
     }  
     .login-container {  
+        height: 430px;
+        width: 350px;  
         max-width: 400px;  
         padding: 30px;  
         background-color: white;  
@@ -70,8 +72,7 @@
                         @csrf  
                         <input type="hidden" name="sdvssdfsdv" value="brthtyjuj7s">
                         <div class="form-group mb-3">  
-                            <input type="text" name="mobile" class="form-control input-register" placeholder="شماره موبایل" required value="09" oninput="validateInput(this)" style="direction: ltr;">  
-                            <p class="text-danger warning-text mt-1">این قسمت را خالی نگذارید</p>  
+                            <input type="text" name="mobile" class="form-control input-register" value="09" placeholder="شماره موبایل" required oninput="validateInput(this)" style="direction: ltr;" value="{{old('mobile',$mobile)}}" required>  
                         </div>  
                         <button type="submit" class="btn btn-secondary btn-register">ورود</button>  
                     </form>  

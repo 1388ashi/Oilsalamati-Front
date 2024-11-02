@@ -74,8 +74,8 @@ class ProductController extends Controller
 
     public function addToFavorites($productId): JsonResponse
     {
-        $user = auth()->user();
-        $product = Product::query()->select(['id', 'title'])
+        $user = auth()->guard('customer')->user();
+            $product = Product::query()->select(['id', 'title'])
             ->findOrFail($productId)->makeHidden('images');
         /**
          * @var $user Customer

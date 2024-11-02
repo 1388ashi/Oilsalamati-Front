@@ -265,7 +265,7 @@
                         </button>  
                     </div>  
                     <div class="modal-body text-center">  
-                        <a href="{{ route('customer.showLoginForm') }}" class="btn btn-primary btn-auth">ورود به حساب کاربری</a>  
+                        <a href="{{ route('pageRegisterLogin') }}" class="btn btn-primary btn-auth">ورود به حساب کاربری</a>  
                         <button type="button" class="btn btn-outline-danger" id="closeButton2">بستن</button>  
                     </div>  
                 </div>  

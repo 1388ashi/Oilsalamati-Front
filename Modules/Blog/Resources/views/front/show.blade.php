@@ -184,6 +184,22 @@
                         </ol>
                     </div>
                     @endif
+                    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">  
+                        <div class="modal-dialog modal-md" role="document">  
+                            <div class="modal-content">  
+                                <div class="modal-header">  
+                                    <h5 class="modal-title font-weight-bold">لطفاً وارد حساب کاربری خود شوید.</h5>  
+                                    <button type="button" class="close" id="closeButton" aria-label="Close">  
+                                        <span aria-hidden="true">&times;</span>  
+                                    </button>  
+                                </div>  
+                                <div class="modal-body text-center">  
+                                    <a href="{{ route('pageRegisterLogin') }}" class="btn btn-primary btn-auth">ورود به حساب کاربری</a>  
+                                    <button type="button" class="btn btn-outline-danger" id="closeButton2">بستن</button>  
+                                </div>  
+                            </div>  
+                        </div>  
+                    </div>
                     <!-- پایان نظرات وبلاگ -->
                     <!-- فرم نظرات وبلاگ -->
                     <div id="statusAlert" class="alert alert-success d-none">  
@@ -242,7 +258,7 @@
             e.preventDefault();  
             let isLoggedIn = @json(auth()->user());  
             if (!isLoggedIn) {  
-                $('#loginModalProduct').modal('show');  
+                $('#loginModal').modal('show');  
             }else{
                 var submitBtn = $(this).find('input[type="submit"]');   
 

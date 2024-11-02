@@ -40,11 +40,7 @@ class CustomerRegisterRequest extends FormRequest
         ];
     }
 
-
-
-
-
-    protected function passedValidation()
+        protected function passedValidation()
     {
         //Check customer
         $registeredCustomer = Customer::where('mobile', $this->mobile)->whereNotNull('password')->count();
@@ -57,13 +53,9 @@ class CustomerRegisterRequest extends FormRequest
         //Check SMS token
         $smsToken = SmsToken::where('mobile', $this->mobile)->first();
         if (! $smsToken) {
-            throw ValidationException::withMessages([
-                'mobile' => ['کاربری با این مشخصات پیدا نشد!']
-            ]);
+            return redirect()->back()->with(['status' => 'danger','کاربری با این مشخصات پیدا نشد']);
         } elseif (! $smsToken->verified_at) {
-            throw ValidationException::withMessages([
-                'mobile' => ['شماره موبایل کاربر احراز نشده است.']
-            ]);
+            return redirect()->back()->with(['status' => 'danger','شماره موبایل کاربر احراز نشده است.']);
         }
         if ($this->reprezentant_mobile) {
             if ($this->mobile == $this->reprezentant_mobile ||

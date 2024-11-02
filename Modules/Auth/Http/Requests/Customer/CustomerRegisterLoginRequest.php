@@ -16,7 +16,7 @@ class CustomerRegisterLoginRequest extends FormRequest
     public function rules()
     {
         return [
-            'mobile' => ['required', 'digits:11', new IranMobile()],
+            'mobile' => ['nullable', 'digits:11', new IranMobile()],
         ];
     }
 
