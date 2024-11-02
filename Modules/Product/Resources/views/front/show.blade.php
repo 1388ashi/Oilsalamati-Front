@@ -574,7 +574,7 @@
             <div class="spr-reviews">
             <h3 class="spr-form-title">نظرات مشتریان</h3>
             <div class="review-inner">
-                @forelse ($product->productComments as $comments)
+                @forelse ($product->productComments as $comment)
                 <div class="spr-review d-flex w-100">
                 <div class="spr-review-profile flex-shrink-0">
                     <img
@@ -594,13 +594,13 @@
                         class="title-review d-flex align-items-center justify-content-between"
                     >
                         <h5 class="spr-review-header-title text-transform-none mb-0">
-                        {{$comments->creator->first_name || $comments->creator->last_name ? $comments->creator->first_name . ' ' . $comments->creator->last_name : '...' }}
+                        {{$comment->creator->first_name || $comment->creator->last_name ? $comment->creator->first_name . ' ' . $comment->creator->last_name : '...' }}
                         </h5>
                         <span class="product-review spr-starratings m-0">
                             <span class="reviewLink">
                                 @php($maxStars = 5)  
                                 @for ($i = 0; $i < $maxStars; $i++)  
-                                    @if ($i < $comments->rate)  
+                                    @if ($i < $comment->rate)  
                                         <i class="icon anm anm-star"></i>  <!-- ستاره پر -->  
                                     @else  
                                         <i class="icon anm anm-star-o"></i> <!-- ستاره خالی -->  
@@ -610,8 +610,8 @@
                         </span>
                         </div>
                     </div>
-                    <b class="head-font">{{$comments->title}}</b>
-                    <p class="spr-review-body">{{$comments->body}}</p>
+                    <b class="head-font">{{$comment->title}}</b>
+                    <p class="spr-review-body">{{$comment->body}}</p>
                     </div>
                 </div>
                 @empty
@@ -899,7 +899,6 @@
 
                             document.cookie = `productData=${encodeURIComponent(JSON.stringify(productData))}; path=/;`;  
                             
-                            // به‌روزرسانی سبد خرید در صفحه  
                             updateCartDisplay();  
 
                             Swal.fire({  
@@ -908,7 +907,6 @@
                             });  
                         },  
                         error: function(error) {  
-                            console.log(error.responseJSON.message);  
                             Swal.fire({  
                                 icon: "error",  
                                 text: error.responseJSON.message  
@@ -917,158 +915,6 @@
                     });  
                 }  
             });  
-// تابع برای به‌روزرسانی نمایش سبد خرید  
-function updateCartDisplay() {  
-let productData = getCookie('productData');  
-if (productData) {  
-    productData = JSON.parse(decodeURIComponent(productData));  
-    let totalItems = productData.length;  
-    $('#cart-count').text(`سبد خرید شما (${totalItems} مورد)`);  
-    $('#num-cart-count').text(`${totalItems}`);  
-
-    $('#output').empty(); // خالی کردن لیست قبلی  
-    let totalPrice = 0; // جمع کل قیمت‌ها  
-
-    productData.forEach(function(product) {  
-        let varietyPrice = parseFloat(product.variety_price) * 1000; // تبدیل قیمت به تومان  
-        let quantity = parseInt(product.variety_quantity); // تعداد  
-        let productTotalPrice = Math.floor(varietyPrice * quantity); // قیمت کل محصول  
-        totalPrice += productTotalPrice;  
-
-        let productHtml = `  
-        <li class="item d-flex justify-content-center align-items-center" data-variety-id="${product.variety_id}">  
-            <a class="product-image rounded-0" href="product-layout1.html">  
-                <img  
-                    class="rounded-0 blur-up lazyload"  
-                    data-src="${product.product_image}"  
-                    src="${product.product_image}"  
-                    alt="product"  
-                    title="محصول"  
-                    width="120"  
-                    height="170"  
-                />  
-            </a>  
-            <div class="product-details">  
-                <a class="product-title" href="product-layout1.html">${product.title_product}</a>  
-                <div class="variant-cart my-2">${product.variety_value}</div>  
-                <div class="priceRow">  
-                    <div class="product-price">  
-                        <span class="price">${product.variety_price}</span>  
-                    </div>  
-                </div>  
-            </div>  
-            <div class="qtyDetail text-center">  
-                <div class="qtyField">  
-                    <a class="qtyBtn minus" onclick="decreaseQuantity(this)">  
-                        <i style="cursor: pointer" class="icon anm anm-minus-r"></i>  
-                    </a>  
-                    <input type="text" name="quantity"   
-                        value="${product.variety_quantity}"   
-                        class="qty"   
-                        data-cart-id=""   
-                        data-key="${product.variety_id}"   
-                        readonly/>  
-                    <a class="qtyBtn plus" onclick="increaseQuantity(this)">  
-                        <i style="cursor: pointer" class="icon anm anm-plus-r"></i>  
-                    </a>  
-                </div>  
-                <a href="#" class="edit-i remove" onclick="removeVariety(event, '${product.variety_id}')" data-variety-id="${product.variety_id}">  
-                    <i class="icon anm anm-times-r" data-bs-toggle="tooltip" data-bs-placement="top" title="حذف"></i>  
-                </a>  
-            </div>  
-        </li>`;  
-
-        // اضافه کردن محصول به لیست  
-        $('#output').append(productHtml);  
-    });  
-
-    console.log("Total Price before formatting: ", totalPrice);  
-    let totalPriceFormatted = formatPrice(totalPrice);  
-    $('#cart-price').text(totalPriceFormatted);  
-}  
-}  
-
-// تابع برای گرفتن کوکی  
-function getCookie(name) {  
-let cookieArr = document.cookie.split(";");  
-
-for (let i = 0; i < cookieArr.length; i++) {  
-    let cookiePair = cookieArr[i].split("=");  
-    if (name == cookiePair[0].trim()) {  
-        return decodeURIComponent(cookiePair[1]);  
-    }  
-}  
-
-return null;  
-}  
-
-// کاهش و افزایش مقدار محصول  
-function decreaseQuantity(element) {  
-let input = $(element).siblings('input.qty');  
-let currentQuantity = parseInt(input.val());  
-
-if (currentQuantity > 1) {  
-    currentQuantity--;  
-    input.val(currentQuantity);  
-
-    // به‌روز کردن مقدار در کوکی  
-    updateProductQuantity(input.data('key'), currentQuantity);  
-    updateCartDisplay(); // به‌روزرسانی سبد خرید  
-}  
-}  
-
-function increaseQuantity(element) {  
-let input = $(element).siblings('input.qty');  
-let currentQuantity = parseInt(input.val());  
-currentQuantity++;  
-input.val(currentQuantity);  
-
-// به‌روز کردن مقدار در کوکی  
-updateProductQuantity(input.data('key'), currentQuantity);  
-updateCartDisplay(); // به‌روزرسانی سبد خرید  
-}  
-
-// تابع برای به‌روزرسانی مقدار محصول در کوکی  
-function updateProductQuantity(variety_id, quantity) {  
-let productData = getCookie('productData');  
-if (productData) {  
-    productData = JSON.parse(decodeURIComponent(productData));  
-    const product = productData.find(p => p.variety_id === variety_id);  
-    if (product) {  
-        product.variety_quantity = quantity;  
-        document.cookie = `productData=${encodeURIComponent(JSON.stringify(productData))}; path=/;`;  
-    }  
-}  
-}  
-
-// تابع حذف محصول از سبد خرید  
-function removeVariety(event, variety_id) {  
-event.preventDefault();  
-let productData = getCookie('productData');  
-
-if (productData) {  
-    productData = JSON.parse(decodeURIComponent(productData));  
-    productData = productData.filter(product => product.variety_id !== variety_id); // فیلتر کردن محصول  
-    document.cookie = `productData=${encodeURIComponent(JSON.stringify(productData))}; path=/;`;  
-    
-    updateCartDisplay(); // به‌روزرسانی سبد خرید  
-}  
-}  
-            function formatPrice(price) {  
-                let millionPart = Math.floor(price / 1000000);
-                let thousandPart = Math.floor((price % 1000000) / 1000);
-                let result = '';
-
-                if (millionPart > 0) {
-                    result += millionPart + ' میلیون تومان';
-                }
-                if (thousandPart > 0) {
-                    if (result) result += ' و ';  // برای جدا کردن بخش‌ها
-                    result += thousandPart + ' هزار تومان';
-                }
-                
-                return result || (price + ' تومان');
-            }
 
             $('.spr-button-primary').on('click', function(event) {  
                 event.preventDefault(); 
@@ -1101,7 +947,7 @@ if (productData) {
                         error: function(error) {  
                             Swal.fire({  
                                 icon: "error",  
-                                text: "خطا در ثبت نظر."  
+                                text: error.responseJSON.message 
                             });    
                         }  
                     });  
@@ -1112,7 +958,7 @@ if (productData) {
                 var formData = $('#postForm').serialize();   
                 let isLoggedIn = @json(auth()->user());  
                 let $icon = $('favicon').find('i');  
-                if ($icon.hasClass('anm-heart-l')) {  
+                // if ($icon.hasClass('anm-heart-l')) {  
                     if (!isLoggedIn) {  
                         $('#loginModalProduct').modal('show');  
                     } else {  
@@ -1144,34 +990,34 @@ if (productData) {
                             }  
                         });  
                     }  
-                }else{
-                    $.ajax({  
-                        url: `{{ route('products.deleteFromFavorites', $product->id) }}`,  
-                        type: 'DELETE',  
-                        headers: {  
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}',  
-                        },  
-                        success: function(response) {
-                            let $icon = $(this).find('i');  
-                            if ($icon.hasClass('anm-heart')) {  
-                                $icon.removeClass('anm-heart').addClass('anm-heart-l');  
-                            } else {  
-                                $icon.removeClass('anm-heart-l').addClass('anm-heart');  
-                            }    
-                            Swal.fire({  
-                                icon: "success",  
-                                text: response.message  
-                            });  
-                        },  
-                        error: function(error) {  
-                            console.log(error);  
-                            Swal.fire({  
-                                icon: "error",  
-                                text: error.message || "An error occurred."  
-                            });  
-                        }  
-                    }); 
-                }
+                // }else{
+                //     $.ajax({  
+                //         url: `{{ route('products.deleteFromFavorites', $idProduct) }}`,  
+                //         type: 'DELETE',  
+                //         headers: {  
+                //             'X-CSRF-TOKEN': '{{ csrf_token() }}',  
+                //         },  
+                //         success: function(response) {
+                //             let $icon = $(this).find('i');  
+                //             if ($icon.hasClass('anm-heart')) {  
+                //                 $icon.removeClass('anm-heart').addClass('anm-heart-l');  
+                //             } else {  
+                //                 $icon.removeClass('anm-heart-l').addClass('anm-heart');  
+                //             }    
+                //             Swal.fire({  
+                //                 icon: "success",  
+                //                 text: response.message  
+                //             });  
+                //         },  
+                //         error: function(error) {  
+                //             console.log(error);  
+                //             Swal.fire({  
+                //                 icon: "error",  
+                //                 text: error.message || "An error occurred."  
+                //             });  
+                //         }  
+                //     }); 
+                // }
             }); 
             $('#closeButtonProduct1').on('click', function() {  
                 $('#loginModalProduct').removeClass('show'); 

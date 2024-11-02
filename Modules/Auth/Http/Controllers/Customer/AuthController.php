@@ -403,7 +403,7 @@ class AuthController extends Controller
             ]
         ];
 
-        return response()->success('', compact('data'));
+        return redirect()->route('home');
     }
 
     public function setDeviceToken(Request $request)
