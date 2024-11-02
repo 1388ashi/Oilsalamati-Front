@@ -62,3 +62,5 @@ Route::webSuperGroup('customer', function () {
   Route::post('/withdraws/{withdraw}/cancel', [WithdrawController::class, 'cancel'])->name('withdraws.cancel');
   Route::post('/transactions', [ProfileController::class, 'transactionsWallet'])->name('profile.transactionsWallet');
 });
+
+Route::get('/my-account', [ProfileController::class, 'myAccount'])->name('customer.my-account')->middleware('auth');

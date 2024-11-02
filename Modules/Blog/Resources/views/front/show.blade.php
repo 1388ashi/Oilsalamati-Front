@@ -47,8 +47,8 @@
                                             <a class="item-link" href="blog-details.html">
                                             <img
                                                 class="featured-image blur-up lazyload"
-                                                data-src="{{ asset('front/assets/images/blog/post-img3-100x.jpg') }}"
-                                                src="{{ asset('front/assets/images/blog/post-img3-100x.jpg') }}"
+                                                data-src="{{ $item->image->url }}"
+                                                src="{{ $item->image->url }}"
                                                 alt="وبلاگ"
                                                 width="100"
                                                 height="100"
@@ -75,8 +75,8 @@
                 <div class="blog-img mb-3">
                     <img
                         class="rounded-0 blur-up lazyload"
-                        data-src="{{asset('front/assets/images/blog/post-img1-big.jpg')}}"
-                        src="{{asset('front/assets/images/blog/post-img1-big.jpg')}}"
+                        data-src="{{ $post['post']->image->url }}"
+                        src="{{ $post['post']->image->url }}"
                         alt="مجموعه فروشگاهی جدید فروشگاه ما"
                         width="1200"
                         height="700"/>

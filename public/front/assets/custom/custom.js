@@ -21,3 +21,45 @@ function confirmDelete(formId) {
     }  
   });  
 }  
+
+function comma() {
+  $("input.comma").on("keyup", function (event) {
+    if (event.which >= 37 && event.which <= 40) return;
+    $(this).val(function (index, value) {
+      return value
+        .replace(/\D/g, "")
+        .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    });
+  });
+}
+
+$(document).ready(function () {
+  comma();
+});
+
+function popup(title, type, message) {
+  Swal.fire ({  
+    title: title,
+    text: message,
+    icon: type,  
+    confirmButtonText: 'بستن',  
+  });
+}
+
+function showErrorMessages(error) {
+  let messages = '';  
+
+  if (error.responseJSON.errors) {  
+    for (const key in error.responseJSON.errors) {  
+      if (error.responseJSON.errors.hasOwnProperty(key)) {  
+        error.responseJSON.errors[key].forEach(message => {  
+          messages += ' ' + message;  
+        });  
+      }  
+    }  
+  } else {  
+    messages = error.responseJSON.message || 'An unknown error occurred.';  
+  }  
+
+  popup('خطا در برداشت', 'error', messages); 
+}

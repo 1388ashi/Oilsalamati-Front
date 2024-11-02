@@ -42,7 +42,7 @@ return [
         'pasargad' => [
             'model' => \Modules\Invoice\Drivers\PasargadDriver::class,
             'label' => 'پاسارگاد',
-            'image' => '/assets/images/drivers/pasargad.png',
+            'image' => '/assets/images/drivers/pasargad.jpg',
             'options' => []
         ],
     ]

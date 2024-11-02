@@ -5,10 +5,14 @@ namespace Modules\Cart\Http\Controllers\Customer;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
+use Modules\Area\Entities\City;
+use Modules\Area\Entities\Province;
 use Modules\Cart\Entities\Cart;
 use Modules\Cart\Http\Requests\Admin\CartStoreRequest;
 use Modules\Cart\Http\Requests\Admin\CartUpdateRequest;
 use Modules\Customer\Entities\Customer;
+use Modules\Invoice\Entities\Invoice;
+use Modules\Invoice\Entities\Payment;
 use Modules\Product\Entities\Variety;
 use Modules\Setting\Entities\Setting;
 use Modules\Shipping\Entities\Shipping;
@@ -32,8 +36,20 @@ class CartController extends Controller
         }
 
         $shippings = (new ShippingCollectionService)->getActiveShippings();
+        $provinces = Province::select(['id', 'name'])->active()->get()->toArray();
+        $cities = City::select(['id', 'name', 'province_id'])->active()->get()->toArray();
+        $drivers = Payment::getAvailableDriversForFront();
 
-        return view('cart::front.index', compact(['carts_showcase', 'carts', 'messages', 'user', 'shippings']));
+        return view('cart::front.index', compact([
+            'carts_showcase', 
+            'carts', 
+            'messages', 
+            'user', 
+            'shippings',
+            'provinces',
+            'cities',
+            'drivers'
+        ]));
     }
 
     public function checkFreeShipping()

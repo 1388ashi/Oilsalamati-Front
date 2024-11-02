@@ -9,12 +9,15 @@
 @section('content')
 
 @include('cart::front.includes.breadcrumb')
+<x-alert-danger/>
 
 <div class="container">
   <div class="row">
     <div class="col-12 col-sm-12 col-md-12 col-lg-12 mt-5">
 
       @include('cart::front.includes.nav-tabs')
+
+      <form id="StoreOrderForm" class="d-none" action="{{ route('customer.orders.store') }}" method="POST">@csrf</form>
 
       <div class="tab-content checkout-form">
 
@@ -27,12 +30,6 @@
     </div>
   </div>
 </div>
-
-{{-- <form action="{{ route('cart.add', ['variety' => 530]) }}" method="POST">
-  @csrf
-  <input type="hidden" name="quantity" value="1">
-  <button class="btn btn-primary">border</button>
-</form> --}}
 
 @endsection
 
@@ -76,12 +73,19 @@
 
 <script>
 
-  let provinces = [];  
-  let cities = [];  
+  const provinces = @json($provinces);  
+  const cities = @json($cities);  
   const addresses = @json($user->addresses);
-  const clonedAddressModal = $('#addNewAddressModal').clone();  
 
-  $(document).ready(function() {
+  const clonedAddressModal = $('#addNewAddressModal').clone();
+
+  let allShippings = [];
+  let allCarts = [];
+  let couponCode = null;
+
+  $(document).ready(function() {  
+
+    allCarts = @json($user->carts);
 
     $('.qtyBtn').on('click', function() {
 
@@ -106,6 +110,7 @@
         }).then((result) => {  
           if (result.isConfirmed) {  
             document.getElementById('delete-cart-' + cartId).submit();  
+            recalculateShipping();
             Swal.fire({  
               icon: "success",  
               text: "آیتم با موفقیت حذف شد."  
@@ -116,7 +121,7 @@
         return;
       }
 
-      input.val(newVal);  
+      input.val(newVal);
 
       $.ajax({
         url: `{{ route('cart.index') }}` + '/' + cartId,
@@ -136,11 +141,13 @@
           const changedCart = newCarts.find((c) => c.id == cartId);
           
           updateTablePrices(changedCart);
+          recalculateShipping();
 
           if (changedCart.quantity != newVal) {
             input.val(changedCart.quantity);
           }
 
+          allCarts = response.data.carts;
         },  
         error: (xhr, status, error) => {  
           console.log(xhr);
@@ -149,21 +156,20 @@
       });
     });
 
+    $('#coupon-code-button').on('click', function() {
+      applyCouponCode();
+    });
+
     $('#steps1-btnNext').on('click', function() {
 
       activeTabButton($('.nav-item:eq(1)'));
       activeNewTab($('#steps2'), $('#steps1'));
-      getAllCities();
-      getAllProvinces().then(allProvinces => {  
-        appendProvincesToAddressForm('addNewAddressModal', allProvinces);  
-        addresses.forEach(address => {
-          let provinceToSelect = address.city.province_id;
-          let modalId = 'editAddressModal-' + address.id;
-          appendProvincesToAddressForm(modalId, allProvinces, true, provinceToSelect);
-          appendCitiesToExistsAddressForm(modalId, address);
-        });
-      }).catch(error => {  
-        showProvinceAjaxErrorAlert(error)
+      appendProvincesToAddressForm('addNewAddressModal', provinces);  
+      addresses.forEach(address => {
+        let provinceToSelect = address.city.province_id;
+        let modalId = 'editAddressModal-' + address.id;
+        appendProvincesToAddressForm(modalId, provinces, true, provinceToSelect);
+        appendCitiesToExistsAddressForm(modalId, address);
       });
 
     });
@@ -174,13 +180,33 @@
     });
 
     $('#steps2-btnNext').on('click', function() {
-      activeTabButton($('.nav-item:eq(2)'));
-      activeNewTab($('#steps3'), $('#steps2'));
+
+      const isValidate = validateAddressAndShipping();
+
+      if (isValidate) {
+        activeTabButton($('.nav-item:eq(2)'));
+        activeNewTab($('#steps3'), $('#steps2'));
+        updateFinalCartOrderDetail();
+      }
+
     });
 
-    $('.shipping-radio').on('input', function() {
-      console.log('asda');
-      
+    $('#steps3-btnPrevious').on('click', function() {
+      activeTabButton($('.nav-item:eq(1)'));
+      activeNewTab($('#steps2'), $('#steps3'));
+    });
+
+    $('input[name=address_id]').on('click', function() {
+      checkShippableShipping($(event.target).data('url'));
+    });
+
+    $('#cartCheckout').on('click', function() {
+
+      const isValide = validateOrderTypeAndPayType();
+      if (isValide) {
+        submitForm();
+      }
+
     });
 
   });
@@ -261,63 +287,6 @@
       tabToShow.removeClass('show');
     }
     
-  }
-
-  function getAllProvinces() {
-
-    if (provinces.length !== 0) {  
-      return Promise.resolve(provinces);
-    } 
-
-    return $.ajax({  
-      url: '{{ route("admin.provinces.getAllProvinces") }}',  
-      type: 'GET',  
-      success: (response) => {  
-        provinces = response.data.provinces;
-      },  
-      error: (error) => {  
-        showProvinceAjaxErrorAlert(error);
-        return [];
-      }  
-    }).then(() => provinces);
-
-  }
-
-  function showProvinceAjaxErrorAlert(error) {
-    Swal.fire ({  
-      title: 'بارگزاری استان ها با خطا مواجه شد!',
-      text: error,
-      icon: "error",  
-      confirmButtonText: 'بستن',  
-    });
-  }
-
-  function getAllCities() {
-
-    if (cities.length != 0) {
-      return Promise.resolve(cities);
-    }
-
-    return $.ajax({  
-      url: '{{ route("admin.cities.getAllCities") }}',  
-      type: 'GET',  
-      success: (response) => {  
-        cities = response.data.cities;
-      },  
-      error: (error) => {  
-        showCitiesAjaxErrorAlert(error);  
-        return [];
-      }  
-    }).then(() => cities);
-  }
-
-  function showCitiesAjaxErrorAlert(error) {
-    Swal.fire ({  
-      title: 'بارگزاری شهر ها با خطا مواجه شد!',
-      text: error,
-      icon: "error",  
-      confirmButtonText: 'بستن',  
-    });
   }
 
   function appendProvincesToAddressForm(addressModalId, provinces, isUpdate = false, selectedProvinceId = null) {
@@ -537,6 +506,203 @@
     $('#addNewAddressModal').modal('hide');
     
   }  
+
+  function checkShippableShipping(url) {
+    $.ajax({
+      url: url,
+      type: 'GET',
+      success: (response) => {
+        allShippings = response.data.shippings;
+        updateShippingBox(allShippings);
+      },  
+      error: (error) => {  
+        Swal.fire ({  
+          text: error,
+          icon: 'error',  
+          confirmButtonText: 'بستن',  
+        });
+      }  
+    });
+  }
+
+  function updateShippingBox(shippings) {
+
+    $('#ShippingSection').empty();
+
+    shippings.forEach(shipping => {
+
+      const shippingBox = $('#ShippingBox').clone();
+
+      shippingBox.find('img').attr('src', shipping.logo.url);
+      shippingBox.find('.shipping-price').text(shipping.calculated_response.shipping_amount.toLocaleString() +' تومان');
+
+      shippingBox.find('input[name=shipping_id]')
+        .attr('id', 'formcheckoutRadio-' + shipping.id)
+        .val(shipping.id);
+      
+      shippingBox.find('label')
+        .attr('for', 'formcheckoutRadio-' + shipping.id)
+        .text(shipping.name);
+
+      if (shipping.description) {
+        shippingBox.find('.customRadio').append(`<p class="text-muted">${shipping.description}</p>`);
+      }
+
+      shippingBox.removeClass('d-none');
+      shippingBox.removeAttr('id');
+
+      $('#ShippingSection').append(shippingBox);
+    }); 
+  }
+
+  function validateAddressAndShipping() {
+
+    const isAnyAddressSelected = $('input[name="address_id"]:checked').length > 0;
+    const isAnyShippingSelected = $('input[name="shipping_id"]:checked').length > 0;
+
+    if (!isAnyAddressSelected) {
+      generateWarningPopup('انتخاب آدرس الزامی است!');
+      return false;
+    }
+
+    if (!isAnyShippingSelected) {
+      generateWarningPopup('انتخاب نوع حمل و نقل الزامی است!');
+      return false;
+    }
+
+    return true;
+  }
+
+  function generateWarningPopup(message) {
+    Swal.fire ({  
+      title: message,
+      icon: 'warning',  
+      confirmButtonText: 'بستن',  
+    });
+  }
+
+  function applyCouponCode() {
+    const input = $('#coupon-code');
+    couponCode = input.val();
+
+    Swal.fire({  
+      icon: "success",  
+      text: "کد تخفیف با موفقیت اعمال شد."  
+    }); 
+
+  }
+
+  function recalculateShipping() {
+    const input = $('input[name="address_id"]:checked');
+    if (input.length > 0) {
+      checkShippableShipping(input.data(url));
+    }
+  }
+
+  function getCartTotalPrice() {
+
+    let totalDiscountAmount = 0;
+    let totalCartsPrice = 0;
+    let finalPrice = 0;
+
+    allCarts.forEach(cart => {
+      totalDiscountAmount += cart.quantity * cart.discount_price;
+      totalCartsPrice += cart.quantity * cart.price;
+      finalPrice += (cart.price - cart.discount_price) * cart.quantity;
+    });
+
+    return {
+      totalDiscountAmount: parseInt(totalDiscountAmount),
+      totalCartsPrice: parseInt(totalCartsPrice),
+      finalPrice: parseInt(finalPrice)
+    };
+  }
+
+  function getShippingPrice() {
+
+    const shippingInput = $('input[name="shipping_id"]:checked');
+    const shippingId = shippingInput.val();
+    const shipping = allShippings.find((shipping) => shipping.id == shippingId);
+
+    return parseInt(shipping.calculated_response.shipping_amount);
+  }
+
+  function getCouponPrice() {
+    return 0;
+  }
+
+  function getTotalInvoiceAmount() {
+
+    const cartPrice = getCartTotalPrice().finalPrice;
+    const shippingAmount = getShippingPrice();
+    const discountOnCoupon = getCouponPrice();
+
+    return parseInt(cartPrice + shippingAmount - discountOnCoupon);
+  }
+
+  function updateFinalCartOrderDetail() {
+
+    const orderDetailBox = $('#FinalCartOrderDetail');
+    const cartsPrices = getCartTotalPrice();
+
+    orderDetailBox.find('.total-price-amount').text(cartsPrices.totalCartsPrice.toLocaleString());
+    orderDetailBox.find('.total-discount-amount').text(cartsPrices.totalDiscountAmount.toLocaleString());
+    orderDetailBox.find('.coupon-amount').text(getCouponPrice().toLocaleString());
+    orderDetailBox.find('.shipping-amount').text(getShippingPrice().toLocaleString());
+    orderDetailBox.find('.total').text(getTotalInvoiceAmount().toLocaleString());
+
+  }
+
+  function validateOrderTypeAndPayType() {
+
+    const isAnyOrderTypeSelected = $('input.order-type-input:checked').length > 0;
+    const isAnyPayTypeSelected = $('input.pay-type-input:checked').length > 0;
+    const isAnyDriverSelected = $('input.driver-input:checked').length > 0;
+
+    if (!isAnyOrderTypeSelected) {
+      generateWarningPopup('انتخاب نوع سفارش الزامی است!');
+      return false;
+    }
+
+    if (!isAnyPayTypeSelected) {
+      generateWarningPopup('انتخاب نوع پرداخت الزامی است!');
+      return false;
+    }
+
+    if (['both', 'gateway'].includes($('input.pay-type-input:checked').val()) && !isAnyDriverSelected) {
+      generateWarningPopup('انتخاب درگاه الزامی است!');
+      return false;
+    }
+
+    return true;
+  }
+
+  function submitForm() {
+
+    const shippingId = $('input[name=shipping_id]:checked').val();
+    const addressId = $('input[name=address_id]:checked').val();
+    const paymentDriver = $('input.driver-input:checked').val();
+    const payType = $('input.pay-type-input:checked').val();
+
+    $('#StoreOrderForm').append(makeInput('shipping_id', shippingId));
+    $('#StoreOrderForm').append(makeInput('address_id', addressId));
+    $('#StoreOrderForm').append(makeInput('pay_type', payType));
+
+    if (paymentDriver != null) {
+      $('#StoreOrderForm').append(makeInput('payment_driver', paymentDriver));
+    }
+
+    if (couponCode != null) {
+      $('#StoreOrderForm').append(makeInput('coupon_code', couponCode));
+    }
+
+    $('#StoreOrderForm').submit();
+
+  }
+
+  function makeInput(name, value) {
+    return $(`<input type="hidden" name="${name}" value="${value}"/>`);
+  }
 
 </script>
 @endsection
