@@ -46,8 +46,8 @@
                                             <a class="item-link" href="{{route('posts.show',$post->id)}}">
                                             <img
                                                 class="featured-image blur-up lazyload"
-                                                data-src="{{ asset('front/assets/images/-2147483648_-210013.jpg') }}"
-                                                src="{{ asset('front/assets/images/-2147483648_-210013.jpg') }}"
+                                                data-src="{{ $post->image->url }}"
+                                                src="{{ $post->image->url }}"
                                                 alt="وبلاگ"
                                                 width="100"
                                                 height="100"
@@ -110,17 +110,15 @@
                         <div class="blog-item col-item">
                             <div class="blog-article zoomscal-hov">
                                 <div class="blog-img">
-                                    <a
-                                        class="featured-image rounded-0 zoom-scal"
-                                        href="{{route('posts.show',$post->id)}}"
-                                        ><img
-                                        class="rounded-0 blur-up lazyload"
-                                        data-src="{{ asset('front/assets/images/-2147483648_-210011.jpg') }}"
-                                        src="{{ asset('front/assets/images/blog/-2147483648_-210011.jpg') }}"
-                                        alt="مجموعه فروشگاه جدید فروشگاه ما"
-                                        width="740"
-                                        height="410"
-                                    />
+                                    <a class="featured-image rounded-0 zoom-scal" href="{{route('posts.show',$post->id)}}">
+                                        <img
+                                            class="rounded-0 blur-up lazyload"
+                                            data-src="{{ $post->image->url }}"
+                                            src="{{ $post->image->url }}"
+                                            alt="مجموعه فروشگاه جدید فروشگاه ما"
+                                            width="740"
+                                            height="410"
+                                        />
                                     </a>
                                 </div>
                                 <div class="blog-content">

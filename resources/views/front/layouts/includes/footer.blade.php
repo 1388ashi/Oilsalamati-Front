@@ -6,7 +6,7 @@
           <div class="ftr-logoText mb-3">
             <img
               class="logoImg"
-              src="{{asset('front/assets/images/logo-jewelry.png')}}"
+              src="{{asset('front/assets/images/logo/logo.9208f443.svg')}}"
               alt="قالب Html چند منظوره Hema"
               title="قالب Html چند منظوره Hema"
               width="149"

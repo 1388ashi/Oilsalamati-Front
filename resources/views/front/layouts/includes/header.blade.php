@@ -41,7 +41,7 @@
       <div class="logo col-5 col-sm-3 col-md-3 col-lg-2 align-self-center">
         <a class="logoImg" href="/">
           <img
-            src="{{asset('front/assets/images/logo.png')}}"
+            src="{{asset('front/assets/images/logo/logo.9208f443.svg')}}"
             alt="قالب  چند منظوره هما"
             title="قالب  چند منظوره هما"
             width="149"
@@ -145,21 +145,16 @@
           </div>
         </div>
         <!--پایان جستجو-->
-        <!--حساب-->
         <div class="account-parent iconset">
           <div class="account-link" title="حساب">
-            <a href="login.html">
+            <a href="{{ route('customer.my-account') }}">
               <i class="hdr-icon icon anm anm-user-al"></i>
             </a>
           </div>
         </div>
-        <!--پایان حساب-->
-        <!--لیست آرزوها-->
-        <div class="wishlist-link iconset" title="علاقه مندی">
+        {{-- <div class="wishlist-link iconset" title="علاقه مندی">
           <a href="wishlist-style1.html"><i class="hdr-icon icon anm anm-heart-l"></i><span class="wishlist-count">0</span></a>
-        </div>
-        <!--پایان فهرست آرزوها-->
-        <!--Minicart-->
+        </div> --}}
         <div class="header-cart iconset" title="سبدخرید">
           <a
             href="#;"
@@ -170,16 +165,11 @@
             ><span id="num-cart-count" class="cart-count">0</span></a
           >
         </div>
-        <!--پایان Minicart-->
-        <!--Mobile Toggle-->
         <button type="button" class="iconset pe-0 menu-icon js-mobile-nav-toggle mobile-nav--open d-lg-none" title="منو">
           <i class="hdr-icon icon anm anm-times-l"></i>
           <i class="hdr-icon icon anm anm-bars-r"></i>
         </button>
-        <!--End Mobile Toggle-->
       </div>
-      <!--End Right Icon-->
     </div>
   </div>
 </header>
-<!--End Header-->

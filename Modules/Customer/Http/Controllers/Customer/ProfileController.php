@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Modules\Area\Entities\Province;
 use Modules\Core\Helpers\Helpers;
 use Modules\Core\Rules\Base64Image;
 use Modules\Customer\Entities\Customer;
@@ -13,7 +14,10 @@ use Modules\Customer\Entities\Deposit;
 use Modules\Customer\Http\Requests\Customer\ChangePasswordRequest;
 use Modules\Customer\Http\Requests\Customer\ProfileUpdateRequest;
 use Modules\CustomersClub\Entities\CustomersClubScore;
+use Modules\Invoice\Entities\Payment;
 use Modules\Newsletters\Entities\UsersNewsletters;
+use Modules\Order\Entities\Order;
+
 //use Shetabit\Shopit\Modules\Customer\Http\Controllers\Customer\ProfileController as BaseProfileController;
 
 class ProfileController extends Controller
@@ -94,8 +98,29 @@ class ProfileController extends Controller
         return response()->success('دریافت اطلاعات پروفایل مشتری', compact('customer'));
     }
 
+    public function myAccount() 
+    {
+        /** @var Customer $customer */
+        $customer = auth()->user();
+        $customer->loadCount('orders');
+        $pendingOrdersCount = $customer->orders->whereNotIn('status', [Order::STATUS_DELIVERED])->count();
+        $deliveredOrdersCount = $customer->orders_count - $pendingOrdersCount;
+        $drivers = Payment::getAvailableDriversForFront();
 
+        $provinces = Province::query()
+            ->select(['id', 'name'])
+            ->active()
+            ->with('cities', fn ($q) => $q->select(['id', 'name', 'province_id'])->active())
+            ->get();
 
+        return view('customer::front.my-account', compact([
+            'customer',
+            'pendingOrdersCount',
+            'deliveredOrdersCount',
+            'provinces',
+            'drivers'
+        ]));
+    }
 
     // came from vendor ================================================================================================
 
