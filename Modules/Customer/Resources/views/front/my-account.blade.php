@@ -62,4 +62,5 @@
   @include('customer::front.includes.scripts.addresses')
   @include('customer::front.includes.scripts.wallet')
   @include('customer::front.includes.scripts.info')
+  @include('customer::front.includes.scripts.favorites')
 @endsection

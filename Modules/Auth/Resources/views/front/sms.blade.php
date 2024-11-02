@@ -94,7 +94,7 @@
         @csrf
     </form>
     <script>  
-        let seconds = 10;
+        let seconds = 120;
 
         const timerElement = document.getElementById("timer");  
         const messageBox = document.getElementById("messageBox");  

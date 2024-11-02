@@ -22,9 +22,10 @@
 			@include('front.layouts.includes.footer')
 			@include('front.layouts.includes.mini-cart')
 			@include('front.layouts.includes.scripts')
-
+			
 			@yield('scripts')
-
+			@include('product::front.minicart-scripts')
+			
     </div>
   </body>
 </html>
