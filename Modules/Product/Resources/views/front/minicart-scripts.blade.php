@@ -117,16 +117,27 @@
     }  
 
     function removeVariety(event, variety_id) {  
-        event.preventDefault();  
-        let productData = getCookie('productData');  
+        Swal.fire ({  
+            text: 'آیا تمایل دارید محصول را از لیست علاقه مندی ها حذف کنید',
+            icon: "warning",  
+            confirmButtonText: 'حذف کن',  
+            showDenyButton: true,  
+            denyButtonText: 'انصراف',  
+            dangerMode: true,  
+            }).then((result) => {  
+            if (result.isConfirmed) {  
+                event.preventDefault();  
+                let productData = getCookie('productData');  
 
-        if (productData) {  
-            productData = JSON.parse(decodeURIComponent(productData));  
-            productData = productData.filter(product => product.variety_id !== variety_id);
-            document.cookie = `productData=${encodeURIComponent(JSON.stringify(productData))}; path=/;`;  
-            
-            updateCartDisplay();
-        }  
+                if (productData) {  
+                    productData = JSON.parse(decodeURIComponent(productData));  
+                    productData = productData.filter(product => product.variety_id !== variety_id);
+                    document.cookie = `productData=${encodeURIComponent(JSON.stringify(productData))}; path=/;`;  
+                    
+                    updateCartDisplay();
+                }  
+            }  
+        }); 
     }  
     function formatPrice(price) {  
         let millionPart = Math.floor(price / 1000000);
