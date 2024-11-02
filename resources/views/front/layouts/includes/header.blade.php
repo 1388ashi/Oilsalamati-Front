@@ -100,13 +100,13 @@
                 <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close" ></button>
               </div>
               <div class="search-body">
-                <form class="form minisearch" id="header-search" action="#" method="get" >
+                <form class="form minisearch" id="header-search">
                   <!--فیلد جستجو-->
                   <div class="d-flex searchField">
                     <div class="search-category"></div>
                     <div class="input-box d-flex fl-1">
                       <input type="text" class="input-text" placeholder="جستجوی محصولات..." id="SearchProductInput"/>
-                      <button type="button" class="action search d-flex-justify-center btn rounded-start-0">
+                      <button type="button" class="action  d-flex-justify-center btn rounded-start-0">
                         <i class="icon anm anm-search-l"></i>
                       </button>
                     </div>

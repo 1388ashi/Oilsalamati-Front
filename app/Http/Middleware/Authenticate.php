@@ -18,7 +18,7 @@ class Authenticate extends Middleware
             if (request()->header('Accept') === 'application/json') {
                 return route('login');
             } else {
-                return route('customer.login');
+                return route('pageRegisterLogin');
             }
         }
     }

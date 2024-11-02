@@ -65,7 +65,7 @@
     if (method === 'POST') {
       addressBox.attr('id', 'AddressBox-' + address.id);
       addressBox.removeClass('d-none');
-      addressBox.find('.edit-btn').attr('data-bs-target', 'EditAddressModal-' + address.id);
+      addressBox.find('.edit-btn').attr('data-bs-target', '#EditAddressModal-' + address.id);
       addressBox.find('.delete-btn').attr('data-address-id', address.id);
       $('#AddressSection').append(addressBox);
       generateEditFormModalForNewAddress(address);
@@ -75,14 +75,18 @@
 
   function generateEditFormModalForNewAddress(address) {  
 
+    $('#addNewAddressModal').modal('hide');  
     const clonedModal = $('#addNewAddressModal').clone();  
     const updateUrl = @json(route('customer.addresses.index')) + '/' + address.id; 
     const province = provinces.find((p) => p.id == address.city.province_id);
 
+    clonedModal.removeAttr('role');  
+    clonedModal.removeAttr('style');  
+
     clonedModal.attr('id', 'EditAddressModal-' + address.id);  
     clonedModal.attr('aria-labelledby', 'EditAddressModal' + address.id + 'Label');  
 
-    clonedModal.find('.modal-title').attr('id', 'EditAddressModal' + address.id + 'Label');  
+    clonedModal.find('.modal-title').attr('id', 'EditAddressModal-' + address.id + 'Label');  
     clonedModal.find('.form').attr('id', 'UpdateAddressForm-' + address.id);  
     clonedModal.find('.form').attr('action', updateUrl);  
     clonedModal.find('.first-name').val(address.first_name);  
@@ -90,6 +94,7 @@
     clonedModal.find('.mobile').val(address.mobile);  
     clonedModal.find('.postal-code').val(address.postal_code);  
     clonedModal.find('.address').val(address.address);  
+    clonedModal.find('.submit-btn span').text('ذخیره آدرس');  
 
     appendProvincesToNewAddressForm('EditAddressModal-' + address.id, address.city.province_id);
     appendCitiesToNewAddressForm('EditAddressModal-' + address.id, address, province.cities);
@@ -99,8 +104,6 @@
     });  
 
     $('#address').append(clonedModal);  
-    $('#addNewAddressModal').modal('hide');
-
   }  
 
   function appendProvincesToNewAddressForm(addressModalId, selectedProvinceId = null) {

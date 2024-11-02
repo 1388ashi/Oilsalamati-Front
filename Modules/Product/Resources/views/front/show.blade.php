@@ -86,95 +86,23 @@
 
         <!-- Product Thumb -->
         <div class="product-thumb product-horizontal-thumb mt-3">
-            <div
-            id="gallery"
-            class="product-thumb-horizontal"
-            dir="ltr"
-            >
-            <a
-                data-image="{{asset('front/assets/images/products/product1.jpg')}}"
-                data-zoom-image="{{asset('front/assets/images/products/product1.jpg')}}"
-                class="slick-slide slick-cloned active"
-            >
-                <img
-                class="blur-up lazyload"
-                data-src="{{asset('front/assets/images/products/product1.jpg')}}"
-                src="{{asset('front/assets/images/products/product1.jpg')}}"
-                alt="محصول"
-                width="625"
-                height="808"
-                />
-            </a>
-            <a
-                data-image="{{asset('front/assets/images/products/product1-1.jpg')}}"
-                data-zoom-image="{{asset('front/assets/images/products/product1-1.jpg')}}"
-                class="slick-slide slick-cloned"
-            >
-                <img
-                class="blur-up lazyload"
-                data-src="{{asset('front/assets/images/products/product1-1.jpg')}}"
-                src="{{asset('front/assets/images/products/product1-1.jpg')}}"
-                alt="محصول"
-                width="625"
-                height="808"
-                />
-            </a>
-            <a
-                data-image="{{asset('front/assets/images/products/product1-2.jpg')}}"
-                data-zoom-image="{{asset('front/assets/images/products/product1-2.jpg')}}"
-                class="slick-slide slick-cloned"
-            >
-                <img
-                class="blur-up lazyload"
-                data-src="{{asset('front/assets/images/products/product1-2.jpg')}}"
-                src="{{asset('front/assets/images/products/product1-2.jpg')}}"
-                alt="محصول"
-                width="625"
-                height="808"
-                />
-            </a>
-            <a
-                data-image="{{asset('front/assets/images/products/product1-3.jpg')}}"
-                data-zoom-image="{{asset('front/assets/images/products/product1-3.jpg')}}"
-                class="slick-slide slick-cloned"
-            >
-                <img
-                class="blur-up lazyload"
-                data-src="{{asset('front/assets/images/products/product1-3.jpg')}}"
-                src="{{asset('front/assets/images/products/product1-3.jpg')}}"
-                alt="محصول"
-                width="625"
-                height="808"
-                />
-            </a>
-            <a
-                data-image="{{asset('front/assets/images/products/product1-4.jpg')}}"
-                data-zoom-image="{{asset('front/assets/images/products/product1-4.jpg')}}"
-                class="slick-slide slick-cloned"
-            >
-                <img
-                class="blur-up lazyload"
-                data-src="{{asset('front/assets/images/products/product1-4.jpg')}}"
-                src="{{asset('front/assets/images/products/product1-4.jpg')}}"
-                alt="محصول"
-                width="625"
-                height="808"
-                />
-            </a>
-            <a
-                data-image="{{asset('front/assets/images/products/product1-5.jpg')}}"
-                data-zoom-image="{{asset('front/assets/images/products/product1-5.jpg')}}"
-                class="slick-slide slick-cloned"
-            >
-                <img
-                class="blur-up lazyload"
-                data-src="{{asset('front/assets/images/products/product1-5.jpg')}}"
-                src="{{asset('front/assets/images/products/product1-5.jpg')}}"
-                alt="محصول"
-                width="625"
-                height="808"
-                />
-            </a>
+            <div id="gallery" class="product-thumb-horizontal" dir="ltr">
+                @foreach ($product->varieties as $variety)
+                <a
+                    data-image="{{ $variety->images_showcase[0]->url }}"
+                    data-zoom-image="{{ $variety->images_showcase[0]->url }}"
+                    class="slick-slide slick-cloned active"
+                >
+                    <img
+                        class="blur-up lazyload"
+                        data-src="{{ $variety->images_showcase[0]->url }}"
+                        src="{{ $variety->images_showcase[0]->url }}"
+                        alt="محصول"
+                        width="625"
+                        height="808"
+                    />
+                </a>
+                @endforeach
             </div>
         </div>
         <!-- End Product Thumb -->

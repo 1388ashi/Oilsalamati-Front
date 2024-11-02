@@ -7,7 +7,7 @@
 
 		<img
 			class="bg-img"
-			src="{{asset('front/assets/images/parallax/491c9728-27b4-4e9d-82a9-ae47cca69060.jpg')}}"
+			src="{{asset('front/assets/images/banner/atlas/baner.png')}}"
 			width="1920"
 			height="645"
 		/>

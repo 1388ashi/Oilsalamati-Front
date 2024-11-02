@@ -1,6 +1,6 @@
 @foreach ($customer->addresses as $address)
 <div class="modal fade" id="EditAddressModal-{{ $address->id }}" tabindex="-1" aria-labelledby="EditAddressModal-{{ $address->id }}Label" aria-hidden="true">
-<div class="modal-dialog modal-dialog-centered">
+<div class="modal-dialog modal-dialog-centered modal-lg">
   <div class="modal-content">
     <div class="modal-header">
       <h2 class="modal-title" id="EditAddressModal-{{ $address->id }}Label">ویرایش جزئیات آدرس</h2>

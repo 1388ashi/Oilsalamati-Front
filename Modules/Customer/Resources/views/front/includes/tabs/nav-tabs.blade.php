@@ -16,7 +16,10 @@
       <a href="#" data-bs-toggle="tab" data-bs-target="#wallet" class="nav-link">کیف پول</a>
     </li>
     <li class="nav-item">
-      <a href="login.html" class="nav-link btn-link">خروج از سیستم</a>
+      <a onclick="$('#LogoutForm').submit()" class="nav-link btn-link">خروج از سیستم</a>
+      <form action="{{ route('customer.logout') }}" id="LogoutForm" method="POST">
+        @csrf
+      </form>
     </li>
   </ul>
 </div>

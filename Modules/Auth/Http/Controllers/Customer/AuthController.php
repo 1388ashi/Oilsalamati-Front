@@ -42,12 +42,20 @@ class AuthController extends Controller
                 return redirect()->back()->with(['status' => $status, 'message' => $message]);
             }
         } else {
-            SmsToken::create([
-                'mobile' => $mobile,
-                'token' => 1234, //random_int(10000, 99999),
-                'expired_at' => Carbon::now()->addHours(240),
-                'verified_at' => now()
-            ]);
+            $smsToken = SmsToken::where('mobile', $mobile)->first();
+            if ($smsToken) {
+                $smsToken->update([
+                    'expired_at' => Carbon::now()->addHours(240),
+                    'verified_at' => now()
+                ]);
+            }else {
+                SmsToken::create([
+                    'mobile' => $mobile,
+                    'token' => 1234, //random_int(10000, 99999),
+                    'expired_at' => Carbon::now()->addHours(240),
+                    'verified_at' => now()
+                ]);
+            }
         }
         return view('auth::front.sms', compact('mobile','type'));  
     }
