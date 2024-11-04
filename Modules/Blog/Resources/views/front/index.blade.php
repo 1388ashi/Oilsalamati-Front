@@ -40,7 +40,7 @@
                     <div class="widget-title"><h2>پست های اخیر</h2></div>
                         <div class="widget-content">
                             <div class="list list-sidebar-products">
-                                {{-- @foreach ($data['posts']->take(3) as $post)
+                                @foreach ($data['posts']->take(3) as $post)
                                     <div class="mini-list-item d-flex align-items-center w-100 clearfix">
                                         <div class="mini-image">
                                             <a class="item-link" href="{{route('posts.show',$post->id)}}">
@@ -61,8 +61,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                @endforeach --}}
-
+                                @endforeach
                             </div>
                         </div>
                     </div>
@@ -106,7 +105,7 @@
             <!--End Toolbar--><!--Blog Grid-->
             <div class="blog-grid-view">
                 <div class="row col-row row-cols-lg-2 row-cols-sm-2 row-cols-1">
-                    {{-- @forelse ($data['posts'] as $post)
+                    @forelse ($data['posts'] as $post)
                         <div class="blog-item col-item">
                             <div class="blog-article zoomscal-hov">
                                 <div class="blog-img">
@@ -125,7 +124,7 @@
                                     <h2 class="h3">
                                         <a href="{{ route('posts.show',$post->id) }}">{{$post->title}}</a>
                                     </h2>
-                                    <ul class="publish-detail d-flex-wrap"> --}}
+                                    <ul class="publish-detail d-flex-wrap">
                                         {{-- <li>
                                             <i class="icon anm anm-user-al"></i>
                                             <span class="opacity-75 ms-1">
@@ -133,7 +132,7 @@
                                             >
                                             کاربر
                                         </li> --}}
-                                        {{-- <li>
+                                        <li>
                                             <i class="icon anm anm-clock-r"></i>
                                             <time>{{ verta($post->created_at)->format('%d %B %Y') }}</time> 
                                             </li>
@@ -150,7 +149,7 @@
                         </div>
                     @empty
                         <p>بلاگی پیدا نشد</p>
-                    @endforelse --}}
+                    @endforelse
                 </div>
 
                 <!-- صفحه بندی -->

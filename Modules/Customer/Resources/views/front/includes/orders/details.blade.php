@@ -1,4 +1,4 @@
-{{-- <div class="modal fade" id="OrderDetail-{{ $order->id }}" tabindex="-1" aria-labelledby="OrderDetail-{{ $order->id }}Label" aria-hidden="true">
+<div class="modal fade" id="OrderDetail-{{ $order->id }}" tabindex="-1" aria-labelledby="OrderDetail-{{ $order->id }}Label" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-xl">
     <div class="modal-content">
       <div class="modal-header">
@@ -55,4 +55,4 @@
       </div>
     </div>
   </div>
-</div> --}}
+</div>

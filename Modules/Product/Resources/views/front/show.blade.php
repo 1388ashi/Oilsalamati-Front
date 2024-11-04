@@ -53,8 +53,8 @@
             <img
                 id="zoompro"
                 class="zoompro"
-                src="{{asset('front/assets/images/products/product1.jpg')}}"
-                data-zoom-image="{{asset('front/assets/images/products/product1.jpg')}}"
+                src="{{$product->varieties[0]->images_showcase[0]->url}}"
+                data-zoom-image="{{$product->varieties[0]->images_showcase[0]->url}}"
                 alt="محصول"
                 width="625"
                 height="808"
@@ -86,7 +86,7 @@
 
         <!-- Product Thumb -->
         <div class="product-thumb product-horizontal-thumb mt-3">
-            <div id="gallery" class="product-thumb-horizontal" dir="ltr">
+            <div id="gallery" class="product-thumb-horizontal"     dir="ltr">
                 @foreach ($product->varieties as $variety)
                 <a
                     data-image="{{ $variety->images_showcase[0]->url }}"
@@ -349,7 +349,7 @@
             </div>
         </div>
         <p class="infolinks d-flex-center justify-content-between">
-            @if (auth()->guard('customer')->user()->favorites()->where('product_id', $product->id)->exists())
+            @if (auth()->guard('customer')->user()?->favorites()->where('product_id', $product->id)->exists())
             <a class="text-link wishlist" style="cursor: pointer" id="wishlistBtn">  
                 <i id="favicon" class="icon anm anm-heart ms-2"></i>  
                 <span>افزودن به فهرست علاقه مندی ها</span>  

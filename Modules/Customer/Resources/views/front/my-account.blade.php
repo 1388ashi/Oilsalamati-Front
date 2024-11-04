@@ -32,7 +32,7 @@
       <div class="dashboard-sidebar bg-block">
         <div class="profile-top text-center mb-4 px-3">
           <div class="profile-image mb-3">
-            <img class="rounded-circle blur-up lazyload" data-src="{{ asset('front/assets/images/users/user-img2.jpg') }}" src="{{ asset('front/assets/images/users/user-img2.jpg') }}" alt="user" width="130"/>
+            <img class="rounded-circle blur-up lazyload" src="{{ asset('front/assets/images/users/user-img2.jpg') }}" alt="user" width="130"/>
           </div>
           <div class="profile-detail">
             <h3 class="mb-1">{{ $customer->full_name }}</h3>
