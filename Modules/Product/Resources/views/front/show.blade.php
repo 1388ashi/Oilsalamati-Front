@@ -50,8 +50,8 @@
                         <img
                             id="zoompro"
                             class="zoompro"
-                            src="{{asset('front/assets/images/products/product1.jpg')}}"
-                            data-zoom-image="{{asset('front/assets/images/products/product1.jpg')}}"
+                            src="{{$product->varieties[0]->images_showcase[0]}}"
+                            data-zoom-image="{{$product->varieties[0]->images_showcase[0]}}"
                             alt="محصول"
                             width="625"
                             height="808"
@@ -84,7 +84,7 @@
                     <!-- Product Thumb -->
                     <div class="product-thumb product-horizontal-thumb mt-3">
                         <div id="gallery" class="product-thumb-horizontal" dir="ltr">
-                            {{-- @foreach ($product->varieties as $variety)
+                            @foreach ($product->varieties as $variety)
                             <a
                                 data-image="{{ $variety->images_showcase[0]->url }}"
                                 data-zoom-image="{{ $variety->images_showcase[0]->url }}"
@@ -99,7 +99,7 @@
                                     height="808"
                                 />
                             </a>
-                            @endforeach --}}
+                            @endforeach
                         </div>
                     </div>
                     <!-- End Product Thumb -->
