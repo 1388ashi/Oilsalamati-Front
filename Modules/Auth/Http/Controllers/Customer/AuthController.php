@@ -319,12 +319,11 @@ class AuthController extends Controller
         // ];  
     
         $request->session()->regenerate();  
-        Auth::login($customer);  
+        Auth::guard('customer')->login($customer);  
         if ($request->forget_password == 1) {
             return redirect()->route('pageRestsPassword',$request->mobile);  
         }
-        return redirect()->intended('/');
-        // return redirect()->route('home');  
+        return redirect()->route('home');  
     }  
     protected function redirectWithMessage($message, $status)  
     {  

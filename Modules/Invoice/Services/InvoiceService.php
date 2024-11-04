@@ -68,7 +68,7 @@ class InvoiceService /*extends BaseInvoiceService*/
 
         $payableAmount = $invoice->getPayAmount();
         $gatewayMakeResponse = $payDriver
-            ->make($payableAmount, route('payment.verify', $payDriver->getName()));
+            ->make($payableAmount, route('web.payment.verify', $payDriver->getName()));
 
 
 

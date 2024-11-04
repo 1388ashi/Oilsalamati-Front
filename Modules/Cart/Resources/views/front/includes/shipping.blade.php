@@ -113,7 +113,7 @@
           <div class="address-select-box active">
             <div class="address-box bg-block h-100">
               <div class="top bank-logo d-flex-justify-center justify-content-between mb-3">
-                <img src="{{asset($shipping->logo->url)}}" class="bank-logo" width="40"/>
+                {{-- <img src="{{asset($shipping->logo->url)}}" class="bank-logo" width="40"/> --}}
               </div>
               <div class="middle">
                 <div class="card-number mb-3">

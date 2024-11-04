@@ -158,7 +158,7 @@
                 @if(@isset($invoice))
                     <a href="{{config('app.front_url')}}/callback?payable_id={{($invoice->payable instanceof \Modules\Order\Entities\OrderUpdater) ? $invoice->payable->order_id : $invoice->payable_id}}&success={{$invoice->status == 'success' ? 1 : 0 }}&type={{$type ?? 'order'}}"
                 @else
-                    <a href="{{config('app.front_url')}}"
+                    <a href="{{route('customer.o')}}"
                        @endif
                    class="back-to-web hover:bg-green-200 hover:text-green-700 absolute inset-y-0 left-0 px-5 rounded-t-2xl text-green-500 text-sm">
                     بازگشت به وبسایت

@@ -138,7 +138,7 @@ class ProductController extends Controller
             ->avg('rate');  
             $averageStar = round($averageStar);
             $idProduct = $product->id;
-
+            
         return view('product::front.show',compact('idProduct','averageStar','product', 'relatedProducts','relatedProducts1','productQuestions'));
     }
 
