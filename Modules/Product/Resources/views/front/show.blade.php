@@ -228,6 +228,7 @@
                         > --}}
                             <input type="hidden" id="varietyPrice" name="varietyPrice" value="">
                             <input type="hidden" id="varietyValue" name="varietyValue" value="">
+                            <input type="hidden" id="imageValue" name="imageValue" value="">
                             <ul class="variants-size size-swatches d-flex-center pt-1 clearfix">
                             @if ($product->varieties_showcase['attributes'])
                                 @foreach ($product->varieties_showcase['attributes'][0]['modelDetails'] as $item)  
@@ -465,7 +466,9 @@
                 item.addEventListener('click', function() {  
                     const itemValue = this.getAttribute('data-item-value');  
                     const itemPrice = this.getAttribute('data-item-price');  
+                    const itemImage = this.getAttribute('data-image');  
                     document.getElementById('price').innerText = formatPrice(itemPrice);  
+                    document.getElementById("imageValue").value = itemImage;
                     document.getElementById("varietyValue").value = itemValue;
                     document.getElementById("varietyPrice").value = itemPrice;
                 });  
@@ -493,7 +496,6 @@
                 $('#variety_id').val(selectedId);  
             });  
 
-
             updateCartDisplay();  
 
             $('.product-form-cart-submit').on('click', function(event) {  
@@ -506,7 +508,7 @@
                     let variety_id = $('#variety_id').val();  
                     let varietyQuantity = $('#quantity').val();  
                     let titleProduct = $('#title').text();  
-                    let productImage = '{{ asset('front/assets/images/products/product1-1-80x.jpg') }}';  
+                    let productImage = $('#imageValue').val();  
                     let varietyValue = $('#varietyValue').val();  
                     let varietyPrice = $('#price').text();  
 
