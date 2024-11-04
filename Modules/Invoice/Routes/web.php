@@ -1,5 +1,7 @@
 <?php
 
+use Modules\Invoice\Http\Controllers\All\PaymentController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -22,3 +24,5 @@
 //Route::get('pay/callback', function (\Illuminate\Http\Request $request) {
 //    dd($request->all());
 //});
+\Illuminate\Support\Facades\Route::name('payment.verify')
+    ->any('payment/{gateway}/verify', [PaymentController::class, 'verify'])->name('web.payment.verify');

@@ -1,4 +1,9 @@
 <script>
+    $(document).ready(function() {
+        updateCartDisplay();  
+
+    });  
+
     function updateCartDisplay() {  
         let productData = getCookie('productData');  
         if (productData) {  
@@ -39,30 +44,28 @@
                         </div>  
                     </div>  
                     <div class="qtyDetail text-center">  
-                        <div class="qtyField">  
-                            <a class="qtyBtn minus" onclick="decreaseQuantity(this)">  
-                                <i style="cursor: pointer" class="icon anm anm-minus-r"></i>  
-                            </a>  
-                            <input type="text" name="quantity"   
-                                value="${product.variety_quantity}"   
-                                class="qty"   
-                                data-cart-id=""   
-                                data-key="${product.variety_id}"   
-                                readonly/>  
-                            <a class="qtyBtn plus" onclick="increaseQuantity(this)">  
-                                <i style="cursor: pointer" class="icon anm anm-plus-r"></i>  
-                            </a>  
-                        </div>  
-                        <a href="#" class="edit-i remove" onclick="removeVariety(event, '${product.variety_id}')" data-variety-id="${product.variety_id}">  
-                            <i class="icon anm anm-times-r" data-bs-toggle="tooltip" data-bs-placement="top" title="حذف"></i>  
+                    <div class="qtyField">
+                        <a class="qtyBtn minus" onclick="decreaseQuantity(this)">  
+                            <i style="cursor: pointer" class="icon anm anm-minus-r"></i>  
                         </a>  
-                    </div>  
+                        <input type="text" name="quantity" 
+                            value="${product.variety_quantity}" 
+                            class="qty" 
+                            data-cart-id="" 
+                            data-key="${product.variety_id}"   
+                            readonly/>
+                        <a class="qtyBtn plus" onclick="increaseQuantity(this)">  
+                            <i style="cursor: pointer" class="icon anm anm-plus-r"></i>  
+                        </a>
+                    </div>
+                    <a href="#" class="edit-i remove" onclick="removeVariety(event, '${product.variety_id}')" data-variety-id="${product.variety_id}">  
+                        <i class="icon anm anm-times-r" data-bs-toggle="tooltip" data-bs-placement="top" title="حذف"></i>  
+                    </a>  
+                </div>
                 </li>`;  
 
                 $('#output').append(productHtml);  
             });  
-
-            console.log("Total Price before formatting: ", totalPrice);  
             let totalPriceFormatted = formatPrice(totalPrice);  
             $('#cart-price').text(totalPriceFormatted);  
         }  
@@ -81,41 +84,36 @@
         return null;  
     }  
 
-    function decreaseQuantity(element) {  
-        let input = $(element).siblings('input.qty');  
-        let currentQuantity = parseInt(input.val());  
+    function increaseQuantity(button) {  
+        const quantityInput = button.previousElementSibling;
+        let newVal = parseInt(quantityInput.value) + 1;
+        quantityInput.value = newVal;
 
-        if (currentQuantity > 1) {  
-            currentQuantity--;  
-            input.val(currentQuantity);  
+        updateQuantityInCookie(quantityInput.dataset.key, newVal);
+        updateQuantityOnServer(quantityInput.dataset.cartId, newVal, quantityInput);
+    }  
 
-            updateProductQuantity(input.data('key'), currentQuantity);  
-            updateCartDisplay(); 
+    function decreaseQuantity(button) {  
+        const quantityInput = button.nextElementSibling; 
+        let newVal = parseInt(quantityInput.value);
+        if (newVal > 1) {  
+            newVal--;
+            quantityInput.value = newVal;
+
+            updateQuantityInCookie(quantityInput.dataset.key, newVal);
+            updateQuantityOnServer(quantityInput.dataset.cartId, newVal, quantityInput);
         }  
-    }  
+    }
+    function updateQuantityInCookie(key, newVal) {
+        let productData = getCookie('productData');
+        productData = productData ? JSON.parse(decodeURIComponent(productData)) : [];
 
-    function increaseQuantity(element) {  
-        let input = $(element).siblings('input.qty');  
-        let currentQuantity = parseInt(input.val());  
-        currentQuantity++;  
-        input.val(currentQuantity);  
-
-        updateProductQuantity(input.data('key'), currentQuantity);  
-        updateCartDisplay(); 
-    }  
-
-    function updateProductQuantity(variety_id, quantity) {  
-        let productData = getCookie('productData');  
-        if (productData) {  
-            productData = JSON.parse(decodeURIComponent(productData));  
-            const product = productData.find(p => p.variety_id === variety_id);  
-            if (product) {  
-                product.variety_quantity = quantity;  
-                document.cookie = `productData=${encodeURIComponent(JSON.stringify(productData))}; path=/;`;  
-            }  
-        }  
-    }  
-
+        const productIndex = productData.findIndex(product => product.variety_id === key);
+        if (productIndex !== -1) {
+            productData[productIndex].variety_quantity = newVal;
+        }
+        document.cookie = `productData=${encodeURIComponent(JSON.stringify(productData))}; path=/;`;
+    }
     function removeVariety(event, variety_id) {  
         Swal.fire ({  
             text: 'آیا تمایل دارید محصول را از لیست علاقه مندی ها حذف کنید',

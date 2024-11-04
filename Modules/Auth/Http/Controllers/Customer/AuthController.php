@@ -293,28 +293,28 @@ class AuthController extends Controller
     
         $token = $customer->createToken('authToken')->plainTextToken;  
     
-        $customer->load(['listenCharges', 'carts']);  
-        $notificationService = new NotificationService($customer);  
-        $notifications = [  
-            'items' => $notificationService->get(),  
-            'total_unread' => $notificationService->getTotalUnread(),  
-        ];  
+        // $customer->load(['listenCharges', 'carts']);  
+        // $notificationService = new NotificationService($customer);  
+        // $notifications = [  
+        //     'items' => $notificationService->get(),  
+        //     'total_unread' => $notificationService->getTotalUnread(),  
+        // ];  
     
-        $data = [  
-            'access_token' => $token,  
-            'user' => $customer,  
-            'token_type' => 'Bearer',  
-            'notifications' => $notifications,  
-            'cart_warnings' => CartFromRequest::addToCartFromRequest($request),  
-            'carts' => $customer->carts,  
-        ];  
+        // $data = [  
+        //     'access_token' => $token,  
+        //     'user' => $customer,  
+        //     'token_type' => 'Bearer',  
+        //     'notifications' => $notifications,  
+        //     'cart_warnings' => CartFromRequest::addToCartFromRequest($request),  
+        //     'carts' => $customer->carts,  
+        // ];  
     
-        Auth::login($customer);  
         $request->session()->regenerate();  
+        Auth::login($customer);  
         if ($request->forget_password == 1) {
             return redirect()->route('pageRestsPassword',$request->mobile);  
         }
-        return redirect()->route('home')->with($data);  
+        return redirect()->route('home');  
     }  
     protected function redirectWithMessage($message, $status)  
     {  

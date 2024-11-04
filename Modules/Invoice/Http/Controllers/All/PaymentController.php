@@ -27,7 +27,7 @@ class PaymentController extends BaseController
         if (!$payment) {
             return response()->error('Wrong transaction id');
         }
-
+        dd($payment);
         return $payment->verify();
     }
 }
