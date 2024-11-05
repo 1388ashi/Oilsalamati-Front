@@ -69,7 +69,7 @@
                     <x-alert-success></x-alert-success>
                     <form action="{{ route('register') }}" method="POST">
                         @csrf
-                        <input type="hidden" name="password" value="brthtyjuj7s">
+                        <input type="hidden" name="sdvssdfsdv" value="brthtyjuj7s">
                         <input type="hidden" name="type" value="register">
                         <input type="hidden" name="mobile" value="{{$mobile}}">
                         <div class="form-group mb-">

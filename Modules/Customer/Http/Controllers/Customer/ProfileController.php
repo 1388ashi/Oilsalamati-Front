@@ -101,7 +101,10 @@ class ProfileController extends Controller
     public function myAccount() 
     {
         /** @var Customer $customer */
-        $customer = auth()->user();
+        $customer = auth()->guard('customer')->user();
+        if (!$customer) {
+            return redirect()->route('pageRegisterLogin');
+        }
         $customer->loadCount('orders');
         $pendingOrdersCount = $customer->orders->whereNotIn('status', [Order::STATUS_DELIVERED])->count();
         $deliveredOrdersCount = $customer->orders_count - $pendingOrdersCount;
