@@ -63,4 +63,4 @@ Route::webSuperGroup('customer', function () {
   Route::post('/transactions', [ProfileController::class, 'transactionsWallet'])->name('profile.transactionsWallet');
 });
 
-Route::get('/my-account', [ProfileController::class, 'myAccount'])->name('customer.my-account')->middleware('auth');
+Route::get('/my-account', [ProfileController::class, 'myAccount'])->name('customer.my-account');
