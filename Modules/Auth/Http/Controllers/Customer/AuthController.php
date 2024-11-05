@@ -31,10 +31,10 @@ use Modules\Core\Rules\IranMobile;
 class AuthController extends Controller
 {
     public function webSendSms($mobile,$type = null)
-    {  
+    {
         if (env('APP_ENV') != 'local') {
             $result = event(new SmsVerify($mobile));
-            
+
             return redirect()->route('webSendSms',$mobile);
             if ($result[0]['status'] != 200) {
                 $status = 'danger';
@@ -45,7 +45,7 @@ class AuthController extends Controller
             $smsToken = SmsToken::where('mobile', $mobile)->first();
             if ($smsToken) {
                 $smsToken->update([
-                    'expired_at' => Carbon::now()->addHours(240),
+                    'expired_at' => Carbon::now()->addHours(24),
                     'verified_at' => now()
                 ]);
             }else {
@@ -57,17 +57,17 @@ class AuthController extends Controller
                 ]);
             }
         }
-        return view('auth::front.sms', compact('mobile','type'));  
+        return view('auth::front.sms', compact('mobile','type'));
     }
     public function webSendSmsRegister($mobile)
-    {  
-        return view('auth::front.sms-register', compact('mobile'));  
+    {
+        return view('auth::front.sms-register', compact('mobile'));
     }
     public function registerLogin(CustomerRegisterLoginRequest $request,$mobile = null)
     {
         $key = Setting::getFromName('smsBomberKey');
-        $value = Setting::getFromName('smsBomberValue');    
-        
+        $value = Setting::getFromName('smsBomberValue');
+
         if(!$mobile){
             if (!$request->has($key) || $request->{$key} != $value) {
                 $status = 'danger';
@@ -99,7 +99,7 @@ class AuthController extends Controller
             if ($status === 'register') {
                 if (env('APP_ENV') != 'local') {
                     $result = event(new SmsVerify($mobile));
-                    
+
                     return redirect()->route('webSendSmsRegister',$mobile);
                     if ($result[0]['status'] != 200) {
                         $status = 'danger';
@@ -126,7 +126,7 @@ class AuthController extends Controller
             }else{
                 // if (env('APP_ENV') != 'local') {
                 //     $result = event(new SmsVerify($mobile));
-                    
+
                 //     return redirect()->route('webSendSms',$mobile);
                 //     if ($result[0]['status'] != 200) {
                 //         $status = 'danger';
@@ -222,10 +222,11 @@ class AuthController extends Controller
             );
         }
     }
-    
+
     // Fourth
     public function register(CustomerRegisterRequest $request)
     {
+        dd('hi');
         /** @var Customer $customer */
         if (!($customer = Customer::query()->where('mobile', $request->mobile)->first())) {
             $customer = Customer::create($request->all());
@@ -276,58 +277,58 @@ class AuthController extends Controller
     public function showLoginForm($mobile){
         return view('auth::front.login',compact('mobile'));
     }
-    public function webLogin(CustomerLoginVerifyRequest $request)  
-    {  
+    public function webLogin(CustomerLoginVerifyRequest $request)
+    {
         if ($request->has('smsToken')) {
-            $request->smsToken->verified_at = now();  
-            $request->smsToken->save(); 
+            $request->smsToken->verified_at = now();
+            $request->smsToken->save();
         }
-        $customer = Customer::where('mobile',$request->mobile)->first();  
-        if ($request->type == 'login' && $customer) {  
-            return $this->handleLogin($request, $customer);  
-        }  
-        return redirect()->route('home');  
-    }  
-    
-    protected function handleLogin(Request $request, Customer $customer)  
-    {  
-        $credentials = $request->validate([  
-            'mobile' => 'required',  
-            'password' => 'nullable',  
-        ]);  
-    
-        if ($request->password && !Hash::check($request->password, $customer->password)) {  
-            return $this->redirectWithMessage('موبایل یا رمز عبور نادرست است', 'danger');  
-        }  
-    
-        $token = $customer->createToken('authToken')->plainTextToken;  
-    
-        // $customer->load(['listenCharges', 'carts']);  
-        // $notificationService = new NotificationService($customer);  
-        // $notifications = [  
-        //     'items' => $notificationService->get(),  
-        //     'total_unread' => $notificationService->getTotalUnread(),  
-        // ];  
-    
-        // $data = [  
-        //     'access_token' => $token,  
-        //     'user' => $customer,  
-        //     'token_type' => 'Bearer',  
-        //     'notifications' => $notifications,  
-        //     'cart_warnings' => CartFromRequest::addToCartFromRequest($request),  
-        //     'carts' => $customer->carts,  
-        // ];  
-    
-        $request->session()->regenerate();  
-        Auth::guard('customer')->login($customer);  
+        $customer = Customer::where('mobile',$request->mobile)->first();
+        if ($request->type == 'login' && $customer) {
+            return $this->handleLogin($request, $customer);
+        }
+        return redirect()->route('home');
+    }
+
+    protected function handleLogin(Request $request, Customer $customer)
+    {
+        $credentials = $request->validate([
+            'mobile' => 'required',
+            'password' => 'nullable',
+        ]);
+
+        if ($request->password && !Hash::check($request->password, $customer->password)) {
+            return $this->redirectWithMessage('موبایل یا رمز عبور نادرست است', 'danger');
+        }
+
+        $token = $customer->createToken('authToken')->plainTextToken;
+
+        // $customer->load(['listenCharges', 'carts']);
+        // $notificationService = new NotificationService($customer);
+        // $notifications = [
+        //     'items' => $notificationService->get(),
+        //     'total_unread' => $notificationService->getTotalUnread(),
+        // ];
+
+        // $data = [
+        //     'access_token' => $token,
+        //     'user' => $customer,
+        //     'token_type' => 'Bearer',
+        //     'notifications' => $notifications,
+        //     'cart_warnings' => CartFromRequest::addToCartFromRequest($request),
+        //     'carts' => $customer->carts,
+        // ];
+
+        $request->session()->regenerate();
+        Auth::guard('customer')->login($customer);
         if ($request->forget_password == 1) {
-            return redirect()->route('pageRestsPassword',$request->mobile);  
+            return redirect()->route('pageRestsPassword',$request->mobile);
         }
-        return redirect()->route('home');  
-    }  
-    protected function redirectWithMessage($message, $status)  
-    {  
-        return redirect()->back()->with(['status' => $status, 'message' => $message]);  
+        return redirect()->route('home');
+    }
+    protected function redirectWithMessage($message, $status)
+    {
+        return redirect()->back()->with(['status' => $status, 'message' => $message]);
     }
 
     public function webRegisterLogin($mobile = null) {

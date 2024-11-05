@@ -274,14 +274,22 @@
 						<div class="product-box">
 							<div class="product-image">
 								<a href="{{ route('products.show', $product) }}" class="product-img rounded-0" >
-									<img
-										class="rounded-0 blur-up lazyload"
-										src="{{asset($product->images_showcase['main_image']->url)}}"
-										alt="{{ $product->title }}"
-										title="{{ $product->title }}"
-										width="625"
-										height="808"
-									/>
+{{--									<img--}}
+{{--										class="rounded-0 blur-up lazyload"--}}
+{{--										src="{{asset($product->images_showcase['main_image']->url)}}"--}}
+{{--										alt="{{ $product->title }}"--}}
+{{--										title="{{ $product->title }}"--}}
+{{--										width="625"--}}
+{{--										height="808"--}}
+{{--									/>--}}
+                                    <img
+                                        class="rounded-0 blur-up lazyload"
+                                        src="{{asset('image/image.jpg')}}"
+                                        alt="{{ $product->title }}"
+                                        title="{{ $product->title }}"
+                                        width="625"
+                                        height="808"
+                                    />
 								</a>
 
 								@php
@@ -298,7 +306,7 @@
 										@endif
 									</div>
 								@endif
-								
+
 							</div>
 							<div class="product-details text-right">
 								<div class="product-name">
@@ -382,13 +390,35 @@
 
 						@php
 							$totalPages = round($response['allProductsCount'] / $response['pagination']);
+                            $i = 1;
 						@endphp
 
-						@for ($i = 1; $i <= $totalPages; $i++)
-							<li class="page-item {{ request('page', 1) == $i ? 'active' : '' }}">
-								<a class="page-link" href="{{ route('products.index', ['page' => $i]) }}">{{ $i }}</a>
-							</li>
-						@endfor
+{{--						@for ($i = 1; $i <= $totalPages; $i++)--}}
+{{--							<li class="page-item {{ request('page', 1) == $i ? 'active' : '' }}">--}}
+{{--								<a class="page-link" href="{{ route('products.index', ['page' => $i]) }}">{{ $i }}</a>--}}
+{{--                            </li>--}}
+{{--                        @endfor--}}
+                        @while($i <= request('page'))
+                            <li class="page-item {{ request('page', 1) == $i ? 'active' : '' }}">
+                                <a class="page-link" href="{{ route('products.index', ['page' => $i]) }}">{{ $i }}</a>
+                            </li>
+                            @if($i == request('page') && $i+1<=$totalPages)
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ route('products.index', ['page' => $i+1]) }}">{{ $i+1 }}</a>
+                                </li>
+                            @if($i+1!=$totalPages)
+                                    <li class="page-item">
+                                        <a class="page-link" href="#">...</a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="{{ route('products.index', ['page' => $totalPages]) }}">{{ 6 }}</a>
+                                    </li>
+                            @endif
+                            @endif
+                            @php
+                                $i++
+                            @endphp
+                        @endwhile
 
 						<li class="page-item {{ request('page') == $totalPages ? 'disabled' : '' }}">
 							<a class="page-link" href="#">
