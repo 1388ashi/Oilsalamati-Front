@@ -274,22 +274,22 @@
 						<div class="product-box">
 							<div class="product-image">
 								<a href="{{ route('products.show', $product) }}" class="product-img rounded-0" >
-{{--									<img--}}
-{{--										class="rounded-0 blur-up lazyload"--}}
-{{--										src="{{asset($product->images_showcase['main_image']->url)}}"--}}
-{{--										alt="{{ $product->title }}"--}}
-{{--										title="{{ $product->title }}"--}}
-{{--										width="625"--}}
-{{--										height="808"--}}
-{{--									/>--}}
-                                    <img
-                                        class="rounded-0 blur-up lazyload"
-                                        src="{{asset('image/image.jpg')}}"
-                                        alt="{{ $product->title }}"
-                                        title="{{ $product->title }}"
-                                        width="625"
-                                        height="808"
-                                    />
+									<img
+										class="rounded-0 blur-up lazyload"
+										src="{{asset($product->images_showcase['main_image']->url)}}"
+										alt="{{ $product->title }}"
+										title="{{ $product->title }}"
+										width="625"
+										height="808"
+									/>
+{{--                                    <img--}}
+{{--                                        class="rounded-0 blur-up lazyload"--}}
+{{--                                        src="{{asset('image/image.jpg')}}"--}}
+{{--                                        alt="{{ $product->title }}"--}}
+{{--                                        title="{{ $product->title }}"--}}
+{{--                                        width="625"--}}
+{{--                                        height="808"--}}
+{{--                                    />--}}
 								</a>
 
 								@php
