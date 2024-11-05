@@ -47,9 +47,9 @@ class Handler extends ExceptionHandler
 
     protected function unauthenticated($request, AuthenticationException $exception)
     {
-        return $request->expectsJson()
-            ? response()->error('لطفا ابتدا وارد شوید', null, 401)
-            : redirect()->guest($exception->redirectTo() ?? route('login'));
+        // return $request->expectsJson()
+        //     ? response()->error('لطفا ابتدا وارد شوید', null, 401)
+        //     : redirect()->guest($exception->redirectTo() ?? route('login'));
     }
 
     public function render($request, Throwable $e)
