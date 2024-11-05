@@ -50,8 +50,8 @@
                         <img
                             id="zoompro"
                             class="zoompro"
-                            src="{{$product->varieties[0]->images_showcase[0]}}"
-                            data-zoom-image="{{$product->varieties[0]->images_showcase[0]}}"
+                            src="{{$product->varieties[0]->images_showcase[0]->url}}"
+                            data-zoom-image="{{$product->varieties[0]->images_showcase[0]->url}}"
                             alt="محصول"
                             width="625"
                             height="808"
@@ -63,7 +63,6 @@
                         <div class="product-labels">
                             <span class="lbl on-sale">فروش</span>
                         </div>
-                            
                         @endif
                         <!-- End Product Label -->
                         <!-- Product Buttons -->
