@@ -499,7 +499,7 @@
 
             $('.product-form-cart-submit').on('click', function(event) {  
                 event.preventDefault();  
-                let isLoggedIn = @json(auth()->user());  
+                let isLoggedIn = @json(auth()->guard('customer')->user());  
                 
                 if (!isLoggedIn) {  
                     $('#loginModalProduct').modal('show');  
