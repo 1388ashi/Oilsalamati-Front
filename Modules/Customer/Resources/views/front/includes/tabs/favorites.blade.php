@@ -13,7 +13,7 @@
             <th scope="col">شناسه سفارش</th>
             <th scope="col">جزئیات محصول</th>
             <th scope="col">قیمت</th>
-            <th scope="col">اقدام</th>
+            {{-- <th scope="col">اقدام</th> --}}
           </tr>
         </thead>
         <tbody>
@@ -30,33 +30,25 @@
               ><i class="icon anm anm-times-r"></i></button>
             </td>
             <td>
-              {{-- <img
+              <img
               class="blur-up lazyload"
               data-src="{{$product->images_showcase['main_image']->url}}"
               src="{{$product->images_showcase['main_image']->url}}"
               width="50"
               alt="محصول"
               title="محصول"
-            /> --}}
-              <img
-                class="blur-up lazyload"
-                data-src="{{asset('front/assets/images/products/product1-120x170.jpg')}}"
-                src="{{asset('front/assets/images/products/product1-120x170.jpg')}}"
-                width="50"
-                alt="محصول"
-                title="محصول"
-              />
+            />
             </td>
-            <td><span class="id">#12301</span></td>
+            <td><span class="id">{{$product->id}}</span></td>
             <td>
-              <span class="name">پیراهن کوبایی آکسفورد</span>
+              <span class="name">{{$product->title}}</span>
             </td>
             <td>
-              <span class="price fw-500">99.00 تومان </span>
+              <span class="price fw-500">{{number_format($product->price)}}</span>
             </td>
-            <td>
+            {{-- <td>
               <a href="cart-style1.html" class="btn btn-md text-nowrap">افزودن به سبد خرید</a>
-            </td>
+            </td> --}}
           </tr>
           @empty
               
