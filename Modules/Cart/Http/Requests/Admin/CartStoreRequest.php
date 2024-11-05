@@ -3,6 +3,7 @@
 namespace Modules\Cart\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 use Modules\Cart\Entities\Cart;
 use Modules\Core\Helpers\Helpers;
 use Modules\Product\Entities\Variety;
@@ -28,7 +29,7 @@ class CartStoreRequest extends FormRequest
         if ($this->variety->quantity == null || $this->variety->quantity == 0){
             throw Helpers::makeValidationException('تنوع مورد نظر ناموجود است');
         }
-        $user = auth()->guard('customer')->user();  
+        $user = Auth::guard('customer')->user();  
         if (!$user) {  
             throw new \Exception('User not authenticated.');
         }  

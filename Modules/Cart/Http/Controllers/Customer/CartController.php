@@ -66,7 +66,7 @@ class CartController extends Controller
     public function add(CartStoreRequest $request, $id): JsonResponse
     {
         $request->variety = Variety::query()->with('product.activeFlash')->whereKey($request->variety_id)->firstOrFail();
-        $user = auth()->guard('customer')->user();  
+        $user = Auth::guard('customer')->user();  
         if (!$user) {  
             throw new \Exception('User not authenticated.');
         }  
@@ -112,7 +112,7 @@ class CartController extends Controller
 
         if ($varietyInCart){
             $varietyInCart->save();
-            $user = auth()->guard('customer')->user();
+            $user = Auth::guard('customer')->user();
 
             $carts = $user->carts;
             $carts_showcase = $user->get_carts_showcase($user->carts);
@@ -124,7 +124,7 @@ class CartController extends Controller
             ]);
         }
 
-        $newCart = Cart::addToCart($request->input('quantity'), $variety, \Auth::guard('customer')->user());
+        $newCart = Cart::addToCart($request->input('quantity'), $variety, Auth::guard('customer')->user());
         $carts = $user->carts;
         $carts_showcase = $user->get_carts_showcase($carts);
         foreach ($carts ?? [] as $cart) $cart->getReadyForFront();

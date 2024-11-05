@@ -107,7 +107,6 @@ class ProductController extends Controller
     }
     public function show($id)
     {
-        dd(Auth::guard('customer')->user());
         /* todo: fix it. load product from service. and also add questions. we should send categories and brands to the ProductDetailsService */
         /** @var $product Product */
         $product = Product::query()->with(['productComments', 'categories', 'brand'])->active()/*->with('varieties')*//*->with('varieties.attributes.pivot', 'varieties.color')*//*->withCommonRelations()*/->findOrFail($id);

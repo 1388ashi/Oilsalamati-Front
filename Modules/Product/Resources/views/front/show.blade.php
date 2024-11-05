@@ -569,7 +569,7 @@
                     product_id: $('input[name="product_id"]').val(),  
                     show_customer_name: $('input[name="show_customer_name"]').val()  
                 };  
-                let isLoggedIn = @json(auth()->user());  
+                let isLoggedIn = @json(auth()->guard('customer')->user());  
                 if (!isLoggedIn) {  
                     $('#loginModalProduct').modal('show');  
                 } else {  
@@ -599,7 +599,7 @@
             $('#wishlistBtn').click(function(event) {  
                 event.preventDefault();  
                 var formData = $('#postForm').serialize();   
-                let isLoggedIn = @json(auth()->user());  
+                let isLoggedIn = @json(auth()->guard('customer')->user());  
                 let $icon = $('favicon').find('i');  
                 // if ($icon.hasClass('anm-heart-l')) {  
                     if (!isLoggedIn) {  
