@@ -50,8 +50,8 @@
                         <img
                             id="zoompro"
                             class="zoompro"
-                            src="{{$product->varieties[0]->images_showcase[0]->url}}"
-                            data-zoom-image="{{$product->varieties[0]->images_showcase[0]->url}}"
+                            {{-- src="{{$product->varieties[0]->images_showcase[0]->url}}"
+                            data-zoom-image="{{$product->varieties[0]->images_showcase[0]->url}}" --}}
                             alt="محصول"
                             width="625"
                             height="808"
