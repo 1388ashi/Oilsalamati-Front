@@ -66,7 +66,7 @@ class CartController extends Controller
     public function add(CartStoreRequest $request, $id): JsonResponse
     {
         $request->variety = Variety::query()->with('product.activeFlash')->whereKey($request->variety_id)->firstOrFail();
-        $user = \Auth::guard('customer')->user();  
+        $user = auth()->guard('customer')->user();  
         if (!$user) {  
             throw new \Exception('User not authenticated.');
         }  
