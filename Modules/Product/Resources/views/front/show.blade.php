@@ -50,8 +50,8 @@
                         <img
                             id="zoompro"
                             class="zoompro"
-                            {{-- src="{{$product->varieties[0]->images_showcase[0]->url }}"
-                            data-zoom-image="{{$product->varieties[0]->images_showcase[0]->url }}" --}}
+                            src="{{$product->varieties[0]->images_showcase[0]->url }}"
+                            data-zoom-image="{{$product->varieties[0]->images_showcase[0]->url }}"
                             alt="محصول"
                             width="625"
                             height="808"
@@ -85,14 +85,14 @@
                         <div id="gallery" class="product-thumb-horizontal" dir="ltr">
                             @foreach ($product->varieties as $variety)  
                             <button  
-                                onclick="imageProduct(this)"  {{-- Use 'this' to refer to the button directly --}}  
-                                data-image="{{ asset('front/assets/images/products/' . $variety->image) }}"  {{-- Dynamic image path --}}  
-                                data-zoom-image="{{ asset('front/assets/images/products/' . $variety->image) }}"  
-                                class="slick-slide slick-cloned @if ($loop->first) active @endif"> {{-- Add active class only to the first one --}}  
+                                onclick="imageProduct(this)" 
+                                data-image="{{ $variety->images_showcase[0]->url }}"
+                                data-zoom-image="{{ $variety->images_showcase[0]->url }}"
+                                class="slick-slide slick-cloned @if ($loop->first) active @endif">
                                 <img  
                                     class="blur-up lazyload"  
-                                    data-src="{{ asset('front/assets/images/products/' . $variety->image) }}"  
-                                    src="{{ asset('front/assets/images/products/' . $variety->image) }}"  
+                                    data-src="{{ $variety->images_showcase[0]->url }}"  
+                                    src="{{ $variety->images_showcase[0]->url }}"  
                                     alt="محصول"  
                                     width="625"  
                                     height="808"  
@@ -471,7 +471,7 @@
                 item.addEventListener('click', function() {  
                     const itemValue = this.getAttribute('data-item-value');  
                     const itemPrice = this.getAttribute('data-item-price');  
-                    
+
                     document.getElementById('price').innerText = formatPrice(itemPrice);  
                     document.getElementById("varietyValue").value = itemValue;
                     document.getElementById("varietyPrice").value = itemPrice;
