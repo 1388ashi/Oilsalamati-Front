@@ -463,7 +463,6 @@
         }
         function imageProduct(button) {  
             const image = button.dataset.image;
-            console.log(btn.data("image"));
             document.getElementById("imageValue").value = image;  
         }  
         document.addEventListener('DOMContentLoaded', function() {  
@@ -472,9 +471,8 @@
                 item.addEventListener('click', function() {  
                     const itemValue = this.getAttribute('data-item-value');  
                     const itemPrice = this.getAttribute('data-item-price');  
-                    // const itemImage = this.getAttribute('data-image');  
+                    
                     document.getElementById('price').innerText = formatPrice(itemPrice);  
-                    // document.getElementById("imageValue").value = itemImage;
                     document.getElementById("varietyValue").value = itemValue;
                     document.getElementById("varietyPrice").value = itemPrice;
                 });  
