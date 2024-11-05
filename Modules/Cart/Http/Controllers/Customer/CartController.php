@@ -25,7 +25,6 @@ class CartController extends Controller
         $messages = [];
         /** @var Customer $user */
         $user = Auth::guard('customer')->user();
-        dd($user);
         $carts = $user->carts;
         $carts_showcase = $user->get_carts_showcase($carts);
 

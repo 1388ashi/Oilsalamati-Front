@@ -281,7 +281,7 @@
     $(document).ready(function() {
         $('#contact-form').on('submit', function(e) {
             e.preventDefault();
-            let isLoggedIn = @json(auth()->user());
+            let isLoggedIn = @json(auth()->guard('customer')->user());
             if (!isLoggedIn) {
                 // $('#loginModal').modal('show');
                 Swal.fire({

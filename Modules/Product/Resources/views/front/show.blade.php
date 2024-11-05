@@ -505,62 +505,68 @@
             $('.product-form-cart-submit').on('click', function(event) {  
                 event.preventDefault();  
                 let isLoggedIn = @json(auth()->guard('customer')->user());  
-                
+                let variety_id = $('#variety_id').val();  
                 if (!isLoggedIn) {  
                     $('#loginModalProduct').modal('show');  
                 } else {  
-                    let variety_id = $('#variety_id').val();  
-                    let varietyQuantity = $('#quantity').val();  
-                    let titleProduct = $('#title').text();  
-                    let productImage = $('#imageValue').val();  
-                    console.log(productImage);
-                    let varietyValue = $('#varietyValue').val();  
-                    let varietyPrice = $('#price').text();  
-                    $.ajax({  
-                        url: `{{ route('cart.add') }}/${variety_id}`,  
-                        type: 'POST',  
-                        headers: {  
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },  
-                        data: {  
-                            variety_id: variety_id,  
-                            quantity: varietyQuantity  
-                        },  
-                        success: function(response) {  
-                            let productData = getCookie('productData');  
-                            productData = productData ? JSON.parse(decodeURIComponent(productData)) : [];  
+                    if (variety_id) {
+                        let varietyQuantity = $('#quantity').val();  
+                        let titleProduct = $('#title').text();  
+                        let productImage = $('#imageValue').val();  
+                        console.log(productImage);
+                        let varietyValue = $('#varietyValue').val();  
+                        let varietyPrice = $('#price').text();  
+                        $.ajax({  
+                            url: `{{ route('cart.add') }}/${variety_id}`,  
+                            type: 'POST',  
+                            headers: {  
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },  
+                            data: {  
+                                variety_id: variety_id,  
+                                quantity: varietyQuantity  
+                            },  
+                            success: function(response) {  
+                                let productData = getCookie('productData');  
+                                productData = productData ? JSON.parse(decodeURIComponent(productData)) : [];  
 
-                            // اضافه کردن یا به‌روزرسانی محصول در productData  
-                            const existingProduct = productData.find(product => product.variety_id === variety_id);  
-                            if (existingProduct) {  
-                                existingProduct.variety_quantity = parseInt(existingProduct.variety_quantity) + parseInt(varietyQuantity);  
-                            } else {  
-                                productData.push({  
-                                    variety_id: variety_id,  
-                                    variety_quantity: varietyQuantity,  
-                                    title_product: titleProduct,  
-                                    product_image: productImage,  
-                                    variety_value: varietyValue,  
-                                    variety_price: varietyPrice,  
+                                // اضافه کردن یا به‌روزرسانی محصول در productData  
+                                const existingProduct = productData.find(product => product.variety_id === variety_id);  
+                                if (existingProduct) {  
+                                    existingProduct.variety_quantity = parseInt(existingProduct.variety_quantity) + parseInt(varietyQuantity);  
+                                } else {  
+                                    productData.push({  
+                                        variety_id: variety_id,  
+                                        variety_quantity: varietyQuantity,  
+                                        title_product: titleProduct,  
+                                        product_image: productImage,  
+                                        variety_value: varietyValue,  
+                                        variety_price: varietyPrice,  
+                                    });  
+                                }  
+
+                                document.cookie = `productData=${encodeURIComponent(JSON.stringify(productData))}; path=/;`;  
+                                
+                                updateCartDisplay();  
+
+                                Swal.fire({  
+                                    icon: "success",  
+                                    text: response.message  
+                                });  
+                            },  
+                            error: function(error) {  
+                                Swal.fire({  
+                                    icon: "error",  
+                                    text: error.responseJSON.message  
                                 });  
                             }  
-
-                            document.cookie = `productData=${encodeURIComponent(JSON.stringify(productData))}; path=/;`;  
-                            
-                            updateCartDisplay();  
-
-                            Swal.fire({  
-                                icon: "success",  
-                                text: response.message  
-                            });  
-                        },  
-                        error: function(error) {  
-                            Swal.fire({  
-                                icon: "error",  
-                                text: error.responseJSON.message  
-                            });  
-                        }  
-                    });  
+                        });  
+                    }else{
+                        Swal.fire({  
+                            icon: "error",  
+                            text: "تنوع مورد نظر را انتخاب کنید"  
+                        });  
+                    }
                 }  
             });  
 
