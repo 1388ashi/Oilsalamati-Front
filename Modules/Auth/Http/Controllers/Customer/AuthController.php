@@ -269,7 +269,7 @@ class AuthController extends Controller
         $customer->update([
             'password' => bcrypt($request->password)
         ]);
-        return redirect()->intended('/');
+        return redirect()->route('home');
         // return redirect()->route('home');
         }
     public function showLoginForm($mobile){
