@@ -269,7 +269,7 @@ class AuthController extends Controller
     }
     public function webLogin(CustomerLoginVerifyRequest $request)  
     {  
-        if ($request->smsToken) {  
+        if ($request->has('smsToken')) {  
             $request->smsToken->verified_at = now();  
             $request->smsToken->save();  
         }  
