@@ -105,30 +105,12 @@
 
                     <!-- Product Gallery -->
                     <div class="lightboximages">
+                        @foreach ($product->varieties as $variety)  
                         <a
-                        href="{{asset('front/assets/images/products/product1.jpg')}}"
+                        href="{{ $variety->images_showcase[0]->url }}"
                         data-size="1000x1280"
                         ></a>
-                        <a
-                        href="{{asset('front/assets/images/products/product1-1.jpg')}}"
-                        data-size="1000x1280"
-                        ></a>
-                        <a
-                        href="{{asset('front/assets/images/products/product1-2.jpg')}}"
-                        data-size="1000x1280"
-                        ></a>
-                        <a
-                        href="{{asset('front/assets/images/products/product1-3.jpg')}}"
-                        data-size="1000x1280"
-                        ></a>
-                        <a
-                        href="{{asset('front/assets/images/products/product1-4.jpg')}}"
-                        data-size="1000x1280"
-                        ></a>
-                        <a
-                        href="{{asset('front/assets/images/products/product1-5.jpg')}}"
-                        data-size="1000x1280"
-                        ></a>
+                        @endforeach  
                     </div>
                 </div>
             </div>
