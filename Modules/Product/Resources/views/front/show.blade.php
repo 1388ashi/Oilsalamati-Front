@@ -84,7 +84,7 @@
                     <div class="product-thumb product-horizontal-thumb mt-3">
                         <div id="gallery" class="product-thumb-horizontal" dir="ltr">
                             @foreach ($product->varieties as $variety)  
-                            <button  
+                            <a  
                                 onclick="imageProduct(this)" 
                                 data-image="{{ $variety->images_showcase[0]->url }}"
                                 data-zoom-image="{{ $variety->images_showcase[0]->url }}"
@@ -97,7 +97,7 @@
                                     width="625"  
                                     height="808"  
                                 />  
-                            </button>  
+                            </a>  
                         @endforeach  
                         </div>
                     </div>
