@@ -224,7 +224,6 @@ class AuthController extends Controller
     // Fourth
     public function register(CustomerRegisterRequest $request)
     {
-        dd('hi');
         /** @var Customer $customer */
         if (!($customer = Customer::query()->where('mobile', $request->mobile)->first())) {
             $customer = Customer::create($request->all());
