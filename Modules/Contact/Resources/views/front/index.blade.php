@@ -33,7 +33,7 @@
                     @csrf
                     <input type="hidden" name="_wreixcf14135vq2av54" value="تهران">
                     <input type="hidden" name="cn8dsada032" value="ایران">
-                    <input type="hidden" name="customer_id" value="{{auth()->user()->id}}">
+                    <input type="hidden" name="customer_id" value="{{auth()->user()?->id}}">
                     <div class="form-row">
                         <div class="col-12 col-sm-12 col-md-6 col-lg-6">
                             <div class="form-group">
@@ -255,58 +255,65 @@
                 </div>
             </div>
         </div>
-        <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">  
-            <div class="modal-dialog modal-md" role="document">  
-                <div class="modal-content">  
-                    <div class="modal-header">  
-                        <h5 class="modal-title font-weight-bold">لطفاً وارد حساب کاربری خود شوید.</h5>  
-                        <button type="button" class="close" id="closeButton" aria-label="Close">  
-                            <span aria-hidden="true">&times;</span>  
-                        </button>  
-                    </div>  
-                    <div class="modal-body text-center">  
-                        <a href="{{ route('pageRegisterLogin') }}" class="btn btn-primary btn-auth">ورود به حساب کاربری</a>  
-                        <button type="button" class="btn btn-outline-danger" id="closeButton2">بستن</button>  
-                    </div>  
-                </div>  
-            </div>  
-        </div>
+{{--        <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">--}}
+{{--            <div class="modal-dialog modal-md" role="document">--}}
+{{--                <div class="modal-content">--}}
+{{--                    <div class="modal-header">--}}
+{{--                        <h5 class="modal-title font-weight-bold">لطفاً وارد حساب کاربری خود شوید.</h5>--}}
+{{--                        <button type="button" class="close" id="closeButton" aria-label="Close">--}}
+{{--                            <span aria-hidden="true">&times;</span>--}}
+{{--                        </button>--}}
+{{--                    </div>--}}
+{{--                    <div class="modal-body text-center">--}}
+{{--                        <a href="{{ route('pageRegisterLogin') }}" class="btn btn-primary btn-auth">ورود به حساب کاربری</a>--}}
+{{--                        <button type="button" class="btn btn-outline-danger" id="closeButton2">بستن</button>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </div>--}}
     </div>
 <!-- پایان نقشه تماس -->
 </div>
 
 @endsection
 @section('scripts')
-<script>  
-    $(document).ready(function() {  
-        $('#contact-form').on('submit', function(e) {  
-            e.preventDefault();  
-            let isLoggedIn = @json(auth()->user());  
-            if (!isLoggedIn) {  
-                $('#loginModal').modal('show');  
+<script>
+    $(document).ready(function() {
+        $('#contact-form').on('submit', function(e) {
+            e.preventDefault();
+            let isLoggedIn = @json(auth()->user());
+            if (!isLoggedIn) {
+                // $('#loginModal').modal('show');
+                Swal.fire({
+                    icon: "error",
+                    title: "خطای ارسال",
+                    text: "لطفا ابتدا وارد اکانت خود شوید!",
+                    showConfirmButton: false,
+                    footer: '<button class="btn btn-danger"><a href="{{route('pageRegisterLogin')}}">ورود به اکانت</a></button>'
+                });
             }else{
-                var submitBtn = $(this).find('input[type="submit"]');   
+                var submitBtn = $(this).find('input[type="submit"]');
 
-                $.ajax({  
-                    url: $(this).attr('action'),   
-                    type: 'POST',  
-                    data: $(this).serialize(),   
-                    success: function(response) {  
-                        $('#contact-form')[0].reset();  
-                        Swal.fire({  
-                            icon: "success",  
-                            text: "پیام شما با موفقیت ثبت شد."  
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: 'POST',
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        $('#contact-form')[0].reset();
+                        Swal.fire({
+                            icon: "success",
+                            text: "پیام شما با موفقیت ثبت شد."
                         });
-                    },  
-                    error: function(xhr) {  
-                        Swal.fire({  
-                            icon: "error",  
-                            text: "خطا در ثبت پیام."  
+                    },
+                    error: function(xhr) {
+                        Swal.fire({
+                            icon: "error",
+                            text: "خطا در ثبت پیام."
                         });
-                    }  
-                });  
+                    }
+                });
             }
-        });  
-    });  
-</script>  
+        });
+    });
+</script>
 @endsection
