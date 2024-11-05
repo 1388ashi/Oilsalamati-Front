@@ -25,14 +25,16 @@ use Modules\Customer\Entities\SmsToken;
 use Modules\Customer\Events\SmsVerify;
 use Modules\Newsletters\Entities\UsersNewsletters;
 use Modules\Setting\Entities\Setting;
+use Shetabit\Shopit\Modules\Auth\Http\Controllers\Customer\AuthController as BaseAuthController;
+use Modules\Core\Rules\IranMobile;
 
 class AuthController extends Controller
 {
     public function webSendSms($mobile,$type = null)
-    {
+    {  
         if (env('APP_ENV') != 'local') {
             $result = event(new SmsVerify($mobile));
-
+            
             return redirect()->route('webSendSms',$mobile);
             if ($result[0]['status'] != 200) {
                 $status = 'danger';
@@ -43,7 +45,7 @@ class AuthController extends Controller
             $smsToken = SmsToken::where('mobile', $mobile)->first();
             if ($smsToken) {
                 $smsToken->update([
-                    'expired_at' => Carbon::now()->addHours(24),
+                    'expired_at' => Carbon::now()->addHours(240),
                     'verified_at' => now()
                 ]);
             }else {
@@ -55,17 +57,17 @@ class AuthController extends Controller
                 ]);
             }
         }
-        return view('auth::front.sms', compact('mobile','type'));
+        return view('auth::front.sms', compact('mobile','type'));  
     }
     public function webSendSmsRegister($mobile)
-    {
-        return view('auth::front.sms-register', compact('mobile'));
+    {  
+        return view('auth::front.sms-register', compact('mobile'));  
     }
     public function registerLogin(CustomerRegisterLoginRequest $request,$mobile = null)
     {
         $key = Setting::getFromName('smsBomberKey');
-        $value = Setting::getFromName('smsBomberValue');
-
+        $value = Setting::getFromName('smsBomberValue');    
+        
         if(!$mobile){
             if (!$request->has($key) || $request->{$key} != $value) {
                 $status = 'danger';
@@ -97,7 +99,7 @@ class AuthController extends Controller
             if ($status === 'register') {
                 if (env('APP_ENV') != 'local') {
                     $result = event(new SmsVerify($mobile));
-
+                    
                     return redirect()->route('webSendSmsRegister',$mobile);
                     if ($result[0]['status'] != 200) {
                         $status = 'danger';
@@ -105,26 +107,18 @@ class AuthController extends Controller
                         return redirect()->back()->with(['status' => $status, 'message' => $message]);
                     }
                 } else {
-                    $smsToken = SmsToken::where('mobile', $mobile)->first();
-                    if ($smsToken) {
-                        $smsToken->update([
-                            'expired_at' => Carbon::now()->addHours(240),
-                            'verified_at' => now()
-                        ]);
-                    }else {
-                        SmsToken::create([
-                            'mobile' => $mobile,
-                            'token' => 1234, //random_int(10000, 99999),
-                            'expired_at' => Carbon::now()->addHours(240),
-                            'verified_at' => now()
-                        ]);
-                    }
+                    SmsToken::create([
+                        'mobile' => $mobile,
+                        'token' => 1234, //random_int(10000, 99999),
+                        'expired_at' => Carbon::now()->addHours(240),
+                        'verified_at' => now()
+                    ]);
                     return redirect()->route('webSendSmsRegister',$mobile);
                 }
             }else{
                 // if (env('APP_ENV') != 'local') {
                 //     $result = event(new SmsVerify($mobile));
-
+                    
                 //     return redirect()->route('webSendSms',$mobile);
                 //     if ($result[0]['status'] != 200) {
                 //         $status = 'danger';
@@ -220,7 +214,7 @@ class AuthController extends Controller
             );
         }
     }
-
+    
     // Fourth
     public function register(CustomerRegisterRequest $request)
     {
@@ -248,9 +242,8 @@ class AuthController extends Controller
 
         $customer->load(['listenCharges', 'carts']);
 
-        $request->session()->regenerate();  
-        Auth::guard('customer')->login($customer);  
-        
+        $token = $customer->createToken('authToken')->plainTextToken;
+
         Helpers::actingAs($customer);
 
         $warnings = CartFromRequest::addToCartFromRequest($request);
@@ -270,17 +263,16 @@ class AuthController extends Controller
             'password' => bcrypt($request->password)
         ]);
         return redirect()->route('home');
-        // return redirect()->route('home');
         }
     public function showLoginForm($mobile){
         return view('auth::front.login',compact('mobile'));
     }
-    public function webLogin(CustomerLoginVerifyRequest $request)
-    {
-        if ($request->has('smsToken')) {
-            $request->smsToken->verified_at = now();
-            $request->smsToken->save();
-        }
+    public function webLogin(CustomerLoginVerifyRequest $request)  
+    {  
+        if ($request->password) {  
+            $request->smsToken->verified_at = now();  
+            $request->smsToken->save();  
+        }  
         $customer = Customer::where('mobile',$request->mobile)->first();  
         if ($request->type == 'login' && $customer) {  
             return $this->handleLogin($request, $customer);  
@@ -296,21 +288,37 @@ class AuthController extends Controller
         ]);  
     
         if ($request->password && !Hash::check($request->password, $customer->password)) {  
-
             return $this->redirectWithMessage('موبایل یا رمز عبور نادرست است', 'danger');  
         }  
     
+        $token = $customer->createToken('authToken')->plainTextToken;  
+    
+        // $customer->load(['listenCharges', 'carts']);  
+        // $notificationService = new NotificationService($customer);  
+        // $notifications = [  
+        //     'items' => $notificationService->get(),  
+        //     'total_unread' => $notificationService->getTotalUnread(),  
+        // ];  
+    
+        // $data = [  
+        //     'access_token' => $token,  
+        //     'user' => $customer,  
+        //     'token_type' => 'Bearer',  
+        //     'notifications' => $notifications,  
+        //     'cart_warnings' => CartFromRequest::addToCartFromRequest($request),  
+        //     'carts' => $customer->carts,  
+        // ];  
+    
         $request->session()->regenerate();  
-        Auth::guard('customer')->login($customer);  
-
+        Auth::login($customer);  
         if ($request->forget_password == 1) {
-            return redirect()->route('pageRestsPassword',$request->mobile);
+            return redirect()->route('pageRestsPassword',$request->mobile);  
         }
-        return redirect()->route('home');
-    }
-    protected function redirectWithMessage($message, $status)
-    {
-        return redirect()->back()->with(['status' => $status, 'message' => $message]);
+        return redirect()->route('home');  
+    }  
+    protected function redirectWithMessage($message, $status)  
+    {  
+        return redirect()->back()->with(['status' => $status, 'message' => $message]);  
     }
 
     public function webRegisterLogin($mobile = null) {
@@ -372,7 +380,7 @@ class AuthController extends Controller
     public function webResetPassword($mobile){
         return view('auth::front.reset-password',compact('mobile'));
     }
-    public function resetPassword(CustomerResetPasswordRequest $request)
+    public function resetPassword(CustomerResetPasswordRequest $request): JsonResponse
     {
         if ($request->smsToken) {
             $smsToken = SmsToken::where('mobile', $request->input('mobile'))->first();
@@ -402,8 +410,8 @@ class AuthController extends Controller
                 'total_unread' => $notificationService->getTotalUnread()
             ]
         ];
-        return redirect()->intended('/');
-        // return redirect()->route('home');
+
+        return redirect()->route('home');
     }
 
     public function setDeviceToken(Request $request)

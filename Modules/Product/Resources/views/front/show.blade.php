@@ -50,8 +50,8 @@
                         <img
                             id="zoompro"
                             class="zoompro"
-                            src="{{$product->varieties[0]->images_showcase[0]->url}}"
-                            data-zoom-image="{{$product->varieties[0]->images_showcase[0]->url}}"
+                        src="{{asset('front/assets/images/products/product1.jpg')}}"
+                    data-zoom-image="{{asset('front/assets/images/products/product1.jpg')}}"
                             alt="محصول"
                             width="625"
                             height="808"
@@ -85,14 +85,18 @@
                         <div id="gallery" class="product-thumb-horizontal" dir="ltr">
                             @foreach ($product->varieties as $variety)
                             <a
-                                data-image="{{ $variety->images_showcase[0]->url }}"
-                                data-zoom-image="{{ $variety->images_showcase[0]->url }}"
+                            src="{{asset('front/assets/images/products/product1.jpg')}}"
+                        data-zoom-image="{{asset('front/assets/images/products/product1.jpg')}}"
+                                {{-- data-image="{{ $variety->images_showcase[0]->url }}"
+                                data-zoom-image="{{ $variety->images_showcase[0]->url }}" --}}
                                 class="slick-slide slick-cloned active"
                             >
                                 <img
                                     class="blur-up lazyload"
-                                    data-src="{{ $variety->images_showcase[0]->url }}"
-                                    src="{{ $variety->images_showcase[0]->url }}"
+                                      src="{{asset('front/assets/images/products/product1.jpg')}}"
+                                    data-zoom-image="{{asset('front/assets/images/products/product1.jpg')}}"
+                                    {{-- data-src="{{ $variety->images_showcase[0]->url }}"
+                                    src="{{ $variety->images_showcase[0]->url }}" --}}
                                     alt="محصول"
                                     width="625"
                                     height="808"
@@ -510,16 +514,15 @@
                     let productImage = $('#imageValue').val();  
                     let varietyValue = $('#varietyValue').val();  
                     let varietyPrice = $('#price').text();  
-
                     $.ajax({  
                         url: `{{ route('cart.add') }}/${variety_id}`,  
                         type: 'POST',  
                         headers: {  
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}',  
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         },  
                         data: {  
                             variety_id: variety_id,  
-                            quantity: varietyQuantity,  
+                            quantity: varietyQuantity  
                         },  
                         success: function(response) {  
                             let productData = getCookie('productData');  
