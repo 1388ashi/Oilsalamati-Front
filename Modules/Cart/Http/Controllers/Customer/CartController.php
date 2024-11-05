@@ -112,7 +112,7 @@ class CartController extends Controller
 
         if ($varietyInCart){
             $varietyInCart->save();
-            $user = \Auth::guard('customer-api')->user();
+            $user = auth()->guard('customer')->user();
 
             $carts = $user->carts;
             $carts_showcase = $user->get_carts_showcase($user->carts);
