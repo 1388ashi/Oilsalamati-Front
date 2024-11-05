@@ -94,7 +94,7 @@ class ProductController extends Controller
     public function deleteFromFavorites($productId)
     {
         /** @var Customer $user */
-        $user = auth()->user();
+        $user = auth()->guard('customer')->user();
         $product = Product::query()->select(['id', 'title'])
             ->findOrFail($productId)->makeHidden('images');
         $user->favorites()->detach([$product->id]);
