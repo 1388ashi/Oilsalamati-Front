@@ -43,8 +43,8 @@ class CustomerRegisterRequest extends FormRequest
         protected function passedValidation()
     {
         //Check customer
-        $registeredCustomer = Customer::where('mobile', $this->mobile)->whereNotNull('password')->count();
-        if ($registeredCustomer >= 1) {
+        $registeredCustomer = Customer::where('mobile', $this->mobile)->first();
+        if ($registeredCustomer) {
             throw ValidationException::withMessages([
                 'mobile' => ['کاربر قبلا ثبت نام شده است.']
             ]);

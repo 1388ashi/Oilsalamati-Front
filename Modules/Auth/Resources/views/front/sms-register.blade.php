@@ -20,8 +20,8 @@
         height: 100vh;
         margin: 0; 
     }  
-    .container {  
-        height: 430px;
+    .container {
+        height: 440px;
         width: 350px;
         max-width: 400px;  
         padding: 40px;  
@@ -34,6 +34,7 @@
         margin-bottom: 20px;  
     }  
     .btn-register {  
+        margin-top: 20px;
         width: 100%;  
         border-radius: 10px;  
     }  

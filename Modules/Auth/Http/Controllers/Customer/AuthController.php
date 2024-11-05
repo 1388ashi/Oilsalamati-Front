@@ -250,8 +250,9 @@ class AuthController extends Controller
 
         $customer->load(['listenCharges', 'carts']);
 
-        $token = $customer->createToken('authToken')->plainTextToken;
-
+        $request->session()->regenerate();  
+        Auth::guard('customer')->login($customer);  
+        
         Helpers::actingAs($customer);
 
         $warnings = CartFromRequest::addToCartFromRequest($request);
@@ -297,29 +298,13 @@ class AuthController extends Controller
         ]);  
     
         if ($request->password && !Hash::check($request->password, $customer->password)) {  
+
             return $this->redirectWithMessage('موبایل یا رمز عبور نادرست است', 'danger');  
         }  
     
-        $token = $customer->createToken('authToken')->plainTextToken;  
-    
-        // $customer->load(['listenCharges', 'carts']);  
-        // $notificationService = new NotificationService($customer);  
-        // $notifications = [  
-        //     'items' => $notificationService->get(),  
-        //     'total_unread' => $notificationService->getTotalUnread(),  
-        // ];  
-    
-        // $data = [  
-        //     'access_token' => $token,  
-        //     'user' => $customer,  
-        //     'token_type' => 'Bearer',  
-        //     'notifications' => $notifications,  
-        //     'cart_warnings' => CartFromRequest::addToCartFromRequest($request),  
-        //     'carts' => $customer->carts,  
-        // ];  
-    
         $request->session()->regenerate();  
         Auth::guard('customer')->login($customer);  
+
         if ($request->forget_password == 1) {
             return redirect()->route('pageRestsPassword',$request->mobile);  
         }

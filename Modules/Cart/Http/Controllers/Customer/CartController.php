@@ -56,9 +56,9 @@ class CartController extends Controller
     public function checkFreeShipping()
     {
         $user = \Auth::user();
-        $free_shipping = (new \Modules\Core\Helpers\Helpers)->getShippingAmountByOrderAmount($user->id);
+        // $free_shipping = (new \Modules\Core\Helpers\Helpers)->getShippingAmountByOrderAmount($user->id);
         $has_free_shipping = [
-            'result' => $free_shipping
+            'result' => 0
         ];
         return response()->success('ارسال رایگان', compact('has_free_shipping'));
     }
