@@ -28,7 +28,7 @@ class CartStoreRequest extends FormRequest
         if ($this->variety->quantity == null || $this->variety->quantity == 0){
             throw Helpers::makeValidationException('تنوع مورد نظر ناموجود است');
         }
-        $user = \Auth::guard('customer')->user();  
+        $user = auth()->guard('customer')->user();  
         if (!$user) {  
             throw new \Exception('User not authenticated.');
         }  
