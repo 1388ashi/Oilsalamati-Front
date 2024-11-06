@@ -58,14 +58,22 @@ class CartController extends Controller
 
     public function checkFreeShipping()
     {
-        $user = \Auth::user();
+        $user = \Auth::guard('customer')->user();
         // $free_shipping = (new \Modules\Core\Helpers\Helpers)->getShippingAmountByOrderAmount($user->id);
         $has_free_shipping = [
             'result' => 0
         ];
         return response()->success('ارسال رایگان', compact('has_free_shipping'));
     }
-
+    public function getCartId($variety_id) {  
+        $cart = Cart::where('customer_id', auth()->guard('customer')->user()?->id)->where('variety_id', (int) $variety_id)->first();  
+        
+        if ($cart) {  
+            return response()->json(['cartId' => $cart->id]);  
+        }  
+    
+        return response()->json(['cartId' => null], 404);  
+    }  
     public function add(CartStoreRequest $request, $id): JsonResponse
     {
         $request->variety = Variety::query()->with('product.activeFlash')->whereKey($request->variety_id)->firstOrFail();
@@ -136,7 +144,7 @@ class CartController extends Controller
 
     }
 
-    public function update(CartUpdateRequest $request, $id)
+    public function update(CartUpdateRequest $request, $id = null)
     {
         $icart = Cart::find($id);
         $variety = Variety::find($icart->variety->id);
@@ -167,7 +175,7 @@ class CartController extends Controller
         $cart =  $request->cart;
         $cart->getReadyForFront();
 
-        $user = \Auth::guard('customer-api')->user();
+        $user = \Auth::guard('customer')->user();
         $carts = $user->carts;
         $carts_showcase = $user->get_carts_showcase($carts);
         foreach ($carts as $cart) $cart->getReadyForFront();

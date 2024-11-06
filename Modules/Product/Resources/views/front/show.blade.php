@@ -50,8 +50,8 @@
                         <img
                             id="zoompro"
                             class="zoompro"
-                            src="{{$product->varieties[0]->images_showcase[0]->url }}"
-                            data-zoom-image="{{$product->varieties[0]->images_showcase[0]->url }}"
+                            {{-- src="{{$product->varieties[0]->images_showcase[0]->url }}"
+                            data-zoom-image="{{$product->varieties[0]->images_showcase[0]->url }}" --}}
                             alt="محصول"
                             width="625"
                             height="808"
@@ -86,13 +86,13 @@
                             @foreach ($product->varieties as $variety)  
                             <a  
                                 onclick="imageProduct(this)" 
-                                data-image="{{ $variety->images_showcase[0]->url }}"
-                                data-zoom-image="{{ $variety->images_showcase[0]->url }}"
+                                {{-- data-image="{{ $variety->images_showcase[0]->url }}"
+                                data-zoom-image="{{ $variety->images_showcase[0]->url }}" --}}
                                 class="slick-slide slick-cloned @if ($loop->first) active @endif">
                                 <img  
                                     class="blur-up lazyload"  
-                                    data-src="{{ $variety->images_showcase[0]->url }}"  
-                                    src="{{ $variety->images_showcase[0]->url }}"  
+                                    {{-- data-src="{{ $variety->images_showcase[0]->url }}"  
+                                    src="{{ $variety->images_showcase[0]->url }}"   --}}
                                     alt="محصول"  
                                     width="625"  
                                     height="808"  
@@ -106,10 +106,10 @@
                     <!-- Product Gallery -->
                     <div class="lightboximages">
                         @foreach ($product->varieties as $variety)  
-                        <a
+                        {{-- <a
                         href="{{ $variety->images_showcase[0]->url }}"
                         data-size="1000x1280"
-                        ></a>
+                        ></a> --}}
                         @endforeach  
                     </div>
                 </div>
@@ -153,7 +153,7 @@
                     @php  
                         function formatPrice($price) {  
                             if ($price >= 1_000_000) {  
-                                return number_format($price / 1_000_000) . ' میلیون تومان';  
+                                return number_format($price / 1_000_000) . ' ملیون تومان';  
                             } elseif ($price >= 1_000) {  
                                 return number_format($price / 1_000) . ' هزار تومان';  
                             } else {  
@@ -436,7 +436,7 @@
     <script>
         function formatPrice(price) {  
             if (price >= 1000000) {  
-                return Math.floor(price / 1000000) + 'میلیون';  
+                return Math.floor(price / 1000000) + 'ملیون';  
             } else if (price >= 1000) {  
                 return Math.floor(price / 1000) + ' هزار تومان';  
             } else {  
