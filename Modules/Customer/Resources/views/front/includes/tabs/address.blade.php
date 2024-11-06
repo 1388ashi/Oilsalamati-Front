@@ -1,15 +1,27 @@
 <div class="tab-pane fade h-100" id="address">
   <div class="address-card mt-0 h-100">
-    <div class="top-sec d-flex-justify-center justify-content-between mb-4">
-      <h2 class="mb-0">آدرس ها</h2>
+    <div class="top-sec d-flex-justify-center justify-content-between align-items-center mb-4">
+      <h2 class="m-0">آدرس ها</h2>
       <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addNewAddressModal">
         <i class="icon anm anm-plus-r ms-1"></i> آدرس جدید
       </button>
     </div>
 
+    <hr>
+
     <div class="address-book-section">
+      @if ($customer->addresses->isEmpty())
+        <div class="row p-3 text-center rounded" id="EmptyAddressSection">
+          <div class="col-12">
+            <p class="text-danger fs-5">
+              <i class="icon anm anm-location ms-1"></i>
+              <span>آدرسی برای شما ثبت نشده</span>  
+            </p>
+          </div>
+        </div>
+      @endif
       <div class="row g-4 row-cols-lg-3 row-cols-md-2 row-cols-sm-2 row-cols-1"  id="AddressSection">
-        @forelse ($customer->addresses as $address)
+        @foreach ($customer->addresses as $address)
           <div class="address-select-box active" id="AddressBox-{{ $address->id }}">
             <div class="address-box bg-block">
               <div class="top d-flex-justify-center justify-content-between mb-3">
@@ -32,13 +44,7 @@
               </div>
             </div>
           </div>
-        @empty
-        <div class="bg-danger p-3 text-center rounded">
-          <div class="col-12">
-            <p class="text-light fs-5">آدرسی برای شما ثبت نشده</p>
-          </div>
-        </div>
-        @endforelse
+        @endforeach
       </div>
     </div>
   </div>

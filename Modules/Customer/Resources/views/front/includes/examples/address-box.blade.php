@@ -8,7 +8,7 @@
         <address class="m-0 address-detail"></address>
       </div>
       <div class="number">
-        <p>تلفن همراه: <a class="address-mobile" dir="ltr"></a></p>
+        <p>تلفن همراه: <a class="address-mobile text-muted" dir="ltr"></a></p>
       </div>
       <div>
         <p>کد پستی: <span class="address-postal-code text-muted"></span></p>

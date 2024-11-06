@@ -28,8 +28,12 @@
 
   function updateInfoBox(customer) {
     const infoBox = $('#info');
-    infoBox.find('.info-full-name').text(customer.first_name +' '+ customer.last_name);
+    const fullName = customer.first_name +' '+ customer.last_name;
+    infoBox.find('.info-full-name').text(fullName);
     infoBox.find('.info-mobile').text(customer.mobile);
     infoBox.find('.info-card-number').text(customer.card_number);
+    $('.profile-detail .full-name').text(fullName);
   }
+
+
 </script>
