@@ -601,7 +601,7 @@
                     return;  
                 }   
 
-                let isFavorite = {{ auth()->guard('customer')->user()->favorites()->where('product_id', $idProduct)->exists() ? 'true' : 'false' }};   
+                let isFavorite = {{ auth()->guard('customer')->user()?->favorites()->where('product_id', $idProduct)->exists() ? 'true' : 'false' }};   
 
                 if (isFavorite) {  
                     $.ajax({  
