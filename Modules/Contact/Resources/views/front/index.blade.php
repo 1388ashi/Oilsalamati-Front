@@ -33,7 +33,7 @@
                     @csrf
                     <input type="hidden" name="_wreixcf14135vq2av54" value="تهران">
                     <input type="hidden" name="cn8dsada032" value="ایران">
-                    <input type="hidden" name="customer_id" value="{{auth()->user()?->id}}">
+                    <input type="hidden" name="customer_id" value="{{auth()->guard('customer')->user()?->id}}">
                     <div class="form-row">
                         <div class="col-12 col-sm-12 col-md-6 col-lg-6">
                             <div class="form-group">

@@ -60,7 +60,7 @@
                 <div class="row my-3 d-flex" style="flex-direction: column; align-items: center;">  
                     <div class="logo d-flex-justify-center" style="align-items: center;">  
                         <img  
-                            src="{{asset('front/assets/images/logo.png')}}"  
+                            src="{{asset('front/assets/images/logo/logo.9208f443.svg')}}" 
                             alt="قالب چند منظوره هما"  
                             title="قالب چند منظوره هما"  
                             width="149"  

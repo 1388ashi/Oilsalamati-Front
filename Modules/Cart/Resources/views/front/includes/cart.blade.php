@@ -29,14 +29,15 @@
                 @forelse ($carts as $cart)
                   <tr id="Cart-{{ $cart->id }}">
                     <td class="text-center cart-delete">
-                      <button
-                        class="btn btn-secondary cart-remove remove-icon position-static"
-                        data-bs-toggle="tooltip" 
-                        data-bs-placement="top" 
-                        onclick="confirmDelete('delete-cart-{{ $cart->id }}')" 
-                        title="حذف از سبد">
-                        <i class="icon anm anm-times-r"></i>
-                      </button>
+                      <button  
+                        class="btn btn-secondary cart-remove remove-icon position-static"  
+                        data-bs-toggle="tooltip"   
+                        data-bs-placement="top"   
+                        data-variety="{{$cart->variety_id}}"   
+                        onclick="confirmDelete('delete-cart-{{ $cart->id }}')"   
+                        title="حذف از سبد">  
+                        <i class="icon anm anm-times-r"></i>  
+                      </button> 
                       <form
                         action="{{ route('cart.remove', $cart) }}"
                         id="delete-cart-{{ $cart->id }}"

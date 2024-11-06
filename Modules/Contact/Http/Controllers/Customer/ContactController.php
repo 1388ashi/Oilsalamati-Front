@@ -12,11 +12,10 @@ class ContactController extends Controller
 {
     public function store(ContactRequest $request)
     {
-        dd('h');
         $contact = Contact::create([
             'subject' =>$request->subject,
             'body' =>$request->body,
-            'customer_id' => auth()->user()->id,
+            'customer_id' => auth()->guard('customer')->user()->id,
         ]);
 
         return response()->success('پیام شما با موفقیت ارسال شد', ['contact' => $contact]);

@@ -1,8 +1,22 @@
 <script>
-    $(document).ready(function() {
-        updateCartDisplay();  
+$(document).ready(function() {  
+    $('.cart-remove').on('click', function() {  
+        const variety_id = $(this).data('variety');  
 
+        let productData = getCookie('productData');  
+        if (productData) {  
+            productData = JSON.parse(decodeURIComponent(productData));  
+
+            productData = productData.filter(product => {  
+                return product.variety_id !== String(variety_id);
+            });  
+            document.cookie = `productData=${encodeURIComponent(JSON.stringify(productData))}; path=/;`;  
+
+            updateCartDisplay();  
+        }  
     });  
+    updateCartDisplay();  
+});
 
     function updateCartDisplay() {  
         let productData = getCookie('productData');  
@@ -17,7 +31,7 @@
 
             productData.forEach(function(product) {  
                 let varietyPrice = parseFloat(product.variety_price) * 1000;
-                let quantity = parseInt(product.variety_quantity); // تعداد  
+                let quantity = parseInt(product.variety_quantity);
                 let productTotalPrice = Math.floor(varietyPrice * quantity); 
                 totalPrice += productTotalPrice;  
 
@@ -143,7 +157,7 @@
         let result = '';
 
         if (millionPart > 0) {
-            result += millionPart + ' میلیون تومان';
+            result += millionPart + 'میلیون';
         }
         if (thousandPart > 0) {
             if (result) result += ' و ';

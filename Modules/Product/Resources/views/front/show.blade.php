@@ -50,8 +50,7 @@
                         <img
                             id="zoompro"
                             class="zoompro"
-                            src="{{$product->varieties[0]->images_showcase[0]->url }}"
-                            data-zoom-image="{{$product->varieties[0]->images_showcase[0]->url }}"
+                            src="{{$product->vcvarieties[0]->images_showcase[0]->url }}"
                             alt="محصول"
                             width="625"
                             height="808"
@@ -294,27 +293,26 @@
                             type="button"
                             name="add"
                             class="btn btn-secondary product-form-sold-out"
-                            disabled="disabled"
-                        >
+                            disabled="disabled">
                             <span>ناموجود</span>
                         </button>
                         @endif
                         </div>
                     </div>
                     <p class="infolinks d-flex-center justify-content-between">
-                        @if (auth()->guard('customer')->user())
-                            @if (auth()->guard('customer')->user()->favorites()->where('product_id', $product->id)->exists())
-                            <a class="text-link wishlist" style="cursor: pointer" id="wishlistBtn">  
-                                <i id="favicon" class="icon anm anm-heart ms-2"></i>  
-                                <span>افزودن به فهرست علاقه مندی ها</span>  
-                            </a>  
-                            @else
-                            <a class="text-link wishlist" style="cursor: pointer" id="wishlistBtn">  
-                                <i id="favicon" class="icon anm anm-heart-l ms-2"></i>  
-                                <span>افزودن به فهرست علاقه مندی ها</span>  
-                            </a>  
-                            @endif
-                        @endif
+                        @if (auth()->guard('customer')->user())  
+                            @if (auth()->guard('customer')->user()->favorites()->where('product_id', $product->id)->exists())  
+                                <a class="text-link wishlist" style="cursor: pointer" id="wishlistBtn">  
+                                    <i id="iconFav" class="icon anm anm-heart ms-2"></i>  
+                                    <span>حذف از فهرست علاقه مندی ها</span>  
+                                </a>  
+                            @else  
+                                <a class="text-link wishlist" style="cursor: pointer" id="wishlistBtn">  
+                                    <i id="iconFav" class="icon anm anm-heart-l ms-2"></i>  
+                                    <span>افزودن به فهرست علاقه مندی ها</span>  
+                                </a>  
+                            @endif  
+                        @endif  
                     </p>
                 </form>
                     <div class="modal fade" id="loginModalProduct" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">  
@@ -436,7 +434,7 @@
     <script>
         function formatPrice(price) {  
             if (price >= 1000000) {  
-                return Math.floor(price / 1000000) + ' میلیون تومان';  
+                return Math.floor(price / 1000000) + 'میلیون';  
             } else if (price >= 1000) {  
                 return Math.floor(price / 1000) + ' هزار تومان';  
             } else {  
@@ -591,70 +589,66 @@
             });  
             $('#wishlistBtn').click(function(event) {  
                 event.preventDefault();  
-                var formData = $('#postForm').serialize();   
                 let isLoggedIn = @json(auth()->guard('customer')->user());  
-                let $icon = $('favicon').find('i');  
-                // if ($icon.hasClass('anm-heart-l')) {  
-                    if (!isLoggedIn) {  
-                        $('#loginModalProduct').modal('show');  
-                    } else {  
-                        $.ajax({  
-                            url: `{{ route('products.addToFavorites',$idProduct) }}`,  
-                            type: 'POST',  
-                            headers: {  
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}',  
-                            },  
-                            success: function(response) {
-                                if ($icon.hasClass('anm-heart-l')) {  
-                                    console.log(1);
-                                    $icon.removeClass('anm-heart-l').addClass('anm-heart');  
-                                } else {  
-                                    console.log(2);
-                                    $icon.removeClass('anm-heart').addClass('anm-heart-l');  
-                                }    
-                                Swal.fire({  
-                                    icon: "success",  
-                                    text: response.message  
-                                });  
-                            },  
-                            error: function(error) {  
-                                console.log(error);  
-                                Swal.fire({  
-                                    icon: "error",  
-                                    text: error.message || "An error occurred."  
-                                });  
-                            }  
-                        });  
-                    }  
-                // }else{
-                //     $.ajax({  
-                //         url: `{{ route('products.deleteFromFavorites', $idProduct) }}`,  
-                //         type: 'DELETE',  
-                //         headers: {  
-                //             'X-CSRF-TOKEN': '{{ csrf_token() }}',  
-                //         },  
-                //         success: function(response) {
-                //             let $icon = $(this).find('i');  
-                //             if ($icon.hasClass('anm-heart')) {  
-                //                 $icon.removeClass('anm-heart').addClass('anm-heart-l');  
-                //             } else {  
-                //                 $icon.removeClass('anm-heart-l').addClass('anm-heart');  
-                //             }    
-                //             Swal.fire({  
-                //                 icon: "success",  
-                //                 text: response.message  
-                //             });  
-                //         },  
-                //         error: function(error) {  
-                //             console.log(error);  
-                //             Swal.fire({  
-                //                 icon: "error",  
-                //                 text: error.message || "An error occurred."  
-                //             });  
-                //         }  
-                //     }); 
-                // }
-            }); 
+                let $icon = $('#iconFav');  
+                let $text = $('#wishlistBtn span');
+                let productId = {{ $idProduct }};  
+
+                if (!isLoggedIn) {  
+                    $('#loginModalProduct').modal('show');  
+                    return;  
+                }   
+
+                let isFavorite = {{ auth()->guard('customer')->user()->favorites()->where('product_id', $idProduct)->exists() ? 'true' : 'false' }};   
+
+                if (isFavorite) {  
+                    $.ajax({  
+                        url: `{{ route('products.deleteFromFavorites', $idProduct) }}`,  
+                        type: 'DELETE',  
+                        headers: {  
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',  
+                        },  
+                        success: function(response) {  
+                            $icon.removeClass('anm-heart').addClass('anm-heart-l'); 
+                            $text.text('افزودن به فهرست علاقه مندی‌ها');
+                            Swal.fire({  
+                                icon: "success",  
+                                text: response.message  
+                            });  
+                        },  
+                        error: function(error) {  
+                            console.log(error);  
+                            Swal.fire({  
+                                icon: "error",  
+                                text: error.message || "An error occurred."  
+                            });  
+                        }  
+                    });  
+                } else {  
+                    $.ajax({  
+                        url: `{{ route('products.addToFavorites', $idProduct) }}`,  
+                        type: 'POST',  
+                        headers: {  
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',  
+                        },  
+                        success: function(response) {  
+                            $icon.removeClass('anm-heart-l').addClass('anm-heart'); // تغییر به قلب پر  
+                            $text.text('حذف از فهرست علاقه مندی‌ها'); // تغییر متن  
+                            Swal.fire({  
+                                icon: "success",  
+                                text: response.message  
+                            });  
+                        },  
+                        error: function(error) {  
+                            console.log(error);  
+                            Swal.fire({  
+                                icon: "error",  
+                                text: error.message || "An error occurred."  
+                            });  
+                        }  
+                    });  
+                }  
+            });
             $('#closeButtonProduct1').on('click', function() {  
                 $('#loginModalProduct').removeClass('show'); 
             });  
