@@ -54,7 +54,7 @@
       return;
     }
 
-    amount = parseInt(amount.replace(',', ''));
+    amount = parseInt(amount.replace(/,/g, ''));
     
     $.ajax({  
       url: url,  
@@ -67,11 +67,21 @@
       },  
       success: (response) => {  
         popup('عملیات موفق', 'success', response.message);
+        updateWalletBalance(amount);
       },  
       error: (error) => {   
         showErrorMessages(error);
       }  
     });
+  }
+  
+  function updateWalletBalance(amount) {
+    const oldBalance = $('.wallet-balance').data('balance');
+    const newBalance = oldBalance - amount;
+
+    $('.wallet-balance')
+      .text(newBalance.toLocaleString())
+      .attr('data-balance', newBalance);
   }
 
 </script>

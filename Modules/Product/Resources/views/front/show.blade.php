@@ -51,6 +51,7 @@
                             id="zoompro"
                             class="zoompro"
                             src="{{$product->vcvarieties[0]->images_showcase[0]->url }}"
+                            data-zoom-image="{{$product->varieties[0]->images_showcase[0]->url }}"
                             alt="محصول"
                             width="625"
                             height="808"
@@ -160,15 +161,16 @@
                             }  
                         }  
                     @endphp  
-                    @if ($product->discount)
-                        <div class="product-price d-flex-center my-3">
-                            <span class="price old-price" id="price">{{ formatPrice($product->unit_price) }}</span><span class="price">99 هزار</span>
-                        </div>
-                        @else
-                        <div class="product-price d-flex-center my-3">
+                        <div class="product-price d-flex-center">
+                    @if($product->discount_type == 'percentage')
+                        <span class="price old-price">{{ $product->discount }}%</span>
+                    @else
+                        @if ($product->discount)
+                            <span class="price old-price">{{ formatPrice($product->discount) }}</span>
+                        @endif
+                    @endif
                             <span class="price" id="price">{{ formatPrice($product->unit_price) }}</span>
                         </div>
-                    @endif
                 </div>
                 <form method="post" action="" class="product-form product-form-border hidedropdown">
                 @csrf

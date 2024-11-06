@@ -15,19 +15,20 @@
         <thead>
           <tr class="table-head text-nowrap">
             <th>ردیف</th>
-            <th>شناسه</th>
+            <th>شناسه تراکنش</th>
             <th>مبلغ (تومان)</th>
             <th>نوع</th>
             <th>وضعیت</th>
             <th>شناسه پرداخت</th>
             <th>تاریخ</th>
+            <th>ساعت</th>
           </tr>
         </thead>
         <tbody>
 
-          @forelse ($customer->wallet->transactions as $transaction)
+          @forelse ($customer->wallet->transactions->sortByDesc('id') as $transaction)
           <tr>
-            <td class="font-weight-bold">{{ $loop->iteration }}</td>
+            <td class="fw-bold">{{ $loop->iteration }}</td>
             <td>{{ $transaction->id }}</td>
             <td>{{ number_format(abs($transaction->amount)) }}</td>
             <td>
@@ -46,6 +47,7 @@
             </td>
             <td>{{ $transaction->payable_id }}</td>
             <td>{{verta($transaction->created_at)->format('Y/m/d')}}</td>
+            <td>{{verta($transaction->created_at)->formatTime()}}</td>
           </tr>
           @empty
           <tr>

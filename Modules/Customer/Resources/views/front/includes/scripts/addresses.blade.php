@@ -46,8 +46,8 @@
         popup('موفق', 'success', response.message);
         updateAddressBox(method, response.data.address);
       },  
-      error: (error) => {  
-        popup('خطا', 'error', error.message);
+      error: (error) => { 
+        showErrorMessages(error);
       }  
     });
 

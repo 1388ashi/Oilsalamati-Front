@@ -56,11 +56,11 @@
           <ul id="siteNav" class="site-nav medium center">
             <li><a href="/">صفحه اصلی </a></li>
             <li class="lvl1 parent dropdown">
-              <a>دسته بندی محصولات <i class="icon anm anm-angle-down-l"></i></a>
+              <a href="{{ route('products.index') }}">دسته بندی محصولات <i class="icon anm anm-angle-down-l"></i></a>
               <ul class="dropdown">
                 @foreach ($categories as $category)
                   <li>
-                    <a href="{{ route('front.products.index', ['category_id' => $category['id']]) }}" class="site-nav">
+                    <a href="{{ route('products.index', ['category_id' => $category['id']]) }}" class="site-nav">
                       {{ $category['title'] }}
                       @if ($category['children'])
                         <i class="icon anm anm-angle-left-l"></i>
@@ -70,7 +70,7 @@
                       <ul class="dropdown">
                         @foreach ($category['children'] as $category)
                           <li>
-                            <a href="{{ route('front.products.index', ['category_id' => $category['id']]) }}" class="site-nav">{{ $category['title'] }}</a>
+                            <a href="{{ route('products.index', ['category_id' => $category['id']]) }}" class="site-nav">{{ $category['title'] }}</a>
                           </li>
                         @endforeach
                       </ul>
@@ -79,9 +79,9 @@
                 @endforeach
               </ul>
             </li>
-            <li><a href="{{ route('posts.index') }}">وبلاگ </a></li>
-            <li><a  href="{{route('about-us')}}">درباره ما </a></li>
-            <li><a href="{{route('contacts.index')}}">تماس ما </a></li>
+            @foreach ($menu['header'] as $menu)
+              <li><a href="{{ $menu['link'] }}">{{ $menu['title'] }}</a></li>
+            @endforeach
           </ul>
         </nav>
       </div>

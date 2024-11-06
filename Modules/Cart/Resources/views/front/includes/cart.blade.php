@@ -51,9 +51,10 @@
                       <a href="{{ route('products.show', $cart->variety->product_id) }}" class="thumb">
 
                         @php
-                          $imageUrl = $cart->variety->product->images_showcase['main_image']->url
+                          $imageUrl = $cart->variety->product->images_showcase['main_image']->url;
                         @endphp
 
+                        <img
                         <img
                           class="rounded-0 blur-up lazyload"
                           data-src="{{ asset($imageUrl) }}"
@@ -62,6 +63,7 @@
                           title="محصول"
                           width="120"
                           height="170"
+                        />
                         />
 
                       </a>
