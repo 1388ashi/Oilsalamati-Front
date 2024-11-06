@@ -55,7 +55,6 @@
                         @endphp
 
                         <img
-                        <img
                           class="rounded-0 blur-up lazyload"
                           data-src="{{ asset($imageUrl) }}"
                           src="{{ asset($imageUrl) }}"
@@ -63,7 +62,6 @@
                           title="محصول"
                           width="120"
                           height="170"
-                        />
                         />
 
                       </a>
