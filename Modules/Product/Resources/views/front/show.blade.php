@@ -50,8 +50,8 @@
                         <img
                             id="zoompro"
                             class="zoompro"
-                            {{-- src="{{$product->varieties[0]->images_showcase[0]->url }}"
-                            data-zoom-image="{{$product->varieties[0]->images_showcase[0]->url }}" --}}
+                            src="{{$product->varieties[0]->images_showcase[0]->url }}"
+                            data-zoom-image="{{$product->varieties[0]->images_showcase[0]->url }}"
                             alt="محصول"
                             width="625"
                             height="808"
@@ -84,20 +84,20 @@
                     <div class="product-thumb product-horizontal-thumb mt-3">
                         <div id="gallery" class="product-thumb-horizontal" dir="ltr">
                             @foreach ($product->varieties as $variety)  
-                            <button  
-                                onclick="imageProduct(this)"  {{-- Use 'this' to refer to the button directly --}}  
-                                data-image="{{ asset('front/assets/images/products/' . $variety->image) }}"  {{-- Dynamic image path --}}  
-                                data-zoom-image="{{ asset('front/assets/images/products/' . $variety->image) }}"  
-                                class="slick-slide slick-cloned @if ($loop->first) active @endif"> {{-- Add active class only to the first one --}}  
+                            <a  
+                                onclick="imageProduct(this)" 
+                                data-image="{{ $variety->images_showcase[0]->url }}"
+                                data-zoom-image="{{ $variety->images_showcase[0]->url }}"
+                                class="slick-slide slick-cloned @if ($loop->first) active @endif">
                                 <img  
                                     class="blur-up lazyload"  
-                                    data-src="{{ asset('front/assets/images/products/' . $variety->image) }}"  
-                                    src="{{ asset('front/assets/images/products/' . $variety->image) }}"  
+                                    data-src="{{ $variety->images_showcase[0]->url }}"  
+                                    src="{{ $variety->images_showcase[0]->url }}"  
                                     alt="محصول"  
                                     width="625"  
                                     height="808"  
                                 />  
-                            </button>  
+                            </a>  
                         @endforeach  
                         </div>
                     </div>
@@ -105,30 +105,12 @@
 
                     <!-- Product Gallery -->
                     <div class="lightboximages">
+                        @foreach ($product->varieties as $variety)  
                         <a
-                        href="{{asset('front/assets/images/products/product1.jpg')}}"
+                        href="{{ $variety->images_showcase[0]->url }}"
                         data-size="1000x1280"
                         ></a>
-                        <a
-                        href="{{asset('front/assets/images/products/product1-1.jpg')}}"
-                        data-size="1000x1280"
-                        ></a>
-                        <a
-                        href="{{asset('front/assets/images/products/product1-2.jpg')}}"
-                        data-size="1000x1280"
-                        ></a>
-                        <a
-                        href="{{asset('front/assets/images/products/product1-3.jpg')}}"
-                        data-size="1000x1280"
-                        ></a>
-                        <a
-                        href="{{asset('front/assets/images/products/product1-4.jpg')}}"
-                        data-size="1000x1280"
-                        ></a>
-                        <a
-                        href="{{asset('front/assets/images/products/product1-5.jpg')}}"
-                        data-size="1000x1280"
-                        ></a>
+                        @endforeach  
                     </div>
                 </div>
             </div>
@@ -471,9 +453,8 @@
                 item.addEventListener('click', function() {  
                     const itemValue = this.getAttribute('data-item-value');  
                     const itemPrice = this.getAttribute('data-item-price');  
-                    // const itemImage = this.getAttribute('data-image');  
+
                     document.getElementById('price').innerText = formatPrice(itemPrice);  
-                    // document.getElementById("imageValue").value = itemImage;
                     document.getElementById("varietyValue").value = itemValue;
                     document.getElementById("varietyPrice").value = itemPrice;
                 });  
@@ -506,61 +487,68 @@
             $('.product-form-cart-submit').on('click', function(event) {  
                 event.preventDefault();  
                 let isLoggedIn = @json(auth()->guard('customer')->user());  
-                
+                let variety_id = $('#variety_id').val();  
                 if (!isLoggedIn) {  
                     $('#loginModalProduct').modal('show');  
                 } else {  
-                    let variety_id = $('#variety_id').val();  
-                    let varietyQuantity = $('#quantity').val();  
-                    let titleProduct = $('#title').text();  
-                    let productImage = $('#imageValue').val();  
-                    let varietyValue = $('#varietyValue').val();  
-                    let varietyPrice = $('#price').text();  
-                    $.ajax({  
-                        url: `{{ route('cart.add') }}/${variety_id}`,  
-                        type: 'POST',  
-                        headers: {  
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },  
-                        data: {  
-                            variety_id: variety_id,  
-                            quantity: varietyQuantity  
-                        },  
-                        success: function(response) {  
-                            let productData = getCookie('productData');  
-                            productData = productData ? JSON.parse(decodeURIComponent(productData)) : [];  
+                    if (variety_id) {
+                        let varietyQuantity = $('#quantity').val();  
+                        let titleProduct = $('#title').text();  
+                        let productImage = $('#imageValue').val();  
+                        console.log(productImage);
+                        let varietyValue = $('#varietyValue').val();  
+                        let varietyPrice = $('#price').text();  
+                        $.ajax({  
+                            url: `{{ route('cart.add') }}/${variety_id}`,  
+                            type: 'POST',  
+                            headers: {  
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },  
+                            data: {  
+                                variety_id: variety_id,  
+                                quantity: varietyQuantity  
+                            },  
+                            success: function(response) {  
+                                let productData = getCookie('productData');  
+                                productData = productData ? JSON.parse(decodeURIComponent(productData)) : [];  
 
-                            // اضافه کردن یا به‌روزرسانی محصول در productData  
-                            const existingProduct = productData.find(product => product.variety_id === variety_id);  
-                            if (existingProduct) {  
-                                existingProduct.variety_quantity = parseInt(existingProduct.variety_quantity) + parseInt(varietyQuantity);  
-                            } else {  
-                                productData.push({  
-                                    variety_id: variety_id,  
-                                    variety_quantity: varietyQuantity,  
-                                    title_product: titleProduct,  
-                                    product_image: productImage,  
-                                    variety_value: varietyValue,  
-                                    variety_price: varietyPrice,  
+                                // اضافه کردن یا به‌روزرسانی محصول در productData  
+                                const existingProduct = productData.find(product => product.variety_id === variety_id);  
+                                if (existingProduct) {  
+                                    existingProduct.variety_quantity = parseInt(existingProduct.variety_quantity) + parseInt(varietyQuantity);  
+                                } else {  
+                                    productData.push({  
+                                        variety_id: variety_id,  
+                                        variety_quantity: varietyQuantity,  
+                                        title_product: titleProduct,  
+                                        product_image: productImage,  
+                                        variety_value: varietyValue,  
+                                        variety_price: varietyPrice,  
+                                    });  
+                                }  
+
+                                document.cookie = `productData=${encodeURIComponent(JSON.stringify(productData))}; path=/;`;  
+                                
+                                updateCartDisplay();  
+
+                                Swal.fire({  
+                                    icon: "success",  
+                                    text: response.message  
+                                });  
+                            },  
+                            error: function(error) {  
+                                Swal.fire({  
+                                    icon: "error",  
+                                    text: error.responseJSON.message  
                                 });  
                             }  
-
-                            document.cookie = `productData=${encodeURIComponent(JSON.stringify(productData))}; path=/;`;  
-                            
-                            updateCartDisplay();  
-
-                            Swal.fire({  
-                                icon: "success",  
-                                text: response.message  
-                            });  
-                        },  
-                        error: function(error) {  
-                            Swal.fire({  
-                                icon: "error",  
-                                text: error.responseJSON.message  
-                            });  
-                        }  
-                    });  
+                        });  
+                    }else{
+                        Swal.fire({  
+                            icon: "error",  
+                            text: "تنوع مورد نظر را انتخاب کنید"  
+                        });  
+                    }
                 }  
             });  
 
