@@ -617,9 +617,9 @@
                                 icon: "success",  
                                 text: response.message  
                             });  
+                            location.reload();
                         },  
                         error: function(error) {  
-                            console.log(error);  
                             Swal.fire({  
                                 icon: "error",  
                                 text: error.message || "An error occurred."  
@@ -634,15 +634,15 @@
                             'X-CSRF-TOKEN': '{{ csrf_token() }}',  
                         },  
                         success: function(response) {  
-                            $icon.removeClass('anm-heart-l').addClass('anm-heart'); // تغییر به قلب پر  
-                            $text.text('حذف از فهرست علاقه مندی‌ها'); // تغییر متن  
+                            $icon.removeClass('anm-heart-l').addClass('anm-heart');
+                            $text.text('حذف از فهرست علاقه مندی‌ها');
                             Swal.fire({  
                                 icon: "success",  
                                 text: response.message  
                             });  
+                            location.reload();
                         },  
                         error: function(error) {  
-                            console.log(error);  
                             Swal.fire({  
                                 icon: "error",  
                                 text: error.message || "An error occurred."  
