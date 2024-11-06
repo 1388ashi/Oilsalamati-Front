@@ -4,7 +4,14 @@
     const form = $(event.target).closest('.modal').find('form');
     const url = form.attr('action');
     const method = form.attr('method');
-    const amount = form.find('.amount').val();
+    let amount = form.find('.amount').val();
+
+    if (amount == null) {
+      popup('اخطار', 'warning', 'مبلغ واریز را وارد کنید');
+      return;
+    }
+
+    amount = parseInt(amount.replace(/,/g, ''));
 
     $.ajax({
       url: url,
@@ -83,5 +90,13 @@
       .text(newBalance.toLocaleString())
       .attr('data-balance', newBalance);
   }
+
+  function selectGatway(event) {  
+    const gatwayImages = $('#GatwaySection').find('.gatway-img');  
+    gatwayImages.each(function() {  
+      $(this).removeClass('selected-gatway');  
+    });  
+    $(event.target).addClass('selected-gatway');  
+}
 
 </script>

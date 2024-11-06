@@ -34,7 +34,7 @@
 
           @forelse ($customer->orders->sortByDesc('id') as $order)
             <tr>
-              <td>{{ $loop->iteration }}</td>
+              <td class="fw-bold">{{ $loop->iteration }}</td>
               <td>{{ $order->id }}</td>
               <td>{{ $order->items->count() }}</td>
               <td>{{ number_format($order->total_invoices_amount) }}</td>
@@ -50,7 +50,7 @@
             </tr>
             @empty
             <tr>
-              <td colspan="7" class="text-center">آیتمی یافت نشد</td>
+              <td colspan="7" class="text-center text-danger">سفارشی ثبت نشده است !</td>
             </tr>
             @endforelse
         </tbody>

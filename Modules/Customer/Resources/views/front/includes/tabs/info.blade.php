@@ -31,11 +31,11 @@
     </div>
 
     <div class="account-box">
-      <div class="row row-cols-lg-2 row-cols-md-2 row-cols-sm-1 row-cols-1">
+      <div class="row">
         <div class="box-info mb-4">
           <div class="box-title d-flex-center">
             <h4>اطلاعات حساب</h4>
-            <a class="btn-link me-auto" data-bs-toggle="modal" data-bs-target="#EditProfileModal">ویرایش</a>
+            <a class="btn-link me-auto" data-bs-toggle="modal" data-bs-target="#EditProfileModal" style="cursor: pointer;">ویرایش</a>
             @include('customer::front.includes.info.edit-profile-modal')
           </div>
           <div class="box-content mt-3">
@@ -48,13 +48,19 @@
               ];
             @endphp
 
-            <p>نام و نام خانوادگی: <b class="info-full-name">{{ $customer->full_name ?? '-' }}</b></p>
-            <p>موبایل: <b class="info-mobile">{{ $customer->mobile }}</b></p>
-            <p>ایمیل: <b>{{ $customer->email ?? '-' }}</b></p>
-            <p>شماره کارت: <b class="info-card-number">{{ $customer->card_number ?? '-' }}</b></p>
-            <p>تاریخ تولد: <b>{{ $customer->birth_date ? verta($customer->birth_date)->formatDate() : '-' }}</b></p>
-            <p>کد ملی: <b>{{ $customer->national_code ?? '-' }}</b></p>
-            <p>جنسیت: <b>{{ $gender[$customer->gender] }}</b></p>
+            <div class="row">
+              <div class="col-xl-6 col-12">
+                <p>نام و نام خانوادگی: <b class="info-full-name">{{ $customer->full_name ?? '-' }}</b></p>
+                <p>موبایل: <b class="info-mobile">{{ $customer->mobile }}</b></p>
+                <p>ایمیل: <b>{{ $customer->email ?? '-' }}</b></p>
+                <p>شماره کارت: <b class="info-card-number">{{ $customer->card_number ?? '-' }}</b></p>
+              </div>
+              <div class="col-xl-6 col-12">
+                <p>تاریخ تولد: <b>{{ $customer->birth_date ? verta($customer->birth_date)->formatDate() : '-' }}</b></p>
+                <p>کد ملی: <b>{{ $customer->national_code ?? '-' }}</b></p>
+                <p>جنسیت: <b>{{ $gender[$customer->gender] }}</b></p>
+              </div>
+            </div>
 
           </div>
         </div>  

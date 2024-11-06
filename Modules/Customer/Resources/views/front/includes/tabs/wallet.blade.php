@@ -2,11 +2,9 @@
   <div class="banks-card mt-0 h-100">
     <div class="top-sec d-flex-justify-center justify-content-between mb-4">
       <h2 class="mb-0">تراکنش های کیف پول</h2>
-      <div>
+      <div class="wallet-transaction-btns">
         <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#WithdrawWalletModal">برداشت از کیف پول</button>
-        @include('customer::front.includes.wallet.withdraw-modal')
         <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#DepositWalletModal">افزایش موجودی</button>
-        @include('customer::front.includes.wallet.deposit-modal')
       </div>
     </div>
 
@@ -33,9 +31,9 @@
             <td>{{ number_format(abs($transaction->amount)) }}</td>
             <td>
               @if($transaction->type == 'deposit')
-                <span title="نوع" class="badge rounded-pill bg-success custom-badge">افزایش کیف پول</span>
+                <span title="نوع" class="badge rounded-pill bg-primary custom-badge">افزایش کیف پول</span>
               @else
-                <span title="نوع" class="badge rounded-pill bg-danger custom-badge">برداشت از کیف پول</span>
+                <span title="نوع" class="badge rounded-pill bg-warning custom-badge">برداشت از کیف پول</span>
               @endif
             </td>
             <td>
@@ -59,3 +57,6 @@
     </div>
   </div>
 </div>
+
+@include('customer::front.includes.wallet.withdraw-modal')
+@include('customer::front.includes.wallet.deposit-modal')

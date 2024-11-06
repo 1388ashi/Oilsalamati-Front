@@ -58,11 +58,12 @@
     const addressBox = method === 'PUT' ? $('#AddressBox-' + address.id) : $('#ExampleAddressBox').clone();
 
     addressBox.find('.address-detail').text(address.address);
-    addressBox.find('.address-receiver').text(address.first_name +' '+ address.last_name +' - '+ address.mobile);
+    addressBox.find('.address-receiver').text(address.first_name +' '+ address.last_name);
     addressBox.find('.address-mobile').text(address.mobile);
     addressBox.find('.address-postal-code').text(address.postal_code);
 
     if (method === 'POST') {
+      $('#EmptyAddressSection').remove();
       addressBox.attr('id', 'AddressBox-' + address.id);
       addressBox.removeClass('d-none');
       addressBox.find('.edit-btn').attr('data-bs-target', '#EditAddressModal-' + address.id);
