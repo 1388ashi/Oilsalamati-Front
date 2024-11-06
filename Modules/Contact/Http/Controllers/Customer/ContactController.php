@@ -12,8 +12,7 @@ class ContactController extends Controller
 {
     public function store(ContactRequest $request)
     {
-        dd('h');
-        $contact = Contact::create([
+        $contact = Contact::query()->create([
             'subject' =>$request->subject,
             'body' =>$request->body,
             'customer_id' => auth()->user()->id,

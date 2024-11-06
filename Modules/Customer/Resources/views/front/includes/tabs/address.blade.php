@@ -8,9 +8,8 @@
     </div>
 
     <div class="address-book-section">
-      <div class="row g-4">
+      <div class="row g-4 row-cols-lg-3 row-cols-md-2 row-cols-sm-2 row-cols-1"  id="AddressSection">
         @forelse ($customer->addresses as $address)
-        <div class="row-cols-lg-3 row-cols-md-2 row-cols-sm-2 row-cols-1"  id="AddressSection">
           <div class="address-select-box active" id="AddressBox-{{ $address->id }}">
             <div class="address-box bg-block">
               <div class="top d-flex-justify-center justify-content-between mb-3">
@@ -28,12 +27,11 @@
                 </div>
               </div>
               <div class="bottom d-flex-justify-center justify-content-between">
-                <button type="button" class="bottom-btn btn btn-gray btn-sm edit-btn" data-bs-toggle="modal" data-bs-target="#EditAddressModal-{{ $address->id }}">ویرایش</button>
-                <button type="button" class="bottom-btn btn btn-gray btn-sm delete-btn" data-address-id="{{ $address->id }}" onclick="deleteAddress(event)">حذف</button>
+                <button type="button" class="bottom-btn btn btn-primary btn-sm edit-btn" data-bs-toggle="modal" data-bs-target="#EditAddressModal-{{ $address->id }}">ویرایش</button>
+                <button type="button" class="bottom-btn btn btn-secondary btn-sm delete-btn" data-address-id="{{ $address->id }}" onclick="deleteAddress(event)">حذف</button>
               </div>
             </div>
           </div>
-        </div>
         @empty
         <div class="bg-danger p-3 text-center rounded">
           <div class="col-12">

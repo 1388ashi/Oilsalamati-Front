@@ -36,7 +36,7 @@
           </div>
           <div class="profile-detail">
             <h3 class="mb-1">{{ $customer->full_name }}</h3>
-            <p class="text-muted">موجودی کیف پول :<b class="text-dark">{{ number_format($customer->balance) }} تومان</b></p>
+            <p class="text-muted">موجودی کیف پول :<b class="text-dark wallet-balance" data-balance="{{ $customer->balance }}">{{ number_format($customer->balance) }} تومان</b></p>
           </div>
         </div>
         @include('customer::front.includes.tabs.nav-tabs')

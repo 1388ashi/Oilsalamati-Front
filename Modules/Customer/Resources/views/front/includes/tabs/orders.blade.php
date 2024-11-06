@@ -13,6 +13,7 @@
             <th scope="col">مبلغ (تومان)</th>
             <th scope="col">وضعیت</th>
             <th scope="col">تاریخ</th>
+            <th scope="col">ساعت</th>
             <th scope="col">مشاهده</th>
           </tr>
         </thead>
@@ -40,7 +41,8 @@
               <td>
                 <span class="badge rounded-pill {{ $statusColors[$order->status] }} custom-badge">{{ __('statuses.' . $order->status) }}</span>
               </td>
-              <td>{{ verta($order->created_at)->formatDate() }}</td>
+              <td>{{ verta($order->created_at)->format('Y/m/d') }}</td>
+              <td>{{ verta($order->created_at)->formatTime() }}</td>
               <td>
                 <a class="view" data-bs-toggle="modal" data-bs-target="#OrderDetail-{{ $order->id }}"><i class="icon anm anm-eye btn-link fs-6"></i></a>
                 @include('customer::front.includes.orders.details')

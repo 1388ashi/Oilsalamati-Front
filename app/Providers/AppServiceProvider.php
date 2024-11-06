@@ -51,11 +51,11 @@ class AppServiceProvider extends ServiceProvider
 
             $baseService = new BaseService();
             $response = $baseService->getBaseRouteCacheData();
-            
 			$view->with([
 				'categories' =>  $response['categories'],
 				'settings' =>  $response['settings'],
 				'special_categories' =>  $response['special_categories'],
+				'menu' =>  $response['menu'],
 			]);
 		});
 

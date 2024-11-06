@@ -51,7 +51,7 @@
 					<div class="product-details text-center">
 
 						<div class="product-name">
-							<a href="{{ route('products.show', $product->id) }}">{{ $product->title }}</a>
+							<a href="{{ route('products.show', $product->id) }}">{{ Str::limit($product->title, 45) }}</a>
 						</div>
 
 						<div class="product-price">

@@ -98,14 +98,16 @@ class AuthController extends Controller
             $status = ($customer && $customer->password) ? 'login' : 'register';
             if ($status === 'register') {
                 if (env('APP_ENV') != 'local') {
-                    $result = event(new SmsVerify($mobile));
                     
-                    return redirect()->route('webSendSmsRegister',$mobile);
+                    $result = event(new SmsVerify($mobile));
                     if ($result[0]['status'] != 200) {
                         $status = 'danger';
                         $message = 'ارسال کد فعال سازی ناموفق بود.لطفا دوباره تلاش کنید';
                         return redirect()->back()->with(['status' => $status, 'message' => $message]);
                     }
+                    
+                    return redirect()->route('webSendSmsRegister',$mobile);
+
                 } else {
                     SmsToken::create([
                         'mobile' => $mobile,
@@ -220,7 +222,7 @@ class AuthController extends Controller
     {
         /** @var Customer $customer */
         if (!($customer = Customer::query()->where('mobile', $request->mobile)->first())) {
-            $customer = Customer::create($request->all());
+            $customer = Customer::query()->create($request->all());
             if (isset($request->reprezentant_mobile)){
                 $reprezentant = DB::table('customers')->where('mobile',$request->reprezentant_mobile)->first();
                 if ($reprezentant){
@@ -242,13 +244,8 @@ class AuthController extends Controller
 
         $customer->load(['listenCharges', 'carts']);
 
-        $token = $customer->createToken('authToken')->plainTextToken;
-
-        Helpers::actingAs($customer);
-
-        $warnings = CartFromRequest::addToCartFromRequest($request);
-        $notificationService = new NotificationService($customer);
-
+        $request->session()->regenerate();  
+        Auth::guard('customer')->login($customer);  
         // لازمه
         $customer->getBalanceAttribute();
         $customer = Customer::query()->whereKey($customer->id)->first();
@@ -257,16 +254,19 @@ class AuthController extends Controller
 
         return view('auth::front.password',compact('customer'));
     }
+
     public function createPassword(Request $request){
         $customer = Customer::query()->where('mobile',$request->mobile)->first();
         $customer->update([
             'password' => bcrypt($request->password)
         ]);
         return redirect()->route('home');
-        }
+    }
+
     public function showLoginForm($mobile){
         return view('auth::front.login',compact('mobile'));
     }
+
     public function webLogin(CustomerLoginVerifyRequest $request)  
     {  
         if ($request->has('smsToken')) {  
@@ -291,31 +291,14 @@ class AuthController extends Controller
             return $this->redirectWithMessage('موبایل یا رمز عبور نادرست است', 'danger');  
         }  
     
-        $token = $customer->createToken('authToken')->plainTextToken;  
-    
-        // $customer->load(['listenCharges', 'carts']);  
-        // $notificationService = new NotificationService($customer);  
-        // $notifications = [  
-        //     'items' => $notificationService->get(),  
-        //     'total_unread' => $notificationService->getTotalUnread(),  
-        // ];  
-    
-        // $data = [  
-        //     'access_token' => $token,  
-        //     'user' => $customer,  
-        //     'token_type' => 'Bearer',  
-        //     'notifications' => $notifications,  
-        //     'cart_warnings' => CartFromRequest::addToCartFromRequest($request),  
-        //     'carts' => $customer->carts,  
-        // ];  
-    
         $request->session()->regenerate();  
-        Auth::login($customer);  
+        Auth::guard('customer')->login($customer);  
         if ($request->forget_password == 1) {
             return redirect()->route('pageRestsPassword',$request->mobile);  
         }
         return redirect()->route('home');  
     }  
+
     protected function redirectWithMessage($message, $status)  
     {  
         return redirect()->back()->with(['status' => $status, 'message' => $message]);  
@@ -329,7 +312,7 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('home','با موفقیت خارج شدید');
+        return redirect()->route('home');
     }
 
 

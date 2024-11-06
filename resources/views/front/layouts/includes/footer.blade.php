@@ -32,44 +32,20 @@
 
         <div class="col-12 col-sm-12 col-md-12 col-lg-9">
           <div class="row">
-            <div
-              class="col-12 col-sm-12 col-md-4 col-lg-3 footer-links ps-lg-5"
-            >
-              <h4 class="h4">پیوندهای مفید</h4>
-              <ul>
-                <li><a href="aboutus-style1.html">درباره ما</a></li>
-                <li>
-                  <a href="contact-style1.html">با ما تماس بگیرید</a>
-                </li>
-                <li><a href="blog-grid.html">آخرین اخبار</a></li>
-                <li><a href="#">خط مشی رازداری</a></li>
-                <li><a href="#">شرایط و شرایط</a></li>
-              </ul>
+            @foreach ($menu['footer'] as $menu)
+            <div class="col-12 col-sm-12 col-md-4 col-lg-3 footer-links ps-lg-5">
+              @if ($menu['children'])
+                <h4 class="h4">{{ $menu['title'] }}</h4>
+                <ul>
+                  @foreach ($menu['children'] as $item)
+                    <li><a href="{{ $item['link'] }}">{{ $item['title'] }}</a></li>
+                  @endforeach
+                </ul>
+              @else
+                <a class="h4" href="{{ $menu['link'] }}">{{ $menu['title'] }}</a>
+              @endif
             </div>
-            <div class="col-12 col-sm-12 col-md-4 col-lg-2 footer-links">
-              <h4 class="h4">فروشگاه سریع</h4>
-              <ul>
-                <li><a href="#">گردنبند</a></li>
-                <li><a href="#">دستبند</a></li>
-                <li><a href="#">دانه های تسبیح</a></li>
-                <li><a href="#">جواهرات پازل</a></li>
-                <li><a href="#">حلقه نامزدی</a></li>
-              </ul>
-            </div>
-            <div
-              class="col-12 col-sm-12 col-md-4 col-lg-3 footer-links ps-lg-5"
-            >
-              <h4 class="h4">حساب من</h4>
-              <ul>
-                <li><a href="my-account.html">حساب من</a></li>
-                <li><a href="#">سابقه سفارش</a></li>
-                <li>
-                  <a href="contact-style1.html">با ما تماس بگیرید</a>
-                </li>
-                <li><a href="#">سفارش‌ها و بازگشت‌ها</a></li>
-                <li><a href="#">مرکز پشتیبانی</a></li>
-              </ul>
-            </div>
+            @endforeach
             <div
               class="col-12 col-sm-12 col-md-12 col-lg-4 mt-1 mt-md-4 mt-lg-0"
             >

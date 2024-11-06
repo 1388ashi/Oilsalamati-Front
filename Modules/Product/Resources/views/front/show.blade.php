@@ -50,8 +50,8 @@
                         <img
                             id="zoompro"
                             class="zoompro"
-                            src="{{$product->varieties[0]->images_showcase[0]->url }}"
-                            data-zoom-image="{{$product->varieties[0]->images_showcase[0]->url }}"
+                            {{-- src="{{$product->varieties[0]->images_showcase[0]->url }}"
+                            data-zoom-image="{{$product->varieties[0]->images_showcase[0]->url }}" --}}
                             alt="محصول"
                             width="625"
                             height="808"
@@ -83,22 +83,22 @@
                     <!-- Product Thumb -->
                     <div class="product-thumb product-horizontal-thumb mt-3">
                         <div id="gallery" class="product-thumb-horizontal" dir="ltr">
-                            @foreach ($product->varieties as $variety)
-                            <a
-                                data-image="{{ $variety->images_showcase[0]->url }}"
-                                data-zoom-image="{{ $variety->images_showcase[0]->url }}"
-                                class="slick-slide slick-cloned active"
-                            >
-                                <img
-                                    class="blur-up lazyload"
-                                    data-src="{{ $variety->images_showcase[0]->url }}"
-                                    src="{{ $variety->images_showcase[0]->url }}"
-                                    alt="محصول"
-                                    width="625"
-                                    height="808"
-                                />
-                            </a>
-                            @endforeach
+                            @foreach ($product->varieties as $variety)  
+                            <button  
+                                onclick="imageProduct(this)"  {{-- Use 'this' to refer to the button directly --}}  
+                                data-image="{{ asset('front/assets/images/products/' . $variety->image) }}"  {{-- Dynamic image path --}}  
+                                data-zoom-image="{{ asset('front/assets/images/products/' . $variety->image) }}"  
+                                class="slick-slide slick-cloned @if ($loop->first) active @endif"> {{-- Add active class only to the first one --}}  
+                                <img  
+                                    class="blur-up lazyload"  
+                                    data-src="{{ asset('front/assets/images/products/' . $variety->image) }}"  
+                                    src="{{ asset('front/assets/images/products/' . $variety->image) }}"  
+                                    alt="محصول"  
+                                    width="625"  
+                                    height="808"  
+                                />  
+                            </button>  
+                        @endforeach  
                         </div>
                     </div>
                     <!-- End Product Thumb -->
@@ -320,16 +320,18 @@
                         </div>
                     </div>
                     <p class="infolinks d-flex-center justify-content-between">
-                        @if (auth()->guard('customer')->user()->favorites()->where('product_id', $product->id)->exists())
-                        <a class="text-link wishlist" style="cursor: pointer" id="wishlistBtn">  
-                            <i id="favicon" class="icon anm anm-heart ms-2"></i>  
-                            <span>افزودن به فهرست علاقه مندی ها</span>  
-                        </a>  
-                        @else
-                        <a class="text-link wishlist" style="cursor: pointer" id="wishlistBtn">  
-                            <i id="favicon" class="icon anm anm-heart-l ms-2"></i>  
-                            <span>افزودن به فهرست علاقه مندی ها</span>  
-                        </a>  
+                        @if (auth()->guard('customer')->user())
+                            @if (auth()->guard('customer')->user()->favorites()->where('product_id', $product->id)->exists())
+                            <a class="text-link wishlist" style="cursor: pointer" id="wishlistBtn">  
+                                <i id="favicon" class="icon anm anm-heart ms-2"></i>  
+                                <span>افزودن به فهرست علاقه مندی ها</span>  
+                            </a>  
+                            @else
+                            <a class="text-link wishlist" style="cursor: pointer" id="wishlistBtn">  
+                                <i id="favicon" class="icon anm anm-heart-l ms-2"></i>  
+                                <span>افزودن به فهرست علاقه مندی ها</span>  
+                            </a>  
+                            @endif
                         @endif
                     </p>
                 </form>
@@ -458,6 +460,10 @@
             } else {  
                 return price + ' تومان';  
             }  
+        }
+        function imageProduct(button) {  
+            const image = button.dataset.image;
+            document.getElementById("imageValue").value = image;  
         }  
         document.addEventListener('DOMContentLoaded', function() {  
             const swatchItems = document.querySelectorAll('.swatch');  
@@ -465,9 +471,9 @@
                 item.addEventListener('click', function() {  
                     const itemValue = this.getAttribute('data-item-value');  
                     const itemPrice = this.getAttribute('data-item-price');  
-                    const itemImage = this.getAttribute('data-image');  
+                    // const itemImage = this.getAttribute('data-image');  
                     document.getElementById('price').innerText = formatPrice(itemPrice);  
-                    document.getElementById("imageValue").value = itemImage;
+                    // document.getElementById("imageValue").value = itemImage;
                     document.getElementById("varietyValue").value = itemValue;
                     document.getElementById("varietyPrice").value = itemPrice;
                 });  
@@ -612,10 +618,8 @@
                             },  
                             success: function(response) {
                                 if ($icon.hasClass('anm-heart-l')) {  
-                                    console.log(1);
                                     $icon.removeClass('anm-heart-l').addClass('anm-heart');  
                                 } else {  
-                                    console.log(2);
                                     $icon.removeClass('anm-heart').addClass('anm-heart-l');  
                                 }    
                                 Swal.fire({  
@@ -624,7 +628,6 @@
                                 });  
                             },  
                             error: function(error) {  
-                                console.log(error);  
                                 Swal.fire({  
                                     icon: "error",  
                                     text: error.message || "An error occurred."  

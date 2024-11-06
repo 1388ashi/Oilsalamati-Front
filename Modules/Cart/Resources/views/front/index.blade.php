@@ -149,9 +149,10 @@
 
           allCarts = response.data.carts;
         },  
-        error: (xhr, status, error) => {  
-          console.log(xhr);
-          showCartUpdateMessageAlert('error', xhr)
+        error: (error) => {  
+          input.val(currentValue);
+          showErrorMessages(error);
+          // showCartUpdateMessageAlert('error', xhr)
         }  
       });
     });

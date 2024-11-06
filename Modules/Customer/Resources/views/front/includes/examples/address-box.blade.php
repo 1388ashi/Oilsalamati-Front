@@ -15,8 +15,8 @@
       </div>
     </div>
     <div class="bottom d-flex-justify-center justify-content-between">
-      <button type="button" class="bottom-btn btn btn-gray btn-sm edit-btn" data-bs-toggle="modal" data-bs-target="">ویرایش</button>
-      <button type="button" class="bottom-btn btn btn-gray btn-sm delete-btn" data-address-id="" onclick="deleteAddress(event)">حذف</button>
+      <button type="button" class="bottom-btn btn btn-primary btn-sm edit-btn" data-bs-toggle="modal" data-bs-target="">ویرایش</button>
+      <button type="button" class="bottom-btn btn btn-secondary btn-sm delete-btn" data-address-id="" onclick="deleteAddress(event)">حذف</button>
     </div>
   </div>
 </div>

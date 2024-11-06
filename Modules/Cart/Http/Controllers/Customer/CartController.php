@@ -11,11 +11,9 @@ use Modules\Cart\Entities\Cart;
 use Modules\Cart\Http\Requests\Admin\CartStoreRequest;
 use Modules\Cart\Http\Requests\Admin\CartUpdateRequest;
 use Modules\Customer\Entities\Customer;
-use Modules\Invoice\Entities\Invoice;
 use Modules\Invoice\Entities\Payment;
 use Modules\Product\Entities\Variety;
 use Modules\Setting\Entities\Setting;
-use Modules\Shipping\Entities\Shipping;
 use Modules\Shipping\Services\ShippingCollectionService;
 
 class CartController extends Controller
@@ -23,9 +21,14 @@ class CartController extends Controller
     public function index()
     {
         $messages = [];
+
+        if (!Auth::guard('customer')->check()) {
+            return redirect()->route('pageRegisterLogin');
+        }
+
         /** @var Customer $user */
         $user = Auth::guard('customer')->user();
-        dd($user);
+
         $carts = $user->carts;
         $carts_showcase = $user->get_carts_showcase($carts);
 
