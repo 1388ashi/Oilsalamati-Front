@@ -91,8 +91,8 @@
                 <div class="spr-review-profile flex-shrink-0">
                     <img
                     class="blur-up lazyload"
-                    data-src="assets/images/users/testimonial2.jpg"
-                    src="assets/images/users/testimonial2.jpg"
+                    data-src="{{asset('front/assets/images/c2487b8c-09ed-4d59-81f0-971ddd5586d9')}}"
+                    src="{{asset('front/assets/images/c2487b8c-09ed-4d59-81f0-971ddd5586d9')}}"
                     alt=""
                     width="200"
                     height="200"

@@ -5,7 +5,7 @@
 @endsection
 
 @section('body_class') checkout-page checkout-style1-page @endsection
- 
+
 @section('content')
 
 @include('cart::front.includes.breadcrumb')
@@ -37,6 +37,8 @@
 
 <script>
   $(document).ready(function () {
+   
+    
     // Add active class to the current list tem (highlight it)
     let checkoutList = document.getElementById("nav-tabs");
     let checkoutItems = checkoutList.getElementsByClassName("nav-item");

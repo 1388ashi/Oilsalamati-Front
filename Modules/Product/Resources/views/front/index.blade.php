@@ -125,9 +125,8 @@
 				<div class="sidebar-widget filterBox filter-widget">
 					<div class="widget-title"><h2>قیمت</h2></div>
 					<form id="FilterForm" class="widget-content price-filter filterDD" action="{{ route('products.index') }}">
-						<input type="hidden" name="color_id" value="{{ request('color_id') }}">
-						<input type="hidden" name="sortBy" value="{{ request('sortBy') }}">
-						<input type="hidden" name="category_id" value="{{ request('category_id') }}">
+						<input type="hidden" name="color_id">
+						<input type="hidden" name="sortBy">
 						<div id="slider-range" class="mt-2"></div>
 						<div class="row">
 							<div class="col-6"><input id="amount" type="text"/></div>
