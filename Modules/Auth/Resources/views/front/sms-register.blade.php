@@ -79,8 +79,8 @@
                             <p class="text-danger warning-text mt-1">این قسمت را خالی نگذارید</p>
                         </div>
                         <div id="timer" class="text-center">02:00</div>
-                        <a href="" onclick="document.getElementById('postForm').submit();" id="messageBox" class="btn btn-secondary btn-register mb-2" style="display: none">ارسال مجدد کد</a>
-                        <button type="submit" class="btn btn-secondary btn-register mb-2">ورود</button>
+                        <a href="" onclick="document.getElementById('postForm').submit();" id="messageBox" class="btn btn-secondary btn-register" style="display: none">ارسال مجدد کد</a>
+                        <button type="submit" class="btn btn-secondary btn-register mb-2">تایید</button>
                         <div class="d-flex-justify-center" style="align-items: center">
                             <a href="{{ route('pageRegisterLogin',$mobile) }}" class="edit-mobile">ویرایش شماره</a>
                         </div>
