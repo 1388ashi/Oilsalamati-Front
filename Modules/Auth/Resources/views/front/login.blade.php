@@ -31,7 +31,7 @@
     }
     .logo {
         text-align: center;
-        margin-bottom: 30px;
+        margin-bottom: 40px;
     }
     .btn-register {
         width: 100%;

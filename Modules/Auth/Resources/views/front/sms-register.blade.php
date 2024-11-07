@@ -18,53 +18,53 @@
         justify-content: center;
         align-items: center;
         height: 100vh;
-        margin: 0; 
-    }  
+        margin: 0;
+    }
     .container {
-        height: 440px;
+        height: 80%;
         width: 350px;
-        max-width: 400px;  
-        padding: 40px;  
-        background-color: white;  
-        border-radius: 10px;  
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);  
-    }  
-    .logo {  
-        text-align: center;  
-        margin-bottom: 20px;  
-    }  
-    .btn-register {  
+        max-width: 400px;
+        padding: 40px;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .logo {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .btn-register {
         margin-top: 20px;
-        width: 100%;  
-        border-radius: 10px;  
-    }  
-    .input-register {  
-        width: 100%;  
-        border-radius: 10px;  
-    }  
-    .warning-text {  
-        font-size: 10px;  
-    }   
-    .text {  
-        font-size: 13px;  
-    }  
-    .edit-mobile:hover {  
-        color: #e96f84;  
-    }  
-</style>   
-<body class="account-page register-page">  
-    <div class="page-wrapper d-flex-justify-center">  
-            <div class="container">  
-                <div class="row my-3 d-flex" style="flex-direction: column; align-items: center;">  
-                    <div class="logo d-flex-justify-center mt-1" style="align-items: center;">  
-                        <img  
+        width: 100%;
+        border-radius: 10px;
+    }
+    .input-register {
+        width: 100%;
+        border-radius: 10px;
+    }
+    .warning-text {
+        font-size: 10px;
+    }
+    .text {
+        font-size: 13px;
+    }
+    .edit-mobile:hover {
+        color: #e96f84;
+    }
+</style>
+<body class="account-page register-page">
+    <div class="page-wrapper d-flex-justify-center">
+            <div class="container">
+                <div class="row my-3 d-flex" style="flex-direction: column; align-items: center;">
+                    <div class="logo d-flex-justify-center mt-1" style="align-items: center;">
+                        <img
                             src="{{asset('front/assets/images/logo/logo.9208f443.svg')}}"
-                            alt="قالب چند منظوره هما"  
-                            title="قالب چند منظوره هما"  
-                            width="149"  
-                            height="39"  
-                        />  
-                    </div>  
+                            alt="قالب چند منظوره هما"
+                            title="قالب چند منظوره هما"
+                            width="149"
+                            height="39"
+                        />
+                    </div>
                     <x-alert-danger></x-alert-danger>
                     <x-alert-success></x-alert-success>
                     <form action="{{ route('register') }}" method="POST">

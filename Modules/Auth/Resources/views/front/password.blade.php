@@ -31,7 +31,7 @@
     }
     .logo {
         text-align: center;
-        margin-bottom: 20px;
+        margin-bottom: 30px;
     }
     .btn-register {
         width: 100%;
@@ -66,7 +66,7 @@
                 </div>
                 <x-alert-danger></x-alert-danger>
                 <x-alert-success></x-alert-success>
-                <form action="{{ route('createPassword') }}" method="POST">
+                <form action="{{ route('createPassword') }}" method="POST" class="mt-5">
                     @csrf
                     <input type="hidden" name="sdvssdfsdv" value="brthtyjuj7s">
                     <input type="hidden" name="mobile" value="{{$customer->mobile}}">
@@ -75,7 +75,7 @@
                         <input type="text" name="sms_token" class="form-control input-register" placeholder="مثال: 123456" required oninput="validateInput(this)" value="{{old('password')}}">
                         <p class="text-danger warning-text mt-1">این قسمت را خالی نگذارید</p>
                     </div>
-                    <button type="submit" class="btn btn-secondary btn-register mb-2">ورود</button>
+                    <button type="submit" class="btn btn-secondary btn-register mb-2 mt-3">ورود</button>
                 </form>
             </div>
         </div>
