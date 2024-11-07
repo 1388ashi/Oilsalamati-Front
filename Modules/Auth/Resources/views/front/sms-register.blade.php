@@ -34,7 +34,6 @@
         margin-bottom: 20px;
     }
     .btn-register {
-        margin-top: 20px;
         width: 100%;
         border-radius: 10px;
     }
@@ -46,7 +45,7 @@
         font-size: 10px;
     }
     .text {
-        font-size: 13px;
+        font-size: 12px;
     }
     .edit-mobile:hover {
         color: #e96f84;
@@ -74,12 +73,12 @@
                         <input type="hidden" name="mobile" value="{{$mobile}}">
                         <div class="form-group mb-">
                             <strong for="">کد تایید را وارد کنید</strong>
-                            <p class="text mt-1">لطفا کد ارسال شده به شماره {{$mobile}} را وارد کنید.</p>
+                            <p class="text text-muted mt-1">لطفا کد ارسال شده به شماره {{$mobile}} را وارد کنید.</p>
                             <input type="text" name="sms_token" class="form-control input-register" placeholder="مثال: 1234"  required oninput="validateInput(this)" style="direction: ltr;" value="{{old('sms_token')}}">
                             <p class="text-danger warning-text mt-1">این قسمت را خالی نگذارید</p>
                         </div>
                         <div id="timer" class="text-center">02:00</div>
-                        <a href="" onclick="document.getElementById('postForm').submit();" id="messageBox" class="btn btn-secondary btn-register" style="display: none">ارسال مجدد کد</a>
+                        <a href="" onclick="document.getElementById('postForm').submit();" id="messageBox" class="btn btn-secondary btn-register mb-2" style="display: none">ارسال مجدد کد</a>
                         <button type="submit" class="btn btn-secondary btn-register mb-2">تایید</button>
                         <div class="d-flex-justify-center" style="align-items: center">
                             <a href="{{ route('pageRegisterLogin',$mobile) }}" class="edit-mobile">ویرایش شماره</a>
