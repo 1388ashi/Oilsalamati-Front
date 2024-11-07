@@ -71,7 +71,7 @@
                         <input type="hidden" name="sdvssdfsdv" value="brthtyjuj7s">
                         <input type="hidden" name="type" value="register">
                         <input type="hidden" name="mobile" value="{{$mobile}}">
-                        <div class="form-group mb-">
+                        <div class="form-group">
                             <strong for="">کد تایید را وارد کنید</strong>
                             <p class="text text-muted mt-1">لطفا کد ارسال شده به شماره {{$mobile}} را وارد کنید.</p>
                             <input type="text" name="sms_token" class="form-control input-register" placeholder="مثال: 1234"  required oninput="validateInput(this)" style="direction: ltr;" value="{{old('sms_token')}}">
