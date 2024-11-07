@@ -66,13 +66,14 @@
                 </div>
                 <x-alert-danger></x-alert-danger>
                 <x-alert-success></x-alert-success>
+                <h5>رمز عبور</h5>
                 <form action="{{ route('createPassword') }}" method="POST" class="mt-5">
                     @csrf
                     <input type="hidden" name="sdvssdfsdv" value="brthtyjuj7s">
                     <input type="hidden" name="mobile" value="{{$customer->mobile}}">
                     <div class="form-group mb-2">
-                        <strong class="mb-4" for="">رمز عبور خود را ثبت کنید</strong>
-                        <input type="text" name="sms_token" class="form-control input-register" placeholder="مثال: 123456" required oninput="validateInput(this)" value="{{old('password')}}">
+                        <strong for="">رمز عبور خود را ثبت کنید</strong>
+                        <input type="text" name="sms_token" class="form-control input-register mt-3" placeholder="مثال: 123456" required oninput="validateInput(this)" value="{{old('password')}}">
                         <p class="text-danger warning-text mt-2">این قسمت را خالی نگذارید</p>
                     </div>
                     <button type="submit" class="btn btn-secondary btn-register mb-2 mt-3">ورود</button>
