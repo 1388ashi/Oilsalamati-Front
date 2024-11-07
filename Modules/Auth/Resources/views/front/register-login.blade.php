@@ -65,7 +65,7 @@
                     </div>
                     <h5 class="mt-2">ورود | ثبت‌نام</h5>
                     <p class="text-muted" style="margin-bottom: 0.5rem;font-size: 12px;">سلام!</p>
-                    <p class="text-muted" style="font-size: 12px;">لطفا شماره موبایل خود را وارد کنید</p>
+                    <p class="text-muted" style="font-size: 12px;margin-bottom: 12px;">لطفا شماره موبایل خود را وارد کنید</p>
                     <x-alert-danger></x-alert-danger>
                     <x-alert-success></x-alert-success>
                     <form action="{{ route('registerLogin') }}" method="POST">
