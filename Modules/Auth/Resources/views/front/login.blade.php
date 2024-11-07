@@ -22,7 +22,7 @@
     }
     .container {
         height: 80%;
-        width: 350px;
+        width: 100%;
         max-width: 400px;
         padding: 60px;
         background-color: white;
