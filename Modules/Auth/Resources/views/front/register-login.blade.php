@@ -63,9 +63,9 @@
                             height="39"
                         />
                     </div>
-                    <h5>ورود | ثبت‌نام</h5>
-                    <p style="margin-bottom: 0.5rem">سلام!</p>
-                    <p>لطفا شماره موبایل خود را وارد کنید</p>
+                    <h5 class="mt-2">ورود | ثبت‌نام</h5>
+                    <p class="text-muted" style="margin-bottom: 0.5rem">سلام!</p>
+                    <p class="text-muted">لطفا شماره موبایل خود را وارد کنید</p>
                     <x-alert-danger></x-alert-danger>
                     <x-alert-success></x-alert-success>
                     <form action="{{ route('registerLogin') }}" method="POST">
@@ -76,7 +76,7 @@
                         </div>
                         <button type="submit" class="btn btn-secondary btn-register">ورود</button>
                     </form>
-                    <p class="text-center mt-3 text-downpage">ورود شما به معنای پذیرش شرایط و قوانین حریم‌ خصوصی است</p>
+                    <p class="text-center text-muted mt-3 text-downpage">ورود شما به معنای پذیرش شرایط و قوانین حریم‌ خصوصی است</p>
                 </div>
             </div>
     </div>
