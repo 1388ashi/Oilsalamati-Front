@@ -5,6 +5,7 @@
 @endsection
 
 @section('styles')
+    @include('customer::front.includes.styles.account')
     @include('customer::front.includes.styles.info')
     @include('customer::front.includes.styles.wallet')
 @endsection
@@ -32,7 +33,7 @@
 
     <x-alert-danger />
 
-    <div class="container">
+    <div class="container" id="account-page-container">
         <div class="row">
             <div class="col-12 col-sm-12 col-md-12 col-lg-3 mb-4 mb-lg-0">
                 <div class="dashboard-sidebar bg-block">

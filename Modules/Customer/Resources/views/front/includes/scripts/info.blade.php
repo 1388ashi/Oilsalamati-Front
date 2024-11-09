@@ -1,8 +1,8 @@
 <script>
   function editProfile(event) {
 
-    const form = $(event.target).closest('.modal').find('form');
-
+    const form = $(event.target).closest('form');
+    
     $.ajax({
       url: form.attr('action'),
       type: form.attr('method'),
@@ -11,13 +11,24 @@
         last_name: form.find('.last-name').val(),  
         mobile: form.find('.mobile').val(),
         card_number: form.find('.card-number').val(),
+        email: form.find('.email').val(),
+        national_code: form.find('.national-code').val(),
+        gender: form.find('.gender').val(),
       },
       headers: {
         'X-CSRF-TOKEN': "{{ csrf_token() }}"
       },
       success: (response) => { 
         popup('موفق', 'success', response.message);
-        updateInfoBox(response.data.customer);
+        const customer = response.data.customer;
+        let fullName = '';
+        if (customer.first_name) {
+          fullName += customer.first_name;
+        } 
+        if (customer.last_name) {
+          fullName = fullName +' '+ customer.last_name;
+        } 
+        $('.profile-detail .full-name').text(fullName);
       },  
       error: (error) => {  
         showErrorMessages(error);
@@ -25,15 +36,5 @@
     });
 
   }
-
-  function updateInfoBox(customer) {
-    const infoBox = $('#info');
-    const fullName = customer.first_name +' '+ customer.last_name;
-    infoBox.find('.info-full-name').text(fullName);
-    infoBox.find('.info-mobile').text(customer.mobile);
-    infoBox.find('.info-card-number').text(customer.card_number);
-    $('.profile-detail .full-name').text(fullName);
-  }
-
 
 </script>

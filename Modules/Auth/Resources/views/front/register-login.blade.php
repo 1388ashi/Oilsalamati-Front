@@ -70,7 +70,7 @@
                     <x-alert-success></x-alert-success>
                     <form action="{{ route('registerLogin') }}" method="POST">
                         @csrf  
-                        <input type="hidden" name="sdvssdfsdv" value="brthtyjuj7s">
+                        {{-- <input type="hidden" name="sdvssdfsdv" value="brthtyjuj7s"> --}}
                         <div class="form-group mb-3">  
                             <input type="text" name="mobile" class="form-control input-register" value="09" placeholder="شماره موبایل" required oninput="validateInput(this)" style="direction: ltr;" value="{{old('mobile',$mobile)}}" required>  
                         </div>  

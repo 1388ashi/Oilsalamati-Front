@@ -33,35 +33,73 @@
     <div class="account-box">
       <div class="row">
         <div class="box-info mb-4">
-          <div class="box-title d-flex-center">
+          <div class="box-title d-flex justify-content-between align-items-center">
             <h4>اطلاعات حساب</h4>
-            <a class="btn-link me-auto" data-bs-toggle="modal" data-bs-target="#EditProfileModal" style="cursor: pointer;">ویرایش</a>
-            @include('customer::front.includes.info.edit-profile-modal')
+            <button 
+              type="button" 
+              onclick="editProfile(event)" 
+              class="btn btn-primary"
+              style="padding-block: "
+              >ویرایش</button>
           </div>
           <div class="box-content mt-3">
-
-            @php
-              $gender = [
-                'male' => 'مرد',
-                'female' => 'زن',
-                null => '-'
-              ];
-            @endphp
-
             <div class="row">
-              <div class="col-xl-6 col-12">
-                <p>نام و نام خانوادگی: <b class="info-full-name">{{ $customer->full_name ?? '-' }}</b></p>
-                <p>موبایل: <b class="info-mobile">{{ $customer->mobile }}</b></p>
-                <p>ایمیل: <b>{{ $customer->email ?? '-' }}</b></p>
-                <p>شماره کارت: <b class="info-card-number">{{ $customer->card_number ?? '-' }}</b></p>
-              </div>
-              <div class="col-xl-6 col-12">
-                <p>تاریخ تولد: <b>{{ $customer->birth_date ? verta($customer->birth_date)->formatDate() : '-' }}</b></p>
-                <p>کد ملی: <b>{{ $customer->national_code ?? '-' }}</b></p>
-                <p>جنسیت: <b>{{ $gender[$customer->gender] }}</b></p>
-              </div>
+              <form action="{{ route('customer.profile.update') }}" method="PATCH" class="col-12">
+                <div class="row">
+                  <div class="col-xl-6 col-12">
+                    <div class="form-group">
+                      <label>نام :</label>
+                      <input type="text" class="form-control first-name" value="{{ $customer->first_name }}">
+                    </div>
+                  </div>
+                  <div class="col-xl-6 col-12">
+                    <div class="form-group">
+                      <label>نام خانوادگی :</label>
+                      <input type="text" class="form-control last-name" value="{{ $customer->last_name }}">
+                    </div>
+                  </div>
+                  <div class="col-xl-6 col-12">
+                    <div class="form-group">
+                      <label>موبایل :</label>
+                      <input type="text" class="form-control mobile" value="{{ $customer->mobile }}">
+                    </div>
+                  </div>
+                  <div class="col-xl-6 col-12">
+                    <div class="form-group">
+                      <label>ایمیل :</label>
+                      <input type="email" class="form-control email" value="{{ $customer->email }}">
+                    </div>
+                  </div>
+                  <div class="col-xl-6 col-12">
+                    <div class="form-group">
+                      <label>شماره کارت :</label>
+                      <input type="text" class="form-control card-number" value="{{ $customer->card_number }}">
+                    </div>
+                  </div>
+                  <div class="col-xl-6 col-12">
+                    <div class="form-group">
+                      <label>تاریخ تولد :</label>
+                      <input type="text" class="form-control birth-date" value="{{ $customer->birth_date }}">
+                    </div>
+                  </div>
+                  <div class="col-xl-6 col-12">
+                    <div class="form-group">
+                      <label>کد ملی :</label>
+                      <input type="text" class="form-control national-code" value="{{ $customer->national_code }}">
+                    </div>
+                  </div>
+                  <div class="col-xl-6 col-12">
+                    <div class="form-group">
+                      <label>جنسیت :</label>
+                      <select class="form-control gender">
+                        <option value="male" @if ($customer->gender === 'male') selected @endif>مرد</option>
+                        <option value="female" @if ($customer->gender === 'female') selected @endif>زن</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </form>
             </div>
-
           </div>
         </div>  
       </div>

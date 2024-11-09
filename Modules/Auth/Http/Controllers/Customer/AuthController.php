@@ -69,11 +69,11 @@ class AuthController extends Controller
         $value = Setting::getFromName('smsBomberValue');    
         
         if(!$mobile){
-            if (!$request->has($key) || $request->{$key} != $value) {
-                $status = 'danger';
-                $message = 'خطا در تایید کد کپچا';
-                return redirect()->back()->with(['status' => $status, 'message' => $message]);
-            }
+            // if (!$request->has($key) || $request->{$key} != $value) {
+            //     $status = 'danger';
+            //     $message = 'خطا در تایید کد کپچا';
+            //     return redirect()->back()->with(['status' => $status, 'message' => $message]);
+            // }
         }
 //        $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
 //            'secret' => config('services.recaptcha.secret_key'),
@@ -109,12 +109,21 @@ class AuthController extends Controller
                     return redirect()->route('webSendSmsRegister',$mobile);
 
                 } else {
-                    SmsToken::create([
-                        'mobile' => $mobile,
-                        'token' => 1234, //random_int(10000, 99999),
-                        'expired_at' => Carbon::now()->addHours(240),
-                        'verified_at' => now()
-                    ]);
+                    $smsToken = SmsToken::where('mobile', $mobile)->first();
+                    if ($smsToken) {
+                        $smsToken->update([
+                            'expired_at' => Carbon::now()->addHours(240),
+                            'verified_at' => now()
+                        ]);
+                    }else {
+                        SmsToken::create([
+                            'mobile' => $mobile,
+                            'token' => 1234, 
+                            'expired_at' => Carbon::now()->addHours(240),
+                            'verified_at' => now()
+                        ]);
+                    }
+                    
                     return redirect()->route('webSendSmsRegister',$mobile);
                 }
             }else{
