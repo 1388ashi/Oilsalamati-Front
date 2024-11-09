@@ -46,93 +46,44 @@
               @endif
             </div>
             @endforeach
-            <div
-              class="col-12 col-sm-12 col-md-12 col-lg-4 mt-1 mt-md-4 mt-lg-0"
-            >
+            <div class="col-12 col-sm-12 col-md-12 col-lg-4 mt-1 mt-md-4 mt-lg-0">
               <div class="footer-newsletter icon-arrow">
                 <form action="#" method="post">
-                  <label class="h4 mb-2"
-                    >در خبرنامه ما ثبت نام کنید</label
-                  >
-                  <p>
-                    مطمئن شوید که هرگز اخبار جالب و تبلیغات انحصاری ما را
-                    از دست ندهید.
-                  </p>
+                  <label class="h4 mb-2">در خبرنامه ما ثبت نام کنید</label>
+                  <p>مطمئن شوید که هرگز اخبار جالب و تبلیغات انحصاری ما را از دست ندهید.</p>
                   <div class="input-group">
-                    <input
-                      type="email"
-                      class="form-control input-group-field newsletter-input rounded-5"
-                      name="email"
-                      value=""
-                      placeholder="آدرس ایمیل خود را وارد کنید..."
-                      required
-                    />
-                    <button
-                      type="submit"
-                      class="input-group-btn text-link newsletter-submit"
-                      name="commit"
-                    >
+                    <input type="email" class="form-control input-group-field newsletter-input rounded-5" name="email" value="" placeholder="آدرس ایمیل خود را وارد کنید..." required/>
+                    <button type="submit" class="input-group-btn text-link newsletter-submit" name="commit">
                       <i class="icon anm anm-arw-left"></i>
                     </button>
                   </div>
                 </form>
-                <ul
-                  class="list-inline social-icons d-inline-flex mt-3 pt-1"
-                >
-                  <li class="list-inline-item">
-                    <a
-                      href="#"
-                      data-bs-toggle="tooltip"
-                      data-bs-placement="top"
-                      title="فیس بوک"
-                      ><i class="icon anm anm-facebook-f"></i
-                    ></a>
-                  </li>
-                  <li class="list-inline-item">
-                    <a
-                      href="#"
-                      data-bs-toggle="tooltip"
-                      data-bs-placement="top"
-                      title="توییتر"
-                      ><i class="icon anm anm-twitter"></i
-                    ></a>
-                  </li>
-                  <li class="list-inline-item">
-                    <a
-                      href="#"
-                      data-bs-toggle="tooltip"
-                      data-bs-placement="top"
-                      title="پینترست"
-                      ><i class="icon anm anm-pinterest-p"></i
-                    ></a>
-                  </li>
-                  <li class="list-inline-item">
-                    <a
-                      href="#"
-                      data-bs-toggle="tooltip"
-                      data-bs-placement="top"
-                      title="لینکدین"
-                      ><i class="icon anm anm-linkedin-in"></i
-                    ></a>
-                  </li>
-                  <li class="list-inline-item">
-                    <a
-                      href="#"
-                      data-bs-toggle="tooltip"
-                      data-bs-placement="top"
-                      title="اینستاگرام"
-                      ><i class="icon anm anm-instagram"></i
-                    ></a>
-                  </li>
-                  <li class="list-inline-item">
-                    <a
-                      href="#"
-                      data-bs-toggle="tooltip"
-                      data-bs-placement="top"
-                      title="یوتیوب"
-                      ><i class="icon anm anm-youtube"></i
-                    ></a>
-                  </li>
+                <ul class="list-inline social-icons d-inline-flex mt-3 pt-1">
+                  @if ($settings['social']['facebook'])
+                    <li class="list-inline-item">
+                      <a href="{{ $settings['social']['facebook'] }}" data-bs-toggle="tooltip" data-bs-placement="top" title="فیسبوک" ><i class="icon anm anm-facebook-f"></i></a>
+                    </li>
+                  @endif
+                  @if ($settings['social']['twitter'])
+                    <li class="list-inline-item">
+                      <a href="{{ $settings['social']['twitter'] }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="توییتر" ><i class="icon anm anm-facebook-f"></i></a>
+                    </li>
+                  @endif
+                  @if ($settings['social']['linkedin'])
+                    <li class="list-inline-item">
+                      <a href="{{ $settings['social']['linkedin'] }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="لینکدین" ><i class="icon anm anm-facebook-f"></i></a>
+                    </li>
+                  @endif
+                  @if ($settings['social']['instagram'])
+                    <li class="list-inline-item">
+                      <a href="{{ $settings['social']['instagram'] }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="اینستاگرام" ><i class="icon anm anm-facebook-f"></i></a>
+                    </li>
+                  @endif
+                  @if ($settings['social']['youtube'])
+                    <li class="list-inline-item">
+                      <a href="{{ $settings['social']['youtube'] }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="یوتوب" ><i class="icon anm anm-facebook-f"></i></a>
+                    </li>
+                  @endif
                 </ul>
               </div>
             </div>
@@ -143,9 +94,7 @@
   </div>
   <div class="footer-bottom clearfix">
     <div class="container container-1330">
-      <div
-        class="d-flex-center flex-column justify-content-md-between flex-md-row-reverse py-lg-1"
-      >
+      <div class="d-flex-center flex-column justify-content-md-between flex-md-row-reverse py-lg-1">
         <ul class="payment-icons d-flex-center mb-2 mb-md-0">
           <li><i class="icon anm anm-cc-visa"></i></li>
           <li><i class="icon anm anm-cc-mastercard"></i></li>

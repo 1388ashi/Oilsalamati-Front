@@ -1,7 +1,7 @@
 <script>
   function editProfile(event) {
 
-    const form = $(event.target).closest('form');
+    const form = $('#EditProfileForm');
     
     $.ajax({
       url: form.attr('action'),

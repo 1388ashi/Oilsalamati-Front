@@ -38,13 +38,13 @@
             <button 
               type="button" 
               onclick="editProfile(event)" 
-              class="btn btn-primary"
-              style="padding-block: "
+              class="btn btn-primary fw-light"
+              style="font-size: 12px; padding: 4px 12px;"
               >ویرایش</button>
           </div>
           <div class="box-content mt-3">
             <div class="row">
-              <form action="{{ route('customer.profile.update') }}" method="PATCH" class="col-12">
+              <form id="EditProfileForm" action="{{ route('customer.profile.update') }}" method="PATCH" class="col-12">
                 <div class="row">
                   <div class="col-xl-6 col-12">
                     <div class="form-group">

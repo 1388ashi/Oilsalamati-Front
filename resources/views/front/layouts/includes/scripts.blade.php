@@ -3,7 +3,7 @@
 <script src="{{ asset('assets/plugins/jquery/jquery.min.js') }}"></script>
 <script src="{{ asset('front/assets/custom/custom.js') }}"></script>
 <script src="{{ asset('front/assets/custom/sweetalert.min.js') }}"></script>
-{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script> --}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 
 
 <script>
@@ -11,11 +11,13 @@
 
     $('#SearchProductInput').on('input', function() {
         clearTimeout(typingTimer);
-        const searchInput = $(this).val();
+        const searchInput = $.trim($(this).val());
 
         typingTimer = setTimeout(function() {
-            searchProducts(searchInput);
-        }, 1000);
+            if (searchInput !== null && searchInput != '' && searchInput != ' ') {
+                searchProducts(searchInput);
+            }
+        }, 1600);
     });
 
     function searchProducts(value) {
@@ -27,15 +29,17 @@
             },
             success: function(response) {
 
-                if (response.data.products.length == 0) {
-                    $("#ProductSearchBox").append(
+                if (response.data.length == 0 || response.data.products.length == 0) {
+                    
+                    $("#ProductSearchBox").html(
                         '<li class="item vala w-100 text-center text-muted">شما هیچ موردی در جستجوی خود ندارید.</li>'
-                        );
+                    );
                     return;
                 }
 
                 const products = response.data.products;
                 const ProductSearchItem = $('#ProductSearchItem');
+                let items;
 
                 $('#ProductSearchBox').empty();
 
@@ -43,11 +47,11 @@
 
                     let item = ProductSearchItem.clone();
 
-                    let img = item.find('#ProductSearchImage');
-                    let title = item.find('#ProductSearchTitle');
-                    let oldPrice = item.find('#ProductSearchOldPrice');
-                    let price = item.find('#ProductSearchPrice');
-                    let link = item.find('a')
+                    let img = item.find('.item-image');
+                    let title = item.find('.item-title');
+                    let oldPrice = item.find('.old-price');
+                    let price = item.find('.price');
+                    let link = item.find('a');
 
                     item.removeAttr('id');
                     item.removeClass('d-none');
@@ -60,14 +64,9 @@
                         title: product.title
                     });
 
-                    let limitedTitle = product.title.length > 28 ? product.title.slice(0, 28) +
-                        '...' : product.title;
+                    let limitedTitle = product.title.length > 28 ? product.title.slice(0, 28) + '...' : product.title;
                     title.text(product.title);
                     price.text(product.final_price.base_amount.toLocaleString() + ' ' + 'تومان');
-
-                    img.removeAttr('id');
-                    title.removeAttr('id');
-                    price.removeAttr('id');
 
                     if (product.final_price.discount > 0) {
                         oldPrice.text(product.final_price.amount.toLocaleString() + ' ' + 'تومان');
@@ -75,11 +74,8 @@
                     } else {
                         oldPrice.remove();
                     }
-
                     $("#ProductSearchBox").append(item);
-
                 });
-
             }
         });
     }

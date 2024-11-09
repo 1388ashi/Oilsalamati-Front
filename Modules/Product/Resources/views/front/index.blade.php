@@ -25,30 +25,32 @@
 </div>
 
 <div class="container">
-	<div class="collection-slider-6items gp10 slick-arrow-dots sub-collection section pt-0" dir="ltr">
-		@foreach ($response['specialCategories'] as $category)
-			<div class="category-item zoomscal-hov">
-				<a href="{{ route('products.index', ['category_id' => $category->id]) }}" class="category-link clr-none">
-					<div class="zoom-scal zoom-scal-nopb rounded-0">
-						<img
-							class="rounded-0 blur-up lazyload"
-							data-src="{{ asset($category->image->url) }}"
-							src="{{ asset($category->image->url) }}"
-							alt="{{ $category->title }}"
-							title="{{ $category->title }}"
-							width="365"
-							height="365"
-						/>
-					</div>
-					<div class="details text-center">
-						<h4 class="category-title mb-0">{{ $category->title }}</h4>
-						<p class="counts">{{ $category->products_count }} محصول</p>
-					</div>
-				</a>
-			</div>
-		@endforeach
-	</div>
-	<!--End Category Slider-->
+
+	@if ($response['childCategories']->isNotEmpty())
+		<div class="collection-slider-6items gp10 slick-arrow-dots sub-collection section pt-0" dir="ltr">
+			@foreach ($response['childCategories'] as $category)
+				<div class="category-item zoomscal-hov">
+					<a href="{{ route('products.index', ['category_id' => $category->id]) }}" class="category-link clr-none">
+						<div class="zoom-scal zoom-scal-nopb rounded-0">
+							<img
+								class="rounded-0 blur-up lazyload"
+								data-src="{{ asset($category->image->url) }}"
+								src="{{ asset($category->image->url) }}"
+								alt="{{ $category->title }}"
+								title="{{ $category->title }}"
+								width="365"
+								height="365"
+							/>
+						</div>
+						<div class="details text-center">
+							<h4 class="category-title mb-0">{{ $category->title }}</h4>
+							<p class="counts">{{ $category->products_count }} محصول</p>
+						</div>
+					</a>
+				</div>
+			@endforeach
+		</div>
+	@endif
 
 	<!--Toolbar-->
 	<div class="toolbar toolbar-wrapper shop-toolbar">
@@ -276,7 +278,7 @@
 								<a href="{{ route('products.show', $product) }}" class="product-img rounded-0" >
 									<img
 										class="rounded-0 blur-up lazyload"
-										src="{{asset($product->images_showcase['main_image']->url)}}"
+										src="{{ asset($product->images_showcase['main_image']?->url) }}"
 										alt="{{ $product->title }}"
 										title="{{ $product->title }}"
 										width="625"
@@ -378,57 +380,6 @@
 					@endforeach
 				</div>
 
-				<!-- Pagination -->
-				<nav class="clearfix pagination-bottom">
-					<ul class="pagination justify-content-center">
-
-						<li class="page-item {{ request('page', 1) == 1 ? 'disabled' : '' }}">
-							<a class="page-link" href="#">
-								<i class="icon anm anm-angle-right-l"></i>
-							</a>
-						</li>
-
-						@php
-							$totalPages = round($response['allProductsCount'] / $response['pagination']);
-                            $i = 1;
-						@endphp
-
-{{--						@for ($i = 1; $i <= $totalPages; $i++)--}}
-{{--							<li class="page-item {{ request('page', 1) == $i ? 'active' : '' }}">--}}
-{{--								<a class="page-link" href="{{ route('products.index', ['page' => $i]) }}">{{ $i }}</a>--}}
-{{--                            </li>--}}
-{{--                        @endfor--}}
-                        @while($i <= request('page'))
-                            <li class="page-item {{ request('page', 1) == $i ? 'active' : '' }}">
-                                <a class="page-link" href="{{ route('products.index', ['page' => $i]) }}">{{ $i }}</a>
-                            </li>
-                            @if($i == request('page') && $i+1<=$totalPages)
-                                <li class="page-item">
-                                    <a class="page-link" href="{{ route('products.index', ['page' => $i+1]) }}">{{ $i+1 }}</a>
-                                </li>
-                            @if($i+1!=$totalPages)
-                                    <li class="page-item">
-                                        <a class="page-link" href="#">...</a>
-                                    </li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="{{ route('products.index', ['page' => $totalPages]) }}">{{ 6 }}</a>
-                                    </li>
-                            @endif
-                            @endif
-                            @php
-                                $i++
-                            @endphp
-                        @endwhile
-
-						<li class="page-item {{ request('page') == $totalPages ? 'disabled' : '' }}">
-							<a class="page-link" href="#">
-								<i class="icon anm anm-angle-left-l"></i>
-							</a>
-						</li>
-
-					</ul>
-				</nav>
-				<!-- End Pagination -->
 			</div>
 		</div>
 	</div>

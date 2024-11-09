@@ -5,6 +5,7 @@ namespace Modules\Product\Http\Controllers\Front;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
+use Modules\Category\Entities\Category;
 use Modules\Category\Services\CategoriesCollectionService;
 use Modules\Core\Classes\CoreSettings;
 use Modules\Core\Helpers\Helpers;
@@ -87,10 +88,12 @@ class ProductController extends Controller
             return response()->success('لیست تمامی محصولات',compact('products', 'priceFilter', 'pageCount','allProductsCount'));
         }
 
-        $homeController = new HomeController();
-        $specialCategories = $homeController->getItemFromName('specialCategories');
-        $categories = $homeController->getItemFromName('categories');
         $colors = (new BaseService)->getBaseRouteCacheData()['colors'];
+        $categories = (new HomeController)->getItemFromName('categories');
+
+        if (request('category_id')) {
+            $childCategories = Category::query()->parents(request('category_id'))->get();
+        }
 
         $response = [
             'products' => $products,
@@ -98,7 +101,7 @@ class ProductController extends Controller
             'pagination' => $pagination,
             'pageCount' => $pageCount,
             'allProductsCount' => $allProductsCount,
-            'specialCategories' => $specialCategories,
+            'childCategories' => isset($childCategories) ? $childCategories : null,
             'categories' => $categories,
             'colors' => $colors,
         ];
