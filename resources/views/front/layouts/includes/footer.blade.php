@@ -155,7 +155,7 @@
           <li><i class="icon anm anm-cc-stripe"></i></li>
           <li><i class="icon anm anm-cc-jcb"></i></li>
         </ul>
-        <div class="copytext">&copy; 2023 هما تمامی حقوق محفوظ است.</div>
+        <div class="copytext">&copy; 2023 تمامی حقوق محفوظ است.</div>
       </div>
     </div>
   </div>

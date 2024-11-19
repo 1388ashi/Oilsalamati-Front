@@ -21,7 +21,6 @@
         margin: 0; 
     }  
     .container {  
-        height: 430px;
         width: 350px;
         max-width: 400px;  
         padding: 40px;  
@@ -69,11 +68,11 @@
                     <input type="hidden" name="mobile" value="{{$mobile}}">
                     <div class="form-group mb-3">  
                         <strong class="mb-2" class="text-strong">رمز عبور خود را بازیابی کنید</strong>
-                        <input type="text" name="password" class="form-control input-register" placeholder="مثال: 123456" required value="{{old('password')}}">  
+                        <input type="text" name="password" class="form-control input-register" placeholder="مثال: 123456" value="{{old('password')}}" required="required" oninvalid="this.setCustomValidity('رمز عبور خود را وارد کنید')"/>    
                     </div>  
                     <div class="form-group mb-2">  
                         <strong class="mb-2" class="text-strong">تکرار رمز عبور</strong>
-                        <input type="text" name="password_confirmation" class="form-control input-register" placeholder="رمز عبور را تکرار کنید" required value="{{old('password_confirmation')}}">  
+                        <input type="text" name="password_confirmation" class="form-control input-register" placeholder="رمز عبور را تکرار کنید" value="{{old('password_confirmation')}}" required="required" oninvalid="this.setCustomValidity('رمز عبور خود را تکرار کنید')"/>      
                         <p class="text-danger warning-text mt-1">این قسمت را خالی نگذارید</p>  
                     </div>  
                     <button type="submit" class="btn btn-secondary btn-register mb-2">ورود</button>  

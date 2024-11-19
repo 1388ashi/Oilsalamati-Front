@@ -21,17 +21,16 @@
         margin: 0; 
     }  
     .container {
-        height: 450px;
         width: 350px;
         max-width: 400px;  
-        padding: 40px;  
+        padding: 30px;  
         background-color: white;  
         border-radius: 10px;  
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);  
     }  
     .logo {  
         text-align: center;  
-        margin-bottom: 20px;  
+        margin-bottom: 30px;  
     }  
     .btn-register {  
         width: 100%;  
@@ -55,7 +54,7 @@
     <div class="page-wrapper d-flex-justify-center">  
             <div class="container">  
                 <div class="row my-3 d-flex" style="flex-direction: column; align-items: center;">  
-                    <div class="logo d-flex-justify-center mt-1" style="align-items: center;">  
+                    <div class="logo d-flex-justify-center" style="align-items: center;">  
                         <img  
                             src="{{asset('front/assets/images/logo/logo.9208f443.svg')}}"
                             alt="قالب چند منظوره هما"  
@@ -75,14 +74,14 @@
                         <input type="hidden" name="forget_password" value="1">
                         @endif
                         <div class="form-group mb-">  
-                            <strong for="">کد تایید را وارد کنید</strong>
+                            <h5 for="">کد تایید را وارد کنید</h5>
                             <p class="text mt-1">لطفا کد ارسال شده به شماره {{$mobile}} را وارد کنید.</p>
-                            <input type="text" name="sms_token" class="form-control input-register" placeholder="مثال: 1234"  required oninput="validateInput(this)" style="direction: ltr;" value="{{old('sms_token')}}">  
+                            <input type="text" name="sms_token" class="form-control input-register" placeholder="مثال: 1234" oninput="validateInput(this)" style="direction: ltr;" value="{{old('sms_token')}}" required="required" oninvalid="this.setCustomValidity('کد تایید را وارد کنید')"/>
                             <p class="text-danger warning-text mt-1">این قسمت را خالی نگذارید</p>  
                         </div>  
                         <div id="timer" class="text-center">02:00</div>  
                         <a href="" onclick="document.getElementById('postForm').submit();" id="messageBox" class="btn btn-secondary btn-register mb-2" style="display: none">ارسال مجدد کد</a>
-                        <button type="submit" class="btn btn-secondary btn-register mb-2">ورود</button>  
+                        <button type="submit" id="btn-register" class="btn btn-secondary btn-register mb-3">ورود</button>  
                         <div class="d-flex-justify-center" style="align-items: center">
                             <a href="{{ route('pageRegisterLogin',$mobile) }}" class="edit-mobile">ویرایش شماره</a>  
                         </div>
@@ -110,6 +109,7 @@
             } else {  
                 clearInterval(countdown);  
                 messageBox.style.display = 'flex';
+                document.getElementById("btn-register").disabled = true;
             }  
         }, 1000);
         function validateInput(input) {  

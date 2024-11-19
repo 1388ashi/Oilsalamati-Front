@@ -21,7 +21,6 @@
         margin: 0; 
     }  
     .container {  
-        height: 430px;
         width: 350px;
         max-width: 400px;  
         padding: 60px;  
@@ -39,6 +38,8 @@
     }  
     .input-register {  
         width: 100%;  
+        margin-top: 11px;
+        margin-bottom: 9px;
         border-radius: 10px;  
     }  
     .warning-text {  
@@ -76,7 +77,7 @@
                         <input type="hidden" name="type" value="login">
                         <div class="form-group mb-">  
                             <strong for="">رمز عبور</strong>
-                            <input type="text" name="password" class="form-control input-register" placeholder="رمز عبور را وارد کنید"  required value="{{old('password')}}">  
+                            <input type="text" name="password" class="form-control input-register" placeholder="رمز عبور را وارد کنید" value="{{old('password')}}" required="required" oninvalid="this.setCustomValidity('رمز عبور خود را وارد کنید')"/>  
                             <p class="text-danger warning-text mt-1">این قسمت را خالی نگذارید</p>  
                         </div>  
                         <button type="submit" class="btn btn-secondary btn-register mb-2">ورود</button>  

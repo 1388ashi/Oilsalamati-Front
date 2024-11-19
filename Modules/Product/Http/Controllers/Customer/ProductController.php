@@ -99,6 +99,9 @@ class ProductController extends Controller
             ->findOrFail($productId)->makeHidden('images');
         $user->favorites()->detach([$product->id]);
 
-        return response()->success('از لیست مورد علاقه ها حذف شد');
+        if (request()->header('Accept') === 'application/json') {
+            return response()->success('از لیست مورد علاقه ها حذف شد');
+        }
+        return response()->json(['message' => 'از لیست مورد علاقه ها حذف شد']);
     }
 }

@@ -24,7 +24,7 @@ class CartUpdateRequest extends FormRequest
     protected function passedValidation()
     {
         $cartId = $this->id;
-        $cart = Cart::query()->where('id', $cartId)->owner()->firstOrFail();
+        $cart = Cart::query()->find($cartId);
         if ($cart->variety->quantity == null || $cart->variety->quantity == 0){
             throw Helpers::makeValidationException('تنوع مورد نظر ناموجود است');
         }

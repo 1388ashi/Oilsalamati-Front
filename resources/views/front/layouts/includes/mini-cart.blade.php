@@ -41,11 +41,7 @@
       </div>
 
       <div class="minicart-action d-flex mt-3">
-        <a
-          href="{{route('cart.index')}}"
-          class="proceed-to-checkout btn btn-primary w-100 ms-1"
-          >تکمیل خرید</a
-        >
+        <a id="proceed-to-checkout" class="proceed-to-checkout btn btn-primary w-100 ms-1">تکمیل خرید</a>
       </div>
     </div>
   </div>

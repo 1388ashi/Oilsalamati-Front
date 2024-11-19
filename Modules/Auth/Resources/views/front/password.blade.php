@@ -21,7 +21,6 @@
         margin: 0; 
     }  
     .container {  
-        height: 430px;
         width: 350px;
         max-width: 400px;  
         padding: 40px;  
@@ -55,7 +54,7 @@
     <div class="page-wrapper d-flex-justify-center">  
         <div class="container">  
             <div class="row my-3 d-flex" style="flex-direction: column; align-items: center;">  
-                <div class="logo d-flex-justify-center mt-1" style="align-items: center;">  
+                <div class="logo d-flex-justify-center mt-1 mb-3" style="align-items: center;">  
                     <img  
                         src="{{asset('front/assets/images/logo/logo.9208f443.svg')}}"
                         alt="قالب چند منظوره هما"  
@@ -71,11 +70,11 @@
                     <input type="hidden" name="sdvssdfsdv" value="brthtyjuj7s">
                     <input type="hidden" name="mobile" value="{{$customer->mobile}}">
                     <div class="form-group mb-2">  
-                        <strong class="mb-2" for="">رمز عبور خود را ثبت کنید</strong>
-                        <input type="text" name="sms_token" class="form-control input-register" placeholder="مثال: 123456" required oninput="validateInput(this)" value="{{old('password')}}">  
-                        <p class="text-danger warning-text mt-1">این قسمت را خالی نگذارید</p>  
+                        <strong for="">رمز عبور خود را ثبت کنید</strong>
+                        <input type="text" name="sms_token" class="form-control input-register mt-2" placeholder="مثال: 123456" oninput="validateInput(this)" value="{{old('password')}}" required="required" oninvalid="this.setCustomValidity('رمز عبور خود را ثبت کنید')"/> 
+                        <p class="text-danger warning-text mt-2">این قسمت را خالی نگذارید</p>  
                     </div>  
-                    <button type="submit" class="btn btn-secondary btn-register mb-2">ورود</button>  
+                    <button type="submit" class="btn btn-secondary btn-register mt-2">ورود</button>  
                 </form>  
             </div>  
         </div>  

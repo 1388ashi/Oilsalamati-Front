@@ -21,7 +21,6 @@
         margin: 0;
     }  
     .login-container {  
-        height: 430px;
         width: 350px;  
         max-width: 400px;  
         padding: 30px;  
@@ -72,7 +71,7 @@
                         @csrf  
                         <input type="hidden" name="sdvssdfsdv" value="brthtyjuj7s">
                         <div class="form-group mb-3">  
-                            <input type="text" name="mobile" class="form-control input-register" value="09" placeholder="شماره موبایل" required oninput="validateInput(this)" style="direction: ltr;" value="{{old('mobile',$mobile)}}" required>  
+                            <input type="text" name="mobile" class="form-control input-register" value="09" placeholder="شماره موبایل" oninput="validateInput(this)" style="direction: ltr;" value="{{old('mobile',$mobile)}}" required="required" oninvalid="this.setCustomValidity('شماره موبایل خود را وارد کنید')"/>    
                         </div>  
                         <button type="submit" class="btn btn-secondary btn-register">ورود</button>  
                     </form>  
