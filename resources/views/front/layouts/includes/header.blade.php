@@ -164,11 +164,14 @@
         </div>
         <div class="account-parent iconset">
           @if (auth()->guard('customer')->check())
-            <div class="account-link" title="حساب" style="background: #2f415d; padding: 8px 24px; border-radius: 20px;">
-              <a href="{{ route('customer.my-account') }}" class="text-light d-flex gap-2 align-items-center">
+            <div class="account-link user-name-icon-box" title="حساب">
+              <a href="{{ route('customer.my-account') }}">
                 @php($customer = auth()->guard('customer')->user())
-                <i class="hdr-icon icon anm anm-user-al text-light"></i>
-                <span>{{ $customer->full_name ?? $customer->mobile }}</span> 
+                <i class="hdr-icon icon anm anm-user-al"></i>
+                <span class="d-flex align-items-center gap-1">
+                  <span>{{ $customer->full_name ?? $customer->mobile }}</span>
+                  <i class="fe fe-chevron-down"></i>
+                </span> 
               </a>
             </div>
           @else

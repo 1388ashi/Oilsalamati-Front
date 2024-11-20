@@ -39,4 +39,11 @@
     opacity: 1;  
     transform: scale(1);
   }
+
+  @media only screen and (max-width: 990px) {
+    #account-page-container {
+      margin-bottom: 22px;
+    }
+  }
+
 </style>

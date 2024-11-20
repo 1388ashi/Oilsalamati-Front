@@ -5,9 +5,13 @@
 @endsection
 
 @section('styles')
+    @include('customer::front.includes.styles.main')
+    @include('customer::front.includes.styles.nav-tabs')
     @include('customer::front.includes.styles.account')
     @include('customer::front.includes.styles.info')
     @include('customer::front.includes.styles.wallet')
+    @include('customer::front.includes.styles.address')
+    @include('customer::front.includes.styles.orders')
 @endsection
 
 @section('body_class')

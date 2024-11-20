@@ -40,7 +40,7 @@
               onclick="editProfile(event)" 
               class="btn btn-primary fw-light"
               style="font-size: 12px; padding: 4px 12px;"
-              >ویرایش</button>
+              >بروزرسانی</button>
           </div>
           <div class="box-content mt-3">
             <div class="row">
@@ -95,6 +95,11 @@
                         <option value="male" @if ($customer->gender === 'male') selected @endif>مرد</option>
                         <option value="female" @if ($customer->gender === 'female') selected @endif>زن</option>
                       </select>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <div class="form-group">
+                      <button class="btn btn-primary form-control w-100">بروزرسانی</button>
                     </div>
                   </div>
                 </div>

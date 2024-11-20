@@ -24,7 +24,6 @@ class CartStoreRequest extends FormRequest
 
     protected function passedValidation()
     {
-        $varietyId = Helpers::getModelIdOnPut('variety');
         $this->variety = Variety::query()->with('product.activeFlash')->whereKey($this->variety_id)->firstOrFail();
         if ($this->variety->quantity == null || $this->variety->quantity == 0){
             throw Helpers::makeValidationException('تنوع مورد نظر ناموجود است');

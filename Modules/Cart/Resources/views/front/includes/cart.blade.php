@@ -140,19 +140,11 @@
           </div>
         </div>
       </div>
-      <!--خلاصه سبد خرید-->
+      <div class="d-flex mb-4" style="flex-direction: column">
+        <button type="button" class="btn btn-primary" id="steps1-btnNext">
+          ادامه فرآیند خرید
+        </button>
+      </div>
     </div>
-  </div>
-
-  <div class="d-flex justify-content-end">
-    {{-- <button
-      type="button"
-      class="btn btn-secondary ms-1 btnPrevious"
-    >
-      بازگشت
-    </button> --}}
-    <button type="button" class="btn btn-primary me-1" id="steps1-btnNext">
-      ادامه فرآیند خرید
-    </button>
   </div>
 </div>

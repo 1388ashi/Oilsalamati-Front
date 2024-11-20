@@ -3,8 +3,8 @@
     <div class="top-sec d-flex-justify-center justify-content-between mb-4">
       <h2 class="mb-0">تراکنش های کیف پول</h2>
       <div class="wallet-transaction-btns">
-        <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#WithdrawWalletModal">برداشت از کیف پول</button>
-        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#DepositWalletModal">افزایش موجودی</button>
+        <button type="button" class="btn btn-secondary btn-sm radius-16" data-bs-toggle="modal" data-bs-target="#WithdrawWalletModal">برداشت از کیف پول</button>
+        <button type="button" class="btn btn-primary btn-sm radius-16" data-bs-toggle="modal" data-bs-target="#DepositWalletModal">افزایش موجودی</button>
       </div>
     </div>
 
@@ -49,7 +49,7 @@
           </tr>
           @empty
           <tr>
-            <td colspan="7" class="text-center">آیتمی یافت نشد</td>
+            <td colspan="7" class="text-center text-danger">آیتمی یافت نشد</td>
           </tr>
           @endforelse
         </tbody>

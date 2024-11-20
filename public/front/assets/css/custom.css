@@ -1,0 +1,38 @@
+
+.user-name-icon-box span {
+  display: none;
+}
+
+@media only screen and (min-width: 580px) {
+
+  .user-name-icon-box {
+    background: #2f415d; 
+    padding: 8px 24px; 
+    border-radius: 20px;
+  }
+
+  .user-name-icon-box a {
+    display: flex;
+    gap: .5rem;
+    align-items: center;
+    color: rgba(248, 249, 250, 1);
+  }
+
+  .user-name-icon-box a span {
+    display: inline;
+  }
+
+  .user-name-icon-box a .icon {
+    color: rgba(248, 249, 250, 1);
+  }
+
+}
+
+@media only screen and (max-width: 580px) {
+  .user-name-icon-box i {
+    color: #171717;
+  }
+  .user-name-icon-box span i {
+    display: none;
+  }
+}

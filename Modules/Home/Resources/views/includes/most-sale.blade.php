@@ -72,7 +72,7 @@
 
 		</div>
 
-		<div class="view-collection text-center">
+		<div class="view-collection text-center mt-4 mt-md-5 mb-md-5">
 			<a href="{{ route('products.index') }}" class="btn btn-outline-secondary btn-lg">مشاهده همه</a>
 		</div>
 
