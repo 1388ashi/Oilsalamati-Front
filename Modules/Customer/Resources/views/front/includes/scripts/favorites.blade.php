@@ -26,11 +26,7 @@
                         });  
                     },  
                     error: function(error) {  
-                        console.log(error);  
-                        Swal.fire({  
-                            icon: "error",  
-                            text: error.responseJSON.message  
-                        });  
+                        showErrorMessages(error);
                     }  
                 }); 
             } 

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html class="no-js" lang="en">
-    
+
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -12,11 +12,11 @@
     <link rel="stylesheet" href="{{asset('front/assets/css/style-min.css')}}">
     <link rel="stylesheet" href="{{asset('front/assets/css/responsive.css')}}">
 </head>
-<style>  
-    body {  
-        display: flex;  
-        justify-content: center;  
-        align-items: center;  
+<style>
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
         height: 100vh;
         margin: 0; 
     }  
@@ -57,16 +57,17 @@
                 <div class="logo d-flex-justify-center mt-1 mb-3" style="align-items: center;">  
                     <img  
                         src="{{asset('front/assets/images/logo/logo.9208f443.svg')}}"
-                        alt="قالب چند منظوره هما"  
-                        title="قالب چند منظوره هما"  
-                        width="149"  
-                        height="39"  
-                    />  
-                </div>  
+                        alt="قالب چند منظوره هما"
+                        title="قالب چند منظوره هما"
+                        width="149"
+                        height="39"
+                    />
+                </div>
                 <x-alert-danger></x-alert-danger>
                 <x-alert-success></x-alert-success>
-                <form action="{{ route('createPassword') }}" method="POST">
-                    @csrf  
+                <h5>رمز عبور</h5>
+                <form action="{{ route('createPassword') }}" method="POST" class="mt-5">
+                    @csrf
                     <input type="hidden" name="sdvssdfsdv" value="brthtyjuj7s">
                     <input type="hidden" name="mobile" value="{{$customer->mobile}}">
                     <div class="form-group mb-2">  

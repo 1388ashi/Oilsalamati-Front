@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html class="no-js" lang="en">
-    
+
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -12,11 +12,11 @@
     <link rel="stylesheet" href="{{asset('front/assets/css/style-min.css')}}">
     <link rel="stylesheet" href="{{asset('front/assets/css/responsive.css')}}">
 </head>
-<style>  
-    body {  
-        display: flex;  
-        justify-content: center;  
-        align-items: center;  
+<style>
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
         height: 100vh;
         margin: 0;
     }  
@@ -38,37 +38,37 @@
     }  
     .input-register {  
         direction: ltr;
-        text-align: left;  
-        width: 100%;  
-        border-radius: 10px;  
-    }  
-    .warning-text {  
-        font-size: 10px;  
-    }  
-    .text-downpage {  
-        font-size: 12px;  
-    }  
-</style>   
-<body class="account-page register-page">  
-    <div class="page-wrapper d-flex-justify-center">  
-            <div class="login-container">  
-                <div class="row my-3" style="display: flex; flex-direction: column; align-items: center;">  
-                    <div class="logo d-flex-justify-center"style="flex-direction: column; align-items: center;">  
-                        <img  
+        text-align: left;
+        width: 100%;
+        border-radius: 10px;
+    }
+    .warning-text {
+        font-size: 10px;
+    }
+    .text-downpage {
+        font-size: 12px;
+    }
+</style>
+<body class="account-page register-page">
+    <div class="page-wrapper d-flex-justify-center">
+            <div class="login-container">
+                <div class="row my-3" style="display: flex; flex-direction: column; align-items: center;">
+                    <div class="logo d-flex-justify-center"style="flex-direction: column; align-items: center;">
+                        <img
                             src="{{asset('front/assets/images/logo/logo.9208f443.svg')}}"
-                            alt="قالب چند منظوره هما"  
-                            title="قالب چند منظوره هما"  
-                            width="149"  
-                            height="39"  
-                        />  
-                    </div>  
-                    <h5>ورود | ثبت‌نام</h5>  
-                    <p style="margin-bottom: 0.5rem">سلام!</p>  
-                    <p>لطفا شماره موبایل خود را وارد کنید</p>  
+                            alt="قالب چند منظوره هما"
+                            title="قالب چند منظوره هما"
+                            width="149"
+                            height="39"
+                        />
+                    </div>
+                    <h5 class="mt-2">ورود | ثبت‌نام</h5>
+                    <p class="text-muted" style="margin-bottom: 0.5rem;font-size: 12px;">سلام!</p>
+                    <p class="text-muted" style="font-size: 12px;margin-bottom: 12px;">لطفا شماره موبایل خود را وارد کنید</p>
                     <x-alert-danger></x-alert-danger>
                     <x-alert-success></x-alert-success>
                     <form action="{{ route('registerLogin') }}" method="POST">
-                        @csrf  
+                        @csrf
                         <input type="hidden" name="sdvssdfsdv" value="brthtyjuj7s">
                         <div class="form-group mb-3">  
                             <input type="text" name="mobile" class="form-control input-register" value="09" placeholder="شماره موبایل" oninput="validateInput(this)" style="direction: ltr;" value="{{old('mobile',$mobile)}}" required="required" oninvalid="this.setCustomValidity('شماره موبایل خود را وارد کنید')"/>    
@@ -80,20 +80,20 @@
             </div>  
     </div>  
 
-    <script>  
-        function validateInput(input) {  
-            input.value = input.value.replace(/[^0-9]/g, '');  
-        
-            if (input.value.length > 11) {  
+    <script>
+        function validateInput(input) {
+            input.value = input.value.replace(/[^0-9]/g, '');
+
+            if (input.value.length > 11) {
                 input.value = input.value.slice(0, 11);
-            }  
-            if (input.value === '') {  
-                input.value = '09';  
-            }  
-            if (input.value.length < 2 && input.value !== '09') {  
-                input.value = '09';  
-            }  
-        }  
-        </script>  
+            }
+            if (input.value === '') {
+                input.value = '09';
+            }
+            if (input.value.length < 2 && input.value !== '09') {
+                input.value = '09';
+            }
+        }
+        </script>
 </body>
 </html>

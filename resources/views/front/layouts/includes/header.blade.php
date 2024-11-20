@@ -11,21 +11,31 @@
       <div class="col-6 col-sm-6 col-md-3 col-lg-4 text-left d-flex align-items-center justify-content-end">
         <div class="social-email left-brd d-inline-flex">
           <ul class="list-inline social-icons d-inline-flex align-items-center">
-            <li class="list-inline-item">
-              <a href="{{ $settings['social']['facebook'] }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="فیسبوک" ><i class="icon anm anm-facebook-f"></i></a>
-            </li>
-            <li class="list-inline-item">
-              <a href="{{ $settings['social']['twitter'] }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="توییتر" ><i class="icon anm anm-twitter"></i></a>
-            </li>
-            <li class="list-inline-item">
-              <a href="{{ $settings['social']['linkedin'] }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="لینکدین" ><i class="icon anm anm-linkedin-in"></i></a>
-            </li>
-            <li class="list-inline-item">
-              <a href="{{ $settings['social']['instagram'] }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="اینستاگرام" ><i class="icon anm anm-instagram"></i></a>
-            </li>
-            <li class="list-inline-item">
-              <a href="{{ $settings['social']['youtube'] }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="یوتیوب" ><i class="icon anm anm-youtube"></i></a>
-            </li>
+            @if ($settings['social']['facebook'])
+              <li class="list-inline-item">
+                <a href="{{ $settings['social']['facebook'] }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="فیسبوک" ><i class="icon anm anm-facebook-f"></i></a>
+              </li>
+            @endif
+            @if ($settings['social']['twitter'])
+              <li class="list-inline-item">
+                <a href="{{ $settings['social']['twitter'] }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="توییتر" ><i class="icon anm anm-facebook-f"></i></a>
+              </li>
+            @endif
+            @if ($settings['social']['linkedin'])
+              <li class="list-inline-item">
+                <a href="{{ $settings['social']['linkedin'] }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="لینکدین" ><i class="icon anm anm-facebook-f"></i></a>
+              </li>
+            @endif
+            @if ($settings['social']['instagram'])
+              <li class="list-inline-item">
+                <a href="{{ $settings['social']['instagram'] }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="اینستاگرام" ><i class="icon anm anm-facebook-f"></i></a>
+              </li>
+            @endif
+            @if ($settings['social']['youtube'])
+              <li class="list-inline-item">
+                <a href="{{ $settings['social']['youtube'] }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="یوتوب" ><i class="icon anm anm-facebook-f"></i></a>
+              </li>
+            @endif
           </ul>
         </div>
       </div>
@@ -100,7 +110,7 @@
                 <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close" ></button>
               </div>
               <div class="search-body">
-                <form class="form minisearch" id="header-search">
+                <div class="form minisearch" id="header-search">
                   <!--فیلد جستجو-->
                   <div class="d-flex searchField">
                     <div class="search-category"></div>
@@ -113,58 +123,65 @@
                   </div>
                   <!--پایان فیلد جستجو-->
 
+                  <li class="item d-none" id="ProductSearchItem">
+                    <div class="mini-list-item d-flex align-items-center w-100 clearfix">
+                      <div class="mini-image text-center">
+                        <a class="item-link">
+                          <img class="item-image blur-up lazyload" width="120" height="170"/>
+                        </a>
+                      </div>
+                      <div class="me-3 details text-right">
+                        <div class="product-name">
+                          <a class="item-title"></a>
+                        </div>
+                        <div class="product-price">
+                          <span class="old-price"></span>
+                          <span class="price"></span>
+                        </div>
+                        <div class="product-review d-flex align-items-center justify-content-start"></div>
+                      </div>
+                    </div>
+                  </li>
+
                   <!--جستجوی محصولات-->
                   <div class="search-products">
                     <ul class="items g-2 g-md-3 row row-cols-lg-4 row-cols-md-3 row-cols-sm-2" id="ProductSearchBox">
                       <li class="item vala w-100 text-center text-muted d-none">شما هیچ موردی در جستجوی خود ندارید.</li>
-                      <li class="item d-none" id="ProductSearchItem">
-                        <div class="mini-list-item d-flex align-items-center w-100 clearfix">
-                          <div class="mini-image text-center">
-                            <a class="item-link">
-                              <img id="ProductSearchImage" class="blur-up lazyload" width="120" height="170"/>
-                            </a>
-                          </div>
-                          <div class="me-3 details text-right">
-                            <div class="product-name">
-                              <a class="item-title" id="ProductSearchTitle"></a>
-                            </div>
-                            <div class="product-price">
-                              <span class="old-price" id="ProductSearchOldPrice"></span>
-                              <span class="price" id="ProductSearchPrice"></span>
-                            </div>
-                            <div class="product-review d-flex align-items-center justify-content-start"></div>
-                          </div>
-                        </div>
-                      </li>
                     </ul>
                   </div>
                   <!--پایان جستجوی محصولات-->
-                </form>
+                </div>
               </div>
             </div>
           </div>
         </div>
         <!--پایان جستجو-->
+        <div class="header-cart iconset" title="سبدخرید">
+          <a href="#;" class="header-cart btn-minicart clr-none" data-bs-toggle="offcanvas" data-bs-target="#minicart-drawer">
+            <i class="hdr-icon icon anm anm-cart-l"></i>
+            <span id="num-cart-count" class="cart-count">0</span>
+          </a>
+        </div>
         <div class="account-parent iconset">
-          <div class="account-link" title="حساب">
-            <a href="{{ route('customer.my-account') }}">
-              <i class="hdr-icon icon anm anm-user-al"></i>
-            </a>
-          </div>
+          @if (auth()->guard('customer')->check())
+            <div class="account-link" title="حساب" style="background: #2f415d; padding: 8px 24px; border-radius: 20px;">
+              <a href="{{ route('customer.my-account') }}" class="text-light d-flex gap-2 align-items-center">
+                @php($customer = auth()->guard('customer')->user())
+                <i class="hdr-icon icon anm anm-user-al text-light"></i>
+                <span>{{ $customer->full_name ?? $customer->mobile }}</span> 
+              </a>
+            </div>
+          @else
+            <div class="account-link" title="حساب">
+              <a href="{{ route('customer.my-account') }}">
+                <i class="hdr-icon icon anm anm-user-al"></i>
+              </a>
+            </div>
+          @endif
         </div>
         {{-- <div class="wishlist-link iconset" title="علاقه مندی">
           <a href="wishlist-style1.html"><i class="hdr-icon icon anm anm-heart-l"></i><span class="wishlist-count">0</span></a>
         </div> --}}
-        <div class="header-cart iconset" title="سبدخرید">
-          <a
-            href="#;"
-            class="header-cart btn-minicart clr-none"
-            data-bs-toggle="offcanvas"
-            data-bs-target="#minicart-drawer"
-            ><i class="hdr-icon icon anm anm-cart-l"></i
-            ><span id="num-cart-count" class="cart-count">0</span></a
-          >
-        </div>
         <button type="button" class="iconset pe-0 menu-icon js-mobile-nav-toggle mobile-nav--open d-lg-none" title="منو">
           <i class="hdr-icon icon anm anm-times-l"></i>
           <i class="hdr-icon icon anm anm-bars-r"></i>

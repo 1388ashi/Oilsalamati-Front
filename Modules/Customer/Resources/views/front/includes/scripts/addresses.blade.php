@@ -68,7 +68,7 @@
       addressBox.removeClass('d-none');
       addressBox.find('.edit-btn').attr('data-bs-target', '#EditAddressModal-' + address.id);
       addressBox.find('.delete-btn').attr('data-address-id', address.id);
-      $('#AddressSection').append(addressBox);
+      $('#AddressSection').prepend(addressBox);
       generateEditFormModalForNewAddress(address);
     }
 
@@ -171,7 +171,7 @@
           $('#AddressBox-' + btn.data('address-id')).remove();
         },  
         error: (error) => {  
-          popup('خطا', 'error', 'عملیات حذف با مشکل مواجه شد');
+          showErrorMessages(error);
         }  
       });
       } else if (result.isDenied) {  

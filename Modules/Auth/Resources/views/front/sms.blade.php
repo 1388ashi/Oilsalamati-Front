@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html class="no-js" lang="en">
-    
+
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -12,14 +12,14 @@
     <link rel="stylesheet" href="{{asset('front/assets/css/style-min.css')}}">
     <link rel="stylesheet" href="{{asset('front/assets/css/responsive.css')}}">
 </head>
-<style>  
-    body {  
-        display: flex;  
-        justify-content: center;  
-        align-items: center;  
+<style>
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
         height: 100vh;
-        margin: 0; 
-    }  
+        margin: 0;
+    }
     .container {
         width: 350px;
         max-width: 400px;  
@@ -57,16 +57,16 @@
                     <div class="logo d-flex-justify-center" style="align-items: center;">  
                         <img  
                             src="{{asset('front/assets/images/logo/logo.9208f443.svg')}}"
-                            alt="قالب چند منظوره هما"  
-                            title="قالب چند منظوره هما"  
-                            width="149"  
-                            height="39"  
-                        />  
-                    </div>  
+                            alt="قالب چند منظوره هما"
+                            title="قالب چند منظوره هما"
+                            width="149"
+                            height="39"
+                        />
+                    </div>
                     <x-alert-danger></x-alert-danger>
                     <x-alert-success></x-alert-success>
                         <form action="{{ route('customer.login') }}" method="POST">
-                        @csrf  
+                        @csrf
                         <input type="hidden" name="sdvssdfsdv" value="brthtyjuj7s">
                         <input type="hidden" name="type" value="login">
                         <input type="hidden" name="mobile" value="{{$mobile}}">
@@ -83,45 +83,45 @@
                         <a href="" onclick="document.getElementById('postForm').submit();" id="messageBox" class="btn btn-secondary btn-register mb-2" style="display: none">ارسال مجدد کد</a>
                         <button type="submit" id="btn-register" class="btn btn-secondary btn-register mb-3">ورود</button>  
                         <div class="d-flex-justify-center" style="align-items: center">
-                            <a href="{{ route('pageRegisterLogin',$mobile) }}" class="edit-mobile">ویرایش شماره</a>  
+                            <a href="{{ route('pageRegisterLogin',$mobile) }}" class="edit-mobile">ویرایش شماره</a>
                         </div>
-                    </form>  
-                </div>  
-            </div>  
-    </div>  
+                    </form>
+                </div>
+            </div>
+    </div>
     <form id="postForm" action="{{ route('registerLogin', $mobile) }}" method="POST" style="display: none;">
         @csrf
     </form>
-    <script>  
+    <script>
         let seconds = 120;
 
-        const timerElement = document.getElementById("timer");  
-        const messageBox = document.getElementById("messageBox");  
+        const timerElement = document.getElementById("timer");
+        const messageBox = document.getElementById("messageBox");
 
-        const countdown = setInterval(() => {  
-            const minutes = Math.floor(seconds / 60);  
-            const secs = seconds % 60;  
+        const countdown = setInterval(() => {
+            const minutes = Math.floor(seconds / 60);
+            const secs = seconds % 60;
 
-            timerElement.textContent = `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;  
+            timerElement.textContent = `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
 
-            if (seconds > 0) {  
-                seconds--;  
-            } else {  
-                clearInterval(countdown);  
+            if (seconds > 0) {
+                seconds--;
+            } else {
+                clearInterval(countdown);
                 messageBox.style.display = 'flex';
                 document.getElementById("btn-register").disabled = true;
             }  
         }, 1000);
-        function validateInput(input) {  
-            if (input.value.length > 4) {  
+        function validateInput(input) {
+            if (input.value.length > 4) {
                 input.value = input.value.slice(0, 4);
-            }  
-        }  
-        function validatePassword(input) {  
-            if (input.value.length > 4) {  
+            }
+        }
+        function validatePassword(input) {
+            if (input.value.length > 4) {
                 input.value = input.value.slice(0, 4);
-            }  
-        }  
-        </script>  
+            }
+        }
+        </script>
 </body>
 </html>

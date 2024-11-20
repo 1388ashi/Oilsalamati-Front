@@ -23,7 +23,7 @@ class CustomerRegisterRequest extends FormRequest
     public function rules()
     {
         $passwordRequired = app(CoreSettings::class)->get('auth.password.required', true);
-        $passwordValidation = $passwordRequired ? ['required', Password::min(6)] : ['nullable'];
+        $passwordValidation = /* $passwordRequired ? ['required', Password::min(6)] : */ ['nullable'];
 
         return [
             'mobile' => ['required', 'digits:11', new IranMobile()],

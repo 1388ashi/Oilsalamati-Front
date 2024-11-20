@@ -18,8 +18,8 @@
         justify-content: center;
         align-items: center;
         height: 100vh;
-        margin: 0; 
-    }  
+        margin: 0;
+    }
     .container {
         width: 350px;
         max-width: 400px;  
@@ -57,12 +57,12 @@
                     <div class="logo d-flex-justify-center mt-1" style="align-items: center;">  
                         <img  
                             src="{{asset('front/assets/images/logo/logo.9208f443.svg')}}"
-                            alt="قالب چند منظوره هما"  
-                            title="قالب چند منظوره هما"  
-                            width="149"  
-                            height="39"  
-                        />  
-                    </div>  
+                            alt="قالب چند منظوره هما"
+                            title="قالب چند منظوره هما"
+                            width="149"
+                            height="39"
+                        />
+                    </div>
                     <x-alert-danger></x-alert-danger>
                     <x-alert-success></x-alert-success>
                     <form action="{{ route('register') }}" method="POST">
@@ -70,7 +70,7 @@
                         <input type="hidden" name="sdvssdfsdv" value="brthtyjuj7s">
                         <input type="hidden" name="type" value="register">
                         <input type="hidden" name="mobile" value="{{$mobile}}">
-                        <div class="form-group mb-">
+                        <div class="form-group">
                             <strong for="">کد تایید را وارد کنید</strong>
                             <p class="text mt-1">لطفا کد ارسال شده به شماره {{$mobile}} را وارد کنید.</p>
                             <input type="text" name="sms_token" class="form-control input-register" placeholder="مثال: 1234" oninput="validateInput(this)" style="direction: ltr;" value="{{old('sms_token')}}" required="required" oninvalid="this.setCustomValidity('کد تایید را وارد کنید')"/>    

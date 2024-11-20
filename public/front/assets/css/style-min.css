@@ -2022,9 +2022,9 @@ textarea:-ms-input-placeholder {
   padding-top: 0 !important;
 }
 
-#page-content {
+/* #page-content {
   margin: 0 0 60px;
-}
+} */
 
 .top-header {
   display: flex;
@@ -2350,7 +2350,8 @@ textarea:-ms-input-placeholder {
 .iconset {
   display: inline-block;
   color: #171717;
-  padding: 0 8px;
+  margin-inline: 4px;
+  /* padding: 0 8px; */
   cursor: pointer;
 }
 
@@ -9890,7 +9891,7 @@ textarea:-ms-input-placeholder {
 .dashboard-content .box-info .box-title {
   position: relative;
   background-color: #f7f7f7;
-  padding: 10px 15px;
+  padding: 8px;
 }
 
 .dashboard-content .box-info .box-title h4 {

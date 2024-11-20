@@ -50,7 +50,7 @@
             </tr>
             @empty
             <tr>
-              <td colspan="7" class="text-center text-danger">سفارشی ثبت نشده است !</td>
+              <td colspan="8" class="text-center text-danger">سفارشی ثبت نشده است !</td>
             </tr>
             @endforelse
         </tbody>

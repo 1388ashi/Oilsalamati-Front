@@ -52,7 +52,7 @@
           </tr>
           @empty
           <tr class="text-center">
-            <td colspan="5" class="fs-5 text-danger">آیتمی جهت نمایش وجود ندارد</td>
+            <td colspan="5" class="text-danger">آیتمی جهت نمایش وجود ندارد</td>
           </tr>
           @endforelse
         </tbody>

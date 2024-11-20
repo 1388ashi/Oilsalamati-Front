@@ -1,5 +1,5 @@
 <section class="slideshow slideshow-wrapper">
-	<div class="container">
+	<div class="container" style="margin-top: 10px;">
 		<div class="row">
 
 			<div class="col-12 col-sm-12 col-md-12 col-lg-8">
@@ -22,7 +22,7 @@
 				</div>
 			</div>
 
-			<div class="col-12 col-sm-12 col-md-12 col-lg-4 mt-4 mt-lg-0">
+			{{-- <div class="col-12 col-sm-12 col-md-12 col-lg-4 mt-4 mt-lg-0">
 				<div class="collection-banner-grid">
 					<div class="row sp-row">
 
@@ -36,7 +36,6 @@
 									<div class="img">
 										<img
 											class="rounded-4 w-100 blur-up lazyload"
-											{{-- src="{{ $advertise->picture }}" --}}
 											alt="{{ $advertise->title }}"
 											data-src="{{ $advertise->picture }}"
 											src="{{ $advertise->picture }}"
@@ -60,8 +59,6 @@
 											class="rounded-4 w-100 blur-up lazyload"
 											src="{{ $advertise->picture }}"
 											alt="{{ $advertise->title }}"
-											{{-- data-src="{{asset('front/assets/images/slideshow/demo7-small-banner2.jpg')}}" --}}
-											{{-- src="{{asset('front/assets/images/slideshow/demo7-small-banner2.jpg')}}" --}}
 											width="454"
 											height="268"
 										/>
@@ -71,7 +68,7 @@
 						</div>
 					</div>
 				</div>
-			</div>
+			</div> --}}
 
 		</div>
 	</div>

@@ -28,8 +28,8 @@ class ProfileUpdateRequest extends FormRequest
         $customer = \Auth::guard('customer-api')->user();
 
         return [
-            'first_name' => 'required|string|max:191',
-            'last_name' => 'required|string|max:191',
+            'first_name' => 'nullable|string|max:191',
+            'last_name' => 'nullable|string|max:191',
             'email' => ['nullable', 'email', 'max:191'],
             'national_code' => [
                 'nullable',
