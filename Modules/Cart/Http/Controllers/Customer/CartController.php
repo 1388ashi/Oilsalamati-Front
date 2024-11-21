@@ -43,7 +43,9 @@ class CartController extends Controller
         $provinces = Province::select(['id', 'name'])->active()->get()->toArray();
         $cities = City::select(['id', 'name', 'province_id'])->active()->get()->toArray();
         $drivers = Payment::getAvailableDriversForFront();
-
+        if (request()->header('Accept') === 'application/json') {
+            return response()->success('سبد خرید شما', compact('carts_showcase', 'carts','messages'/*, 'reservations'*/));
+        }
         return view('cart::front.index', compact([
             'carts_showcase', 
             'carts', 
