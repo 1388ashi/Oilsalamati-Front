@@ -110,8 +110,8 @@ use Modules\Product\Http\Controllers\Front\PPCController;
         Route::get('/compare/search', [CompareController::class, 'search'])->name('compare.search');
         Route::get('/{product}', [AllProductController::class, 'show'])->name('show');
         Route::post('/{product} ', [CustomerProductController::class, 'addToFavorites'])->name('addToFavorites');
-        Route::delete('/{product}/favorite', [CustomerProductController::class, 'deleteFromFavorites'])->name('deleteFromFavorites');
     });
+Route::delete('/{product}/favorite', [CustomerProductController::class, 'deleteFromFavorites'])->name('products.deleteFromFavorites');
     
 
 Route::post('torob/products', [PPCController::class, 'torob']);

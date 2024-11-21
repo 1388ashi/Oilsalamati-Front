@@ -9,12 +9,11 @@
             <div class="item col-item">
                 <div class="product-box">
                     <div class="product-image">
-                        <!-- شروع تصویر محصول -->
                         <a href="{{route('products.show',$product->id)}}" class="product-img">
                             <img
                                 class="primary blur-up lazyload"
-                                data-src="{{asset('front/assets/images/products/cosmetic-product1.jpg')}}"
-                                src="{{asset('front/assets/images/products/cosmetic-product1.jpg')}}"
+                                {{-- data-src="{{$product->images_showcase['main_image']->url}}"
+                                src="{{$product->images_showcase['main_image']->url}}" --}}
                                 alt="محصول"
                                 title="محصول"
                                 width="625"
@@ -22,8 +21,8 @@
                             />
                             <img
                                 class="hover blur-up lazyload"
-                                data-src="{{asset('front/assets/images/products/cosmetic-product1-1.jpg')}}"
-                                src="{{asset('front/assets/images/products/cosmetic-product1-1.jpg')}}"
+                                {{-- data-src="{{$product->images_showcase['main_image']->url}}"
+                                src="{{$product->images_showcase['main_image']->url}}" --}}
                                 alt=" محصول"
                                 title="محصول"
                                 width="625"
@@ -39,15 +38,11 @@
                                 <span class="lbl on-sale">{{ number_format($finalPrice->discount_price) . ' تومان' }} تخفیف</span>
                             @endif
                         </div>
-                        <!-- برچسب محصول نهایی -->
                     </div>
                     <div class="product-details text-center">
-                        <!-- نام محصول -->
                         <div class="product-name">
                         <a href="{{route('products.show',$product->id)}}">{{$product->title}}</a>
                         </div>
-                        <!-- نام محصول نهایی -->
-                        <!-- قیمت محصول -->
                         <div class="product-price">
                             @if ($hasDiscount)
                                 <span class="price old-price">{{ number_format($finalPrice->amount) }} تومان </span>

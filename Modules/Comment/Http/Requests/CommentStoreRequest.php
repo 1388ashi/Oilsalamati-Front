@@ -21,7 +21,7 @@ class CommentStoreRequest extends FormRequest
             'name' => [$this->nameRequired ? 'required' : 'nullable', 'string'],
             'email' => [$this->emailRequired ? 'required' : 'nullable', 'email'],
             'body' => 'required|string',
-            'parent_id' => 'nullable|exists:    ,id'
+            'parent_id' => 'nullable|exists:comments,id'
         ];
     }
 

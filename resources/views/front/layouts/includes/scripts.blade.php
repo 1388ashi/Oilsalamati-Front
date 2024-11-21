@@ -3,7 +3,6 @@
 <script src="{{ asset('assets/plugins/jquery/jquery.min.js') }}"></script>
 <script src="{{ asset('front/assets/custom/custom.js') }}"></script>
 <script src="{{ asset('front/assets/custom/sweetalert.min.js') }}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 
 
 <script>
