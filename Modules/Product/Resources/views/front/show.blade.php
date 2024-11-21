@@ -141,13 +141,13 @@
                     </div>
                         <div class="product-price d-flex-center">
                         @if($product->discount_type == 'percentage')
-                            <span class="price old-price" id="price">{{ number_format($product->unit_price) }} تومان </span>
+                            <span class="price old-price">{{ number_format($product->unit_price) }} تومان </span>
                             <div class="discount-product">
                                 <span class="text-white">{{ $product->discount }}%</span>
                             </div>
                         @else
                             @if ($product->discount)
-                                <span class="price old-price" id="price">{{ number_format($product->unit_price) }} تومان </span>
+                                <span class="price old-price">{{ number_format($product->unit_price) }} تومان </span>
                                 <span class="text-success">{{ number_format($product->discount) }}</span>
                             @endif
                         @endif

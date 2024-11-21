@@ -4954,7 +4954,7 @@ textarea:-ms-input-placeholder {
 .index-demo3 .size-swatches li:hover,
 .index-demo3 .swatches li.active,
 .index-demo3 .swatches li:hover {
-  box-shadow: 0 0 0 1px #cb8161, 0 0 0 0 var(--white) inset;
+  box-shadow: 0 0 0 1px #cb8161, 0 0 0 0 #fff inset;
 }
 
 .index-demo3 .footer-logo-links .social-icons li a:hover,
