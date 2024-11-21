@@ -4939,6 +4939,7 @@ textarea:-ms-input-placeholder {
 .index-demo3 .swatches li.active,
 .index-demo3 .swatches li:hover {
   box-shadow: 0 0 0 1px #cb8161, 0 0 0 0 #fff inset;
+  background-color: #2f415d;
 }
 
 .index-demo3 .footer-logo-links .social-icons li a:hover,
@@ -7538,6 +7539,8 @@ textarea:-ms-input-placeholder {
 .swatches li:hover {
   border-color: #fff;
   box-shadow: 0 0 0 1px #000, 0 0 0 0 #fff inset;
+  background: #2f415d;
+  color: #FFFFFF;
 }
 
 .swatches li.small {

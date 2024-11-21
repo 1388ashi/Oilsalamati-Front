@@ -5,6 +5,7 @@
 <link href="{{ asset('front/assets/css/responsive.css') }}" rel="stylesheet" />
 <link href="{{asset('assets/font/font.css')}}" rel="stylesheet"/>
 
+
 <style>
   @page {
     margin-block: 30px;
