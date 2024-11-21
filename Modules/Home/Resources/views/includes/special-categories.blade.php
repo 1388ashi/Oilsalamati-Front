@@ -7,8 +7,8 @@
 						<div class="zoom-scal zoom-scal-nopb rounded-3">
 							<img
 								class="blur-up lazyload"
-								data-src="{{ asset($category->image->url) }}"
-								src="{{ asset($category->image->url) }}"
+								data-src="{{ asset($category->image?->url) }}"
+								src="{{ asset($category->image?->url) }}"
 								alt="{{ $category->title }}"
 								title="{{ $category->title }}"
 								width="365"
