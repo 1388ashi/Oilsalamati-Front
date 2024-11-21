@@ -21,42 +21,41 @@
         margin: 0;
     }
     .container {
-        height: 80%;
-        width: 100%;
-        max-width: 400px;
-        padding: 40px;
-        background-color: white;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-    .logo {
-        text-align: center;
-        margin-bottom: 20px;
-    }
-    .btn-register {
-        width: 100%;
-        border-radius: 10px;
-    }
-    .input-register {
-        width: 100%;
-        border-radius: 10px;
-    }
-    .warning-text {
-        font-size: 10px;
-    }
-    .text {
-        font-size: 13px;
-    }
-    .edit-mobile:hover {
-        color: #e96f84;
-    }
-</style>
-<body class="account-page register-page">
-    <div class="page-wrapper d-flex-justify-center">
-            <div class="container">
-                <div class="row my-3 d-flex" style="flex-direction: column; align-items: center;">
-                    <div class="logo d-flex-justify-center mt-1" style="align-items: center;">
-                        <img
+        width: 350px;
+        max-width: 400px;  
+        padding: 30px;  
+        background-color: white;  
+        border-radius: 10px;  
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);  
+    }  
+    .logo {  
+        text-align: center;  
+        margin-bottom: 30px;  
+    }  
+    .btn-register {  
+        width: 100%;  
+        border-radius: 10px;  
+    }  
+    .input-register {  
+        width: 100%;  
+        border-radius: 10px;  
+    }  
+    .warning-text {  
+        font-size: 10px;  
+    }   
+    .text {  
+        font-size: 13px;  
+    }  
+    .edit-mobile:hover {  
+        color: #e96f84;  
+    }  
+</style>   
+<body class="account-page register-page">  
+    <div class="page-wrapper d-flex-justify-center">  
+            <div class="container">  
+                <div class="row my-3 d-flex" style="flex-direction: column; align-items: center;">  
+                    <div class="logo d-flex-justify-center" style="align-items: center;">  
+                        <img  
                             src="{{asset('front/assets/images/logo/logo.9208f443.svg')}}"
                             alt="قالب چند منظوره هما"
                             title="قالب چند منظوره هما"
@@ -74,15 +73,15 @@
                         @if (isset($type))
                         <input type="hidden" name="forget_password" value="1">
                         @endif
-                        <div class="form-group mb-">
-                            <strong for="">کد تایید را وارد کنید</strong>
+                        <div class="form-group mb-">  
+                            <h5 for="">کد تایید را وارد کنید</h5>
                             <p class="text mt-1">لطفا کد ارسال شده به شماره {{$mobile}} را وارد کنید.</p>
-                            <input type="text" name="sms_token" class="form-control input-register" placeholder="مثال: 1234"  required oninput="validateInput(this)" style="direction: ltr;" value="{{old('sms_token')}}">
-                            <p class="text-danger warning-text mt-1">این قسمت را خالی نگذارید</p>
-                        </div>
-                        <div id="timer" class="text-center">02:00</div>
+                            <input type="text" name="sms_token" class="form-control input-register" placeholder="مثال: 1234" oninput="validateInput(this)" style="direction: ltr;" value="{{old('sms_token')}}" required="required" oninvalid="this.setCustomValidity('کد تایید را وارد کنید')"/>
+                            <p class="text-danger warning-text mt-1">این قسمت را خالی نگذارید</p>  
+                        </div>  
+                        <div id="timer" class="text-center">02:00</div>  
                         <a href="" onclick="document.getElementById('postForm').submit();" id="messageBox" class="btn btn-secondary btn-register mb-2" style="display: none">ارسال مجدد کد</a>
-                        <button type="submit" class="btn btn-secondary btn-register mb-2">تایید</button>
+                        <button type="submit" id="btn-register" class="btn btn-secondary btn-register mb-3">ورود</button>  
                         <div class="d-flex-justify-center" style="align-items: center">
                             <a href="{{ route('pageRegisterLogin',$mobile) }}" class="edit-mobile">ویرایش شماره</a>
                         </div>
@@ -110,7 +109,8 @@
             } else {
                 clearInterval(countdown);
                 messageBox.style.display = 'flex';
-            }
+                document.getElementById("btn-register").disabled = true;
+            }  
         }, 1000);
         function validateInput(input) {
             if (input.value.length > 4) {

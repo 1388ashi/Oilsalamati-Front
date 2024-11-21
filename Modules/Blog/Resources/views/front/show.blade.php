@@ -129,8 +129,8 @@
                                         <div class="flex-shrink-0 comment-img">
                                             <img
                                             class="blur-up lazyload"
-                                            data-src="{{asset('front/assets/images/users/user-img1.jpg')}}"
-                                            src="{{asset('front/assets/images/users/user-img1.jpg')}}"
+                                            data-src="{{asset('front/assets/images/c2487b8c-09ed-4d59-81f0-971ddd5586d9')}}"
+                                            src="{{asset('front/assets/images/c2487b8c-09ed-4d59-81f0-971ddd5586d9')}}"
                                             alt=" نظر"
                                             width="200"
                                             height="200"
@@ -156,8 +156,8 @@
                                             <div class="flex-shrink-0 comment-img">
                                                 <img
                                                 class="blur-up lazyload"
-                                                data-src="{{asset('front/assets/images/users/user-img1.jpg')}}"
-                                                src="{{asset('front/assets/images/users/user-img1.jpg')}}"
+                                                data-src="{{asset('front/assets/images/c2487b8c-09ed-4d59-81f0-971ddd5586d9')}}"
+                                                src="{{asset('front/assets/images/c2487b8c-09ed-4d59-81f0-971ddd5586d9')}}"
                                                 alt=" نظر"
                                                 width="200"
                                                 height="200"
@@ -184,31 +184,6 @@
                         </ol>
                     </div>
                     @endif
-                    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">  
-                        <div class="modal-dialog modal-md" role="document">  
-                            <div class="modal-content">  
-                                <div class="modal-header">  
-                                    <h5 class="modal-title font-weight-bold">لطفاً وارد حساب کاربری خود شوید.</h5>  
-                                    <button type="button" class="close" id="closeButton" aria-label="Close">  
-                                        <span aria-hidden="true">&times;</span>  
-                                    </button>  
-                                </div>  
-                                <div class="modal-body text-center">  
-                                    <a href="{{ route('pageRegisterLogin') }}" class="btn btn-primary btn-auth">ورود به حساب کاربری</a>  
-                                    <button type="button" class="btn btn-outline-danger" id="closeButton2">بستن</button>  
-                                </div>  
-                            </div>  
-                        </div>  
-                    </div>
-                    <!-- پایان نظرات وبلاگ -->
-                    <!-- فرم نظرات وبلاگ -->
-                    <div id="statusAlert" class="alert alert-success d-none">  
-                        نظر با موفقیت ثبت شده و پس از تایید نمایش داده خواهد شد.
-                    </div>  
-                    <div id="statusDanger" class="alert alert-danger d-none">  
-                        مشکلی پیش آمده دوباره تلاش کنید. 
-                    </div>  
-                    
                     <div class="formFeilds comment-form form-vertical">  
                         <form id="commentForm" method="post" action="{{ route('comments.store', $post['post']) }}">  
                             @csrf  
@@ -242,12 +217,9 @@
                             </div>  
                         </form>  
                     </div>  
-                <!-- پایان فرم نظرات وبلاگ -->
                 </div>
-                <!-- پایان محتوای وبلاگ -->
             </div>
         </div>
-        <!--پایان محتوای وبلاگ-->
     </div>
 </div> 
 @endsection
@@ -258,9 +230,16 @@
             e.preventDefault();  
             let isLoggedIn = @json(auth()->guard('customer')->user());  
             if (!isLoggedIn) {  
-                $('#loginModal').modal('show');  
+                Swal.fire({  
+                    icon: "error",  
+                    title: "خطای ارسال",  
+                    text: "لطفا ابتدا وارد اکانت خود شوید!",  
+                    showConfirmButton: false,  
+                    footer: '<button class="btn btn-danger"><a href="{{route('pageRegisterLogin')}}">ورود به اکانت</a></button>'  
+                });  
             }else{
                 var submitBtn = $(this).find('input[type="submit"]');   
+                submitBtn.prop('disabled', true); 
 
                 $.ajax({  
                     url: $(this).attr('action'),   
@@ -273,11 +252,15 @@
                             text: "نظر با موفقیت ثبت شد و پس از تایید نمایش داده خواهد شد."  
                         });
                     },  
-                    error: function(xhr) {  
+                    error: function(error) {
+                        console.log(error);  
                         Swal.fire({  
                             icon: "error",  
                             text: "خطا در ثبت نظر."  
                         });
+                    }  
+                    complete: function() {  
+                        submitBtn.prop('disabled', false);  
                     }  
                 });  
             }

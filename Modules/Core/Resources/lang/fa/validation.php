@@ -227,6 +227,7 @@ return [
         'ids' => 'شناسه ها',
         'ids.*' => 'شناسه',
         'amount' => 'مقدار',
+        'subject' => 'عنوان',
         'quantity' => 'تعداد',
         'in_progress' => 'درحال پردازش',
         'delivered' => 'ارسال شده',

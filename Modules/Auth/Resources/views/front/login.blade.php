@@ -18,35 +18,36 @@
         justify-content: center;
         align-items: center;
         height: 100vh;
-        margin: 0;
-    }
-    .container {
-        height: 80%;
-        width: 100%;
-        max-width: 400px;
-        padding: 60px;
-        background-color: white;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-    .logo {
-        text-align: center;
-        margin-bottom: 50px;
-    }
-    .btn-register {
-        width: 100%;
-        border-radius: 10px;
-    }
-    .input-register {
-        width: 100%;
-        border-radius: 10px;
-    }
-    .warning-text {
-        font-size: 10px;
-    }
-    .text {
-        font-size: 13px;
-    }
+        margin: 0; 
+    }  
+    .container {  
+        width: 350px;
+        max-width: 400px;  
+        padding: 60px;  
+        background-color: white;  
+        border-radius: 10px;  
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);  
+    }  
+    .logo {  
+        text-align: center;  
+        margin-bottom: 30px;  
+    }  
+    .btn-register {  
+        width: 100%;  
+        border-radius: 10px;  
+    }  
+    .input-register {  
+        width: 100%;  
+        margin-top: 11px;
+        margin-bottom: 9px;
+        border-radius: 10px;  
+    }  
+    .warning-text {  
+        font-size: 10px;  
+    }   
+    .text {  
+        font-size: 13px;  
+    }  
     .edit-mobile{
         font-size: 12px;
     }
@@ -76,10 +77,10 @@
                         <input type="hidden" name="type" value="login">
                         <div class="form-group mb-">
                             <strong for="">رمز عبور</strong>
-                            <input type="text" name="password" class="form-control input-register" placeholder="رمز عبور را وارد کنید"  required value="{{old('password')}}">
-                            <p class="text-danger warning-text mt-1">این قسمت را خالی نگذارید</p>
-                        </div>
-                        <button type="submit" class="btn btn-secondary btn-register mb-2">ورود</button>
+                            <input type="text" name="password" class="form-control input-register" placeholder="رمز عبور را وارد کنید" value="{{old('password')}}" required="required" oninvalid="this.setCustomValidity('رمز عبور خود را وارد کنید')"/>  
+                            <p class="text-danger warning-text mt-1">این قسمت را خالی نگذارید</p>  
+                        </div>  
+                        <button type="submit" class="btn btn-secondary btn-register mb-2">ورود</button>  
                         <div class="d-flex justify-content-between mt-2">
                             <a href="{{ route('webSendSms',$mobile) }}" class="edit-mobile">ورود با کد یکبار مصرف</a>
                             <p class="edit-mobile">|</p>

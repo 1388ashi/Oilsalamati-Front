@@ -72,7 +72,6 @@
                                 </p>
 
                                 <button type="button" class="d-flex justify-content-center text-center"
-                                    style="border-radius: 50%; padding-inline: 10px; padding-top: 4px; background-color: #2F415d;"
                                     data-bs-toggle="modal" data-bs-target="#DepositWalletModal">
                                     <span class="text-center text-light">+</span>
                                 </button>

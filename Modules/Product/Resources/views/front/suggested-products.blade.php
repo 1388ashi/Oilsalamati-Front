@@ -9,7 +9,6 @@
             <div class="item col-item">
                 <div class="product-box">
                     <div class="product-image">
-                        <!-- شروع تصویر محصول -->
                         <a href="{{route('products.show',$product->id)}}" class="product-img">
                             <img
                                 class="primary blur-up lazyload"
@@ -39,15 +38,11 @@
                                 <span class="lbl on-sale">{{ number_format($finalPrice->discount_price) . ' تومان' }} تخفیف</span>
                             @endif
                         </div>
-                        <!-- برچسب محصول نهایی -->
                     </div>
                     <div class="product-details text-center">
-                        <!-- نام محصول -->
                         <div class="product-name">
                         <a href="{{route('products.show',$product->id)}}">{{$product->title}}</a>
                         </div>
-                        <!-- نام محصول نهایی -->
-                        <!-- قیمت محصول -->
                         <div class="product-price">
                             @if ($hasDiscount)
                                 <span class="price old-price">{{ number_format($finalPrice->amount) }} تومان </span>

@@ -19,25 +19,24 @@
         align-items: center;
         height: 100vh;
         margin: 0;
-    }
-    .login-container {
-        height: 80%;
-        width: 100%;
-        max-width: 400px;
-        padding: 30px;
-        background-color: white;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-    .logo {
-        text-align: center;
-        margin-bottom: 20px;
-    }
-    .btn-register {
-        width: 100%;
-        border-radius: 10px;
-    }
-    .input-register {
+    }  
+    .login-container {  
+        width: 350px;  
+        max-width: 400px;  
+        padding: 30px;  
+        background-color: white;  
+        border-radius: 10px;  
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);  
+    }  
+    .logo {  
+        text-align: center;  
+        margin-bottom: 20px;  
+    }  
+    .btn-register {  
+        width: 100%;  
+        border-radius: 10px;  
+    }  
+    .input-register {  
         direction: ltr;
         text-align: left;
         width: 100%;
@@ -71,15 +70,15 @@
                     <form action="{{ route('registerLogin') }}" method="POST">
                         @csrf
                         <input type="hidden" name="sdvssdfsdv" value="brthtyjuj7s">
-                        <div class="form-group mb-3">
-                            <input type="text" name="mobile" class="form-control input-register" value="09" placeholder="شماره موبایل" required oninput="validateInput(this)" style="direction: ltr;" value="{{old('mobile',$mobile)}}" required>
-                        </div>
-                        <button type="submit" class="btn btn-secondary btn-register">ورود</button>
-                    </form>
-                    <p class="text-center text-muted mt-3 text-downpage">ورود شما به معنای پذیرش شرایط و قوانین حریم‌ خصوصی است</p>
-                </div>
-            </div>
-    </div>
+                        <div class="form-group mb-3">  
+                            <input type="text" name="mobile" class="form-control input-register" value="09" placeholder="شماره موبایل" oninput="validateInput(this)" style="direction: ltr;" value="{{old('mobile',$mobile)}}" required="required" oninvalid="this.setCustomValidity('شماره موبایل خود را وارد کنید')"/>    
+                        </div>  
+                        <button type="submit" class="btn btn-secondary btn-register">ورود</button>  
+                    </form>  
+                    <p class="text-center mt-3 text-downpage">ورود شما به معنای پذیرش شرایط و قوانین حریم‌ خصوصی است</p>  
+                </div>  
+            </div>  
+    </div>  
 
     <script>
         function validateInput(input) {

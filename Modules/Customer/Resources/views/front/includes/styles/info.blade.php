@@ -1,4 +1,10 @@
 <style>
+  .profile-detail button {
+    border-radius: 50%; 
+    padding-inline: 10px; 
+    padding-top: 4px; 
+    background-color: var(--dark-blue);
+  }
   .profile-image {
     position: relative;
     display: inline-block;

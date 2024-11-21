@@ -372,7 +372,7 @@ class AuthController extends Controller
     public function webResetPassword($mobile){
         return view('auth::front.reset-password',compact('mobile'));
     }
-    public function resetPassword(CustomerResetPasswordRequest $request): JsonResponse
+    public function resetPassword(CustomerResetPasswordRequest $request)
     {
         if ($request->smsToken) {
             $smsToken = SmsToken::where('mobile', $request->input('mobile'))->first();
@@ -416,6 +416,4 @@ class AuthController extends Controller
         $accessToken->device_token = $request->device_token;
         $accessToken->save();
     }
-
-
 }
