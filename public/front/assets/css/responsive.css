@@ -95,9 +95,9 @@
 }
 
 @media only screen and (max-width: 1199px) {
-  #page-content {
+  /* #page-content {
     margin: 0 0 50px;
-  }
+  } */
   .section {
     padding-top: 50px;
     padding-bottom: 50px;
@@ -1838,9 +1838,9 @@
     padding-top: 40px;
     padding-bottom: 40px;
   }
-  #page-content {
+  /* #page-content {
     margin: 0 0 30px;
-  }
+  } */
   .mobile-hide {
     display: none;
   }

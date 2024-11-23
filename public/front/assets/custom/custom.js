@@ -63,3 +63,13 @@ function showErrorMessages(error) {
 
   popup('خطا در برداشت', 'error', messages); 
 }
+
+function showLoader(time) {
+  
+  const loader = $('#loader-div');  
+  loader.css('display', 'flex');  
+  setTimeout(function() {  
+    loader.css('display', 'none');   
+  }, time);  
+
+}

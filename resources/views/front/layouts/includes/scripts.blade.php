@@ -4,7 +4,6 @@
 <script src="{{ asset('front/assets/custom/custom.js') }}"></script>
 <script src="{{ asset('front/assets/custom/sweetalert.min.js') }}"></script>
 
-
 <script>
     let typingTimer;
 

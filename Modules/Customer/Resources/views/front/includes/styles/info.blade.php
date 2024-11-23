@@ -1,4 +1,10 @@
 <style>
+  .profile-detail button {
+    border-radius: 50%; 
+    padding-inline: 10px; 
+    padding-top: 4px; 
+    background-color: var(--dark-blue);
+  }
   .profile-image {
     position: relative;
     display: inline-block;
@@ -39,4 +45,11 @@
     opacity: 1;  
     transform: scale(1);
   }
+
+  @media only screen and (max-width: 990px) {
+    #account-page-container {
+      margin-bottom: 22px;
+    }
+  }
+
 </style>

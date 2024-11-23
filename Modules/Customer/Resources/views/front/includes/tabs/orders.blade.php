@@ -2,6 +2,9 @@
   <div class="orders-card mt-0 h-100">
     <div class="top-sec d-flex-justify-center justify-content-between mb-4">
       <h2 class="mb-0">سفارشات من</h2>
+      <button id="print-user-orders-button">
+        <span>چاپ تمام سفارشات</span>
+      </button>
     </div>
     <div class="table-bottom-brd table-responsive">
       <table class="table align-middle text-center order-table">
@@ -15,6 +18,7 @@
             <th scope="col">تاریخ</th>
             <th scope="col">ساعت</th>
             <th scope="col">مشاهده</th>
+            <th scope="col">چاپ</th>
           </tr>
         </thead>
         <tbody>
@@ -44,8 +48,11 @@
               <td>{{ verta($order->created_at)->format('Y/m/d') }}</td>
               <td>{{ verta($order->created_at)->formatTime() }}</td>
               <td>
-                <a class="view" data-bs-toggle="modal" data-bs-target="#OrderDetail-{{ $order->id }}"><i class="icon anm anm-eye btn-link fs-6"></i></a>
+                <a class="view" data-bs-toggle="modal" style="cursor: pointer;" data-bs-target="#OrderDetail-{{ $order->id }}"><i class="fe fe-eye text-info fs-18"></i></a>
                 @include('customer::front.includes.orders.details')
+              </td>
+              <td>
+                <a style="cursor: pointer;"><i class="fe fe-printer text-purple fs-18"></i></a>
               </td>
             </tr>
             @empty

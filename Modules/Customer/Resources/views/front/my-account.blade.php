@@ -5,9 +5,14 @@
 @endsection
 
 @section('styles')
+    @include('customer::front.includes.styles.main')
+    @include('customer::front.includes.styles.nav-tabs')
     @include('customer::front.includes.styles.account')
     @include('customer::front.includes.styles.info')
     @include('customer::front.includes.styles.wallet')
+    @include('customer::front.includes.styles.address')
+    @include('customer::front.includes.styles.orders')
+    <link href="{{asset('front/assets/date-time-picker/mds.bs.datetimepicker.style.css') }}"/>
 @endsection
 
 @section('body_class')
@@ -68,7 +73,6 @@
                                 </p>
 
                                 <button type="button" class="d-flex justify-content-center text-center"
-                                    style="border-radius: 50%; padding-inline: 10px; padding-top: 4px; background-color: #2F415d;"
                                     data-bs-toggle="modal" data-bs-target="#DepositWalletModal">
                                     <span class="text-center text-light">+</span>
                                 </button>
@@ -95,57 +99,13 @@
 @endsection
 
 @section('scripts')
+
+    <script src="{{ asset('front/assets/date-time-picker/mds.bs.datetimepicker.js') }}"></script>
+
     @include('customer::front.includes.scripts.addresses')
     @include('customer::front.includes.scripts.wallet')
     @include('customer::front.includes.scripts.info')
     @include('customer::front.includes.scripts.favorites')
+    @include('customer::front.includes.scripts.update-image')
 
-    <script>
-        const fileInput = $('#ImageBrowse').get(0);
-
-        async function getBase64(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = () => resolve(reader.result.split(',')[1]);
-                reader.onerror = error => reject(error);
-            });
-        }
-
-        function storeUserImage(e) {
-            e.preventDefault();
-
-            if (fileInput.files && fileInput.files.length > 0) {
-                const file = fileInput.files[0];
-                getBase64(file).then(base64 => {
-                    console.log(file);
-                    return;
-                    $.ajax({
-                        type: 'PUT',
-                        url: $(e.target).attr('action'),
-                        data: {
-                            image: base64,
-                        },
-                        headers: {
-                            'X-CSRF-TOKEN': "{{ csrf_token() }}"
-                        },
-                        success: function(data) {
-                            console.log("success");
-                            console.log(data);
-                        },
-                        error: function(data) {
-                            console.log("error");
-                            console.log(data);
-                        }
-                    });
-                }).catch(error => {
-                    console.error("Error converting to base64:", error);
-                });
-            } else {
-                console.log('No file selected.');
-            }
-        }
-
-        $('#imageUploadForm').on('submit', storeUserImage);
-    </script>
 @endsection

@@ -18,14 +18,20 @@
       <div id="page-content">
         @yield('content')
       </div>
-      
-			@include('front.layouts.includes.footer')
-			@include('front.layouts.includes.mini-cart')
-			@include('front.layouts.includes.scripts')
-			
-			@yield('scripts')
-			@include('product::front.minicart-scripts')
 			
     </div>
+
+		<div id="loader-div">
+			<div id="loader" class="loader"></div>
+		</div>
+		
+
+		@include('front.layouts.includes.footer')
+		@include('front.layouts.includes.mini-cart')
+		@include('front.layouts.includes.scripts')
+		@include('product::front.minicart-scripts')
+
+		@yield('scripts')
+
   </body>
 </html>

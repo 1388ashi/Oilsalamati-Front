@@ -1,4 +1,4 @@
-<section class="section product-slider pb-0">
+<section class="section product-slider">
 	<div class="container">
 		<div class="section-header">
 			<h2>پر بازدید ترین ها</h2>

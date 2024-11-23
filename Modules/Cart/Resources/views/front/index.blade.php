@@ -29,7 +29,16 @@
 
     </div>
   </div>
+  
 </div>
+
+
+{{-- <form action="{{ route('cart.add', ['id' => 305]) }}" method="POST">
+  @csrf
+  <input type="hidden" value="2" name="quantity">
+  <input type="hidden" value="305" name="variety_id">
+  <button>asdad</button>
+</form> --}}
 
 @endsection
 
@@ -39,7 +48,6 @@
   $(document).ready(function () {
    
     
-    // Add active class to the current list tem (highlight it)
     let checkoutList = document.getElementById("nav-tabs");
     let checkoutItems = checkoutList.getElementsByClassName("nav-item");
     for (let i = 0; i < checkoutItems.length; i++) {
@@ -53,7 +61,6 @@
       });
     }
 
-    // Nav next/prev
     $(".btnNext").click(function () {
       const nextTabLinkEl = $(".nav-tabs .active")
         .closest("li")
@@ -90,6 +97,8 @@
     allCarts = @json($user->carts);
 
     $('.qtyBtn').on('click', function() {
+
+      showLoader(3000);
 
       const input = $(this).closest('td').find('.cart-qty-input');
       const cartId = input.data('cart-id');
@@ -154,7 +163,6 @@
         error: (error) => {  
           input.val(currentValue);
           showErrorMessages(error);
-          // showCartUpdateMessageAlert('error', xhr)
         }  
       });
     });
@@ -164,6 +172,11 @@
     });
 
     $('#steps1-btnNext').on('click', function() {
+
+      if (allCarts.length < 1) {
+        popup('هشدار', 'warning', 'سبد خرید شما خالی است');
+        return false;
+      }
 
       activeTabButton($('.nav-item:eq(1)'));
       activeNewTab($('#steps2'), $('#steps1'));

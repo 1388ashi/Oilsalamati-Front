@@ -29,7 +29,6 @@
         </div>
       </div>
     </div>
-
     <div class="account-box">
       <div class="row">
         <div class="box-info mb-4">
@@ -40,7 +39,7 @@
               onclick="editProfile(event)" 
               class="btn btn-primary fw-light"
               style="font-size: 12px; padding: 4px 12px;"
-              >ویرایش</button>
+              >بروزرسانی</button>
           </div>
           <div class="box-content mt-3">
             <div class="row">
@@ -79,7 +78,9 @@
                   <div class="col-xl-6 col-12">
                     <div class="form-group">
                       <label>تاریخ تولد :</label>
-                      <input type="text" class="form-control birth-date" value="{{ $customer->birth_date }}">
+                      <input class="form-control fc-datepicker birth-date-2" id="birth-date" type="text" autocomplete="off"/>
+                      <input id="birth-date_hide" class="birth-date-1" type="hidden" value="{{ $customer->birth_date }}" />
+{{--                      <input type="text" class="form-control birth-date" value="{{ $customer->birth_date }}">--}}
                     </div>
                   </div>
                   <div class="col-xl-6 col-12">
@@ -95,6 +96,11 @@
                         <option value="male" @if ($customer->gender === 'male') selected @endif>مرد</option>
                         <option value="female" @if ($customer->gender === 'female') selected @endif>زن</option>
                       </select>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <div class="form-group">
+                      <button class="btn btn-primary form-control w-100">بروزرسانی</button>
                     </div>
                   </div>
                 </div>

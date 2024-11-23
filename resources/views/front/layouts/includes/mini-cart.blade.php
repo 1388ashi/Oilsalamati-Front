@@ -40,9 +40,9 @@
         </div>
       </div>
 
-      <div class="minicart-action d-flex mt-3">
-        <a id="proceed-to-checkout" class="proceed-to-checkout btn btn-primary w-100 ms-1">تکمیل خرید</a>
-      </div>
+      <div class="minicart-action d-flex mt-3">  
+        <a id="proceed-to-checkout" class="proceed-to-checkout btn btn-primary w-100 ms-1">تکمیل خرید</a>  
+    </div>  
     </div>
   </div>
   <!--محتوای MiniCart-->

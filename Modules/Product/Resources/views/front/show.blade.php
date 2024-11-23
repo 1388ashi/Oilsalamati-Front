@@ -50,8 +50,8 @@
                         <img
                             id="zoompro"
                             class="zoompro"
-                            {{-- src="{{$product->varieties[0]->images_showcase[0]->url }}"
-                            data-zoom-image="{{$product->varieties[0]->images_showcase[0]->url }}" --}}
+                            src="{{$product->varieties[0]->images_showcase[0]->url }}"
+                            data-zoom-image="{{$product->varieties[0]->images_showcase[0]->url }}"
                             alt="محصول"
                             width="625"
                             height="808"
@@ -78,13 +78,13 @@
                             @foreach ($product->varieties as $variety)  
                                 <a  
                                     onclick="imageProduct(this)"   
-                                    {{-- data-zoom-image="{{ $variety->images_showcase[0]->url }}"
-                                    data-image="{{ $variety->images_showcase[0]->url }}"   --}}
+                                    data-zoom-image="{{ $variety->images_showcase[0]->url }}"
+                                    data-image="{{ $variety->images_showcase[0]->url }}"  
                                     class="slick-slide slick-cloned @if ($loop->first) active @endif">  
                                     <img  
                                         class="blur-up lazyload"  
-                                        {{-- data-src="{{ $variety->images_showcase[0]->url }}"  
-                                        src="{{ $variety->images_showcase[0]->url }}"    --}}
+                                        data-src="{{ $variety->images_showcase[0]->url }}"  
+                                        src="{{ $variety->images_showcase[0]->url }}"   
                                         alt="محصول"  
                                         width="625"  
                                         height="808"  
@@ -95,10 +95,10 @@
                     </div>
                     <div class="lightboximages">
                         @foreach ($product->varieties as $variety)  
-                        {{-- <a
+                        <a
                             href="{{ $variety->images_showcase[0]->url }}"
                             data-size="1000x1280">
-                        </a> --}}
+                        </a>
                         @endforeach  
                     </div>
                 </div>
@@ -139,16 +139,20 @@
                         شناسه:<span class="text">{{ $product->id }}</span>
                         </p>
                     </div>
-                        <div class="product-price d-flex-center">
-                    @if($product->discount_type == 'percentage')
-                        <span class="price old-price">{{ $product->discount }}%</span>
-                    @else
-                        @if ($product->discount)
-                            <span class="price old-price">{{ number_format($product->discount) }}</span>
-                        @endif
-                    @endif
-                            <span class="price" id="price">{{ number_format($product->unit_price) }} تومان </span>
-                        </div>
+                    <div class="product-price d-flex-center">
+                        @if($product->discount_type == 'percentage')  
+                            <span class="price old-price">{{ number_format($product->final_price['base_amount']) }} تومان </span>  
+                            <div class="discount-product">  
+                                <span class="text-white">{{ $product->discount }}%</span>  
+                            </div>  
+                        @else  
+                            @if ($product->discount)  
+                                <span class="price old-price">{{ number_format($product->final_price['base_amount']) }} تومان </span>  
+                                <span class="text-success">{{ number_format($product->discount) }}</span>  
+                            @endif  
+                        @endif  
+                    </div> 
+                    <span class="price" id="price">{{ number_format($product->final_price['amount']) }} تومان </span>  
                 </div>
                 <form method="post" action="" class="product-form product-form-border hidedropdown">
                 @csrf
@@ -460,11 +464,6 @@
                     $('#showSize').text(selectedValue);  
                 });  
                 let isLoggedIn = @json(auth()->guard('customer')->user());  
-                if (!isLoggedIn) {
-                    updateCartDisplay();  
-                }else{
-                    updateCartInfo();
-                }
 
                 $('.product-form-cart-submit').on('click', function(event) {  
                     event.preventDefault();  
@@ -500,7 +499,8 @@
                             document.cookie = `productData=${encodeURIComponent(JSON.stringify(productData))}; path=/;`;  
                             
                             updateCartDisplay();  
-
+                            let offcanvas = new bootstrap.Offcanvas(document.getElementById('minicart-drawer'));  
+                            offcanvas.show(); 
                             Swal.fire({  
                                 icon: "success",  
                                 text: 'محصول با موفقیت به سبد خرید شما اضافه شد.' 

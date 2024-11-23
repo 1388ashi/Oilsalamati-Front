@@ -97,6 +97,6 @@
       $(this).removeClass('selected-gatway');  
     });  
     $(event.target).addClass('selected-gatway');  
-}
+  }
 
 </script>
