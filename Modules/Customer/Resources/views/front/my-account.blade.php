@@ -10,12 +10,9 @@
     @include('customer::front.includes.styles.account')
     @include('customer::front.includes.styles.info')
     @include('customer::front.includes.styles.wallet')
-<<<<<<< HEAD
     @include('customer::front.includes.styles.address')
     @include('customer::front.includes.styles.orders')
-=======
     <link href="{{asset('front/assets/date-time-picker/mds.bs.datetimepicker.style.css') }}"/>
->>>>>>> b7f1f31f752f34af05e2598acf395f495c9b6ea1
 @endsection
 
 @section('body_class')
