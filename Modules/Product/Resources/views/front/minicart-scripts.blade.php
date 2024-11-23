@@ -317,6 +317,10 @@
             quantityInput.value = newVal;  
             updateQuantityInCookie(variety_id, newVal);
             updateTotalPrice(newVal, variety_id);  
+            Swal.fire({  
+                icon: "success",  
+                text: "تعداد محصول با موفقیت افزایش یافت. "
+            });  
         }  
         function decreaseQuantity(button) {  
             const quantityInput = button.nextElementSibling;  
@@ -327,6 +331,10 @@
                 quantityInput.value = newVal;  
                 updateQuantityInCookie(variety_id, newVal);
                 updateTotalPrice(newVal, variety_id);  
+                Swal.fire({  
+                    icon: "success",  
+                    text: "تعداد محصول با موفقیت کاهش یافت. "
+                });  
             }  
         }  
         function updateTotalPrice(newVal, inputVarietyId) {  

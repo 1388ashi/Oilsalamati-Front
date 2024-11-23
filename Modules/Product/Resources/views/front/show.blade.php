@@ -176,8 +176,8 @@
                         <!-- End Swatches Color -->
                         <!-- Swatches Size -->
                         <div class="product-item swatches-size w-100 mb-4 swatch-1 option2" data-option-index="1">
-                        {{-- <label class="label d-flex align-items-center"
-                            >اندازه:<span class="slVariant me-1 fw-bold">S</span>
+                        <label class="label d-flex align-items-center"
+                            >اندازه:<span id="showSize" class="slVariant me-1 fw-bold">انتخاب بکنید</span>
                             <a
                             href="#sizechart-modal"
                             class="text-link sizelink text-muted size-chart-modal"
@@ -185,7 +185,7 @@
                             data-bs-target="#sizechart_modal"
                             >راهنمای اندازه</a
                             ></label
-                        > --}}
+                        >
                             <input type="hidden" id="varietyPrice" name="varietyPrice" value="">
                             <input type="hidden" id="varietyValue" name="varietyValue" value="">
                             <input type="hidden" id="imageValue" name="imageValue" value="">
@@ -343,7 +343,6 @@
             </div>
         </div>
     @include('product::front.tabs-body')
-    <!--End Product Tabs-->
     </div>
     <div class="pswp" tabindex="-1" role="dialog">
         <div class="pswp__bg"></div>
@@ -458,6 +457,7 @@
                     var title = document.getElementById("title").value;
                     var selectedQuantity = document.getElementById("quantity").value;
                     $('#variety_id').val(selectedId);  
+                    $('#showSize').text(selectedValue);  
                 });  
                 let isLoggedIn = @json(auth()->guard('customer')->user());  
                 if (!isLoggedIn) {
