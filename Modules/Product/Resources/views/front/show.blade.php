@@ -140,7 +140,7 @@
                         </p>
                     </div>
                     <div class="product-price d-flex-center">
-                        @dd($product)
+                        @dd($product->final_price)
                         @if($product->discount_type == 'percentage')  
                             <span class="price old-price">{{ number_format($product->final_price['base_amount']) }} تومان </span>  
                             <div class="discount-product">  
