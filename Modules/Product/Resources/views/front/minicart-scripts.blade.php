@@ -7,15 +7,18 @@
                 carts = data;
             }
             let totalItems = carts.length;
-            $('.minicart-bottom').show();  
             $('#cart-count').text(`سبد خرید شما (${totalItems} مورد)`);
             $('#num-cart-count').text(`${totalItems}`);
 
             $('#output').empty();
             let totalPrice = 0;
             console.log(totalItems);
-            console.log(carts);
-        
+            if (totalItems == 0) {
+                $('#output').append('<li>سبد خرید شما خالی است.</li>');
+                $('.minicart-bottom').hide();  
+                return
+            }
+            $('.minicart-bottom').show();  
             carts.forEach(function(cart) {
                 let varietyPrice = parseFloat(cart.price);
                 let quantity = parseInt(cart.quantity);
@@ -23,9 +26,10 @@
                 totalPrice += productTotalPrice;
                 let title = cart.variety.product?.title ?? cart.variety.title;
                 let attributesValue = cart.variety?.attributes?.[0]?.pivot?.value ?? cart.variety.title;
-                // let imageValue = cart.variety.main_image_showcase?.url ?? cart.variety.product.images_showcase
-                //     .main_image.url;
-                let imageValue = '';
+                console.log(cart);
+                let imageValue = cart.variety.main_image_showcase?.url ?? cart.variety.product.images_showcase
+                    .main_image.url;
+                // let imageValue = '';
 
                 let productHtml = `  
                 <li class="item d-flex justify-content-center align-items-center" data-variety-id="${cart.variety_id}">  
