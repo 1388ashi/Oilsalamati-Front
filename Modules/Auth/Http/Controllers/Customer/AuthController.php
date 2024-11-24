@@ -293,7 +293,7 @@ class AuthController extends Controller
             'mobile' => 'required',  
             'password' => 'nullable',  
         ]);  
-        if (!Hash::check($request->password, $customer->password)) {  
+        if (!Hash::check($request->password, "$customer->password")) {  
             return $this->redirectWithMessage('موبایل یا رمز عبور نادرست است', 'danger');  
         }  
         
