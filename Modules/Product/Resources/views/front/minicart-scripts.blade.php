@@ -278,8 +278,6 @@
             } else {  
                 $('#output').append('<li>سبد خرید شما خالی است.</li>');  
                 $('#cart-count').text('سبد خرید شما (0 مورد)');  
-                $('#num-cart-count').text('0');  
-                $('#cart-price').text('0');  
                 $('.minicart-bottom').hide();  
 
             }  
