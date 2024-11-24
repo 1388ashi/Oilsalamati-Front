@@ -119,17 +119,19 @@
         
       </div>
 
+      <div class="d-print-none" style="margin-top: 4%; margin-bottom: 4%;">
+        <div class="col-12">
+          <div class="d-flex justify-content-center">
+            <button class="btn btn-purple" onclick="window.print()">چاپ</button>
+          </div>
+        </div>
+      </div>
+
       <div class="d-print-none" style="margin-top: 100px;"></div>
       
     @endforeach
 
-    <div class="d-print-none" style="margin-top: 4%; margin-bottom: 4%;">
-      <div class="col-12">
-        <div class="d-flex justify-content-center">
-          <button class="btn btn-purple" onclick="window.print()">چاپ</button>
-        </div>
-      </div>
-    </div>
+    
 
     @include("admin.layouts.includes.scripts")
 
