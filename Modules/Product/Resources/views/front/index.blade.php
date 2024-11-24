@@ -26,7 +26,7 @@
 
 <div class="container">
 
-	@if ($response['childCategories']->isNotEmpty())
+	@if ($response['childCategories']?->isNotEmpty())
 		<div class="collection-slider-6items gp10 slick-arrow-dots sub-collection section pt-0" dir="ltr">
 			@foreach ($response['childCategories'] as $category)
 				<div class="category-item zoomscal-hov">
@@ -104,8 +104,8 @@
 							@endphp
 
 							@foreach ($response['categories'] as $category)
-								@if ($category->children->isNotEmpty())
-									<li class="lvl1 {{ $category->children->isNotEmpty() ? 'sub-level' : ''}}">
+								@if ($category->children?->isNotEmpty())
+									<li class="lvl1 {{ $category->children?->isNotEmpty() ? 'sub-level' : ''}}">
 										<a class="site-nav">{{ $category->title }}</a>
 										<ul class="sublinks">
 											@foreach ($category->children as $category)

@@ -17,7 +17,6 @@
             <th>مبلغ (تومان)</th>
             <th>نوع</th>
             <th>وضعیت</th>
-            <th>شناسه پرداخت</th>
             <th>تاریخ</th>
             <th>ساعت</th>
           </tr>
@@ -43,7 +42,6 @@
                 <span title="وضعیت" class="badge rounded-pill bg-danger custom-badge">خطا</span>
               @endif
             </td>
-            <td>{{ $transaction->payable_id }}</td>
             <td>{{verta($transaction->created_at)->format('Y/m/d')}}</td>
             <td>{{verta($transaction->created_at)->formatTime()}}</td>
           </tr>
