@@ -25,7 +25,7 @@
                 let attributesValue = cart.variety?.attributes?.[0]?.pivot?.value ?? cart.variety.title;
                 // let imageValue = cart.variety.main_image_showcase?.url ?? cart.variety.product.images_showcase
                 //     .main_image.url;
-                // let imageValue = '';
+                let imageValue = '';
 
                 let productHtml = `  
                 <li class="item d-flex justify-content-center align-items-center" data-variety-id="${cart.variety_id}">  
