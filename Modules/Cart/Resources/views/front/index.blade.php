@@ -4,6 +4,10 @@
 	<title>سبد خرید</title>
 @endsection
 
+@section('styles')
+  @include('cart::front.includes.styles')
+@endsection
+
 @section('body_class') checkout-page checkout-style1-page @endsection
 
 @section('content')
@@ -212,7 +216,7 @@
       activeNewTab($('#steps2'), $('#steps3'));
     });
 
-    $('input[name=address_id]').on('click', function() {
+    $('input[name=address_id]').on('click', function(event) {
       checkShippableShipping($(event.target).data('url'));
     });
 
@@ -259,12 +263,6 @@
     tr.find('.unit-discount').text(cart.discount_price.toLocaleString());
     tr.find('.price').text(cart.cart_price_amount.toLocaleString());
   }
-
-  function preventChange(event) {  
-    event.preventDefault();  
-    event.stopPropagation();  
-    alert("تغییر مقدار این فیلد مجاز نیست.");  
-  }  
 
   function activeTabButton(elementToToggle) {  
 
@@ -527,17 +525,8 @@
     $.ajax({
       url: url,
       type: 'GET',
-      success: (response) => {
-        allShippings = response.data.shippings;
-        updateShippingBox(allShippings);
-      },  
-      error: (error) => {  
-        Swal.fire ({  
-          text: error,
-          icon: 'error',  
-          confirmButtonText: 'بستن',  
-        });
-      }  
+      success: (response) => updateShippingBox(response.data.shippings),  
+      error: (error) => showErrorMessages(error)
     });
   }
 
@@ -718,6 +707,20 @@
 
   function makeInput(name, value) {
     return $(`<input type="hidden" name="${name}" value="${value}"/>`);
+  }
+
+  function assignBorderToAddressBox(event) {
+    
+    $('.address-box').each(function() {  
+      $(this).removeClass('address-box-border');  
+    });  
+
+    if ($(event.target).hasClass('address-box')) {
+      $(event.target).addClass('address-box-border');
+    } else {
+      $(event.target).closest('.address-box').addClass('address-box-border');
+    }
+  
   }
 
 </script>

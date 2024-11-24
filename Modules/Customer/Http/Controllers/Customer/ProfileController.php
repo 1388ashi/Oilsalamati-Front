@@ -126,6 +126,39 @@ class ProfileController extends Controller
         ]));
     }
 
+    public function printOrders()
+    {
+        $customer = Auth::guard('customer')->user();
+        $orders = $customer->orders()
+            ->with([
+                'address' => fn($q) => $q->select(['id', 'first_name', 'last_name', 'mobile', 'address', 'postal_code', 'city_id']),
+                'address.city' => fn($q) => $q->select(['id', 'name', 'province_id']),
+                'address.city.province' => fn($q) => $q->select(['id', 'name']),
+                'items' => fn($q) => $q->select(['id', 'order_id', 'variety_id', 'amount', 'discount_amount', 'quantity']),
+            ])
+            ->select([
+                'id',
+                'customer_id',
+                'address_id',
+                'status',
+                'parent_id',
+                'created_at',
+                'description',
+                'shipping_amount',
+                'total_invoices_amount'
+            ])
+            ->parents()
+            ->latest('id');
+
+        if (request()->has('order_id'))  {
+            $orders = $orders->where('id', request('order_id'));
+        }
+
+        $orders = $orders->get();
+
+        return view('customer::front.print', compact('orders'));
+    }
+
     // came from vendor ================================================================================================
 
 

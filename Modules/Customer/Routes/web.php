@@ -64,3 +64,4 @@ Route::webSuperGroup('customer', function () {
 });
 
 Route::get('/my-account', [ProfileController::class, 'myAccount'])->name('customer.my-account');
+Route::get('/print-orders', [ProfileController::class, 'printOrders'])->name('customer.print-orders');

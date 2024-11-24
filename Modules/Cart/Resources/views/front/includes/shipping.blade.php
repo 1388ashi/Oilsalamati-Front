@@ -22,23 +22,72 @@
               </div>
             </div>
             <div class="bottom d-flex-justify-left">
-              <button type="button" class="bottom-btn btn btn-primery edit-btn btn-sm" data-target-modal-id="" onclick="openEditAddressModal(event)">ویرایش</button>
+
+              <button type="button" class="btn btn-primary btn-sm edit-btn address-operation-button" data-target-modal-id="" onclick="openEditAddressModal(event)">
+                <i class="fe fe-edit"></i>
+              </button>
+
               <button 
                 type="button" 
-                class="bottom-btn btn btn-secondary btn-sm delete-btn" 
+                class="btn btn-secondary btn-sm delete-btn address-operation-button" 
                 data-delete-address-url=""
                 data-address-id=""
                 onclick="confrimDeletingAddress(event)">
-                حذف
+                <i class="fe fe-trash"></i>
               </button>
+
             </div>
           </div>
         </div>
         @foreach ($user->addresses as $address)
           <div class="address-select-box" id="AddressBox-{{ $address->id }}">
-            <div class="address-box bg-block">
-              <div class="middle">
-                <div class="card-number mb-3">
+            <div class="address-box bg-block" onclick="assignBorderToAddressBox(event)">
+              <div class="middle d-flex justify-content-between">
+
+                <div class="d-flex flex-column">
+                  <p class="col-12 address mb-1 d-flex align-items-center gap-2">
+                    <i class="fe fe-map"></i>
+                    <span class="text-muted">{{ $address->city->province->name }} - {{ $address->city->name }} - {{ $address->address }}</span>
+                  </p>
+                  <p class="col-12 address-receiver mb-1 d-flex align-items-center gap-2">
+                    <i class="fe fe-user"></i>
+                    <span class="text-muted">{{ $address->first_name .' '. $address->last_name }} - {{ $address->mobile }}</span>
+                  </p>
+                  <p class="col-12 address-postal-code d-flex align-items-center gap-2">
+                    <i class="fe fe-link"></i>
+                    <span class="text-muted">کد پستی : {{ $address->postal_code }}</span>
+                  </p>
+                </div>
+
+                <input 
+                  id="formcheckoutRadio-{{ $address->id }}" 
+                  data-url="{{ route('customer.shippings.getShippableForAddress', ['address' => $address->id]) }}" 
+                  value="{{ $address->id }}" 
+                  name="address_id" 
+                  type="hidden" 
+                  class="radio"
+                />
+
+                <div>
+                  <button 
+                    type="button"
+                    class="btn btn-primary btn-sm edit-btn address-operation-button" 
+                    data-target-modal-id="editAddressModal-{{ $address->id }}" 
+                    onclick="openEditAddressModal(event)">
+                    <i class="fe fe-edit"></i>
+                  </button>
+    
+                  <button 
+                    type="button" 
+                    class="btn btn-secondary btn-sm delete-btn address-operation-button" 
+                    data-delete-address-url="{{ route('customer.addresses.destroy', $address) }}"
+                    data-address-id="{{ $address->id }}"
+                    onclick="confrimDeletingAddress(event)">
+                    <i class="fe fe-trash"></i>
+                  </button>
+                </div>
+
+                {{-- <div class="card-number mb-3">
                   <div class="customRadio clearfix">
                     <input 
                       id="formcheckoutRadio-{{ $address->id }}" 
@@ -51,22 +100,41 @@
                     <label class="address-detail" for="formcheckoutRadio-{{ $address->id }}" class="mb-2">
                       {{ $address->city->province->name }} - {{ $address->city->name }} - {{ $address->address }}
                     </label>
-                    <p class="text-muted col-12 address-receiver mb-0">{{ $address->first_name .' '. $address->last_name }} - {{ $address->mobile }}</p>
+                    <p class="col-12 address-receiver mb-1 d-flex align-items-center gap-2">
+                      <i class="fe fe-map text-dark"></i>
+                      <span class="text-muted">{{ $address->city->province->name }} - {{ $address->city->name }} - {{ $address->address }}</span>
+                    </p>
+                    <p class="col-12 address-receiver mb-1 d-flex align-items-center gap-2">
+                      <i class="fe fe-user text-dark"></i>
+                      <span class="text-muted">{{ $address->first_name .' '. $address->last_name }} - {{ $address->mobile }}</span>
+                    </p>
                     <p class="text-muted col-12 address-postal-code">کد پستی : {{ $address->postal_code }}</p>
                   </div>
-                </div>
+                </div> --}}
+
               </div>
-              <div class="bottom d-flex-justify-left">
-                <button type="button" class="bottom-btn btn btn-primery edit-btn btn-sm" data-target-modal-id="editAddressModal-{{ $address->id }}" onclick="openEditAddressModal(event)">ویرایش</button>
+
+              {{-- <div class="bottom d-flex-justify-left">
+
+                <button 
+                  type="button"
+                  class="btn btn-primary btn-sm edit-btn address-operation-button" 
+                  data-target-modal-id="editAddressModal-{{ $address->id }}" 
+                  onclick="openEditAddressModal(event)">
+                  <i class="fe fe-edit"></i>
+                </button>
+  
                 <button 
                   type="button" 
-                  class="bottom-btn btn btn-secondary btn-sm delete-btn" 
+                  class="btn btn-secondary btn-sm delete-btn address-operation-button" 
                   data-delete-address-url="{{ route('customer.addresses.destroy', $address) }}"
                   data-address-id="{{ $address->id }}"
                   onclick="confrimDeletingAddress(event)">
-                  حذف
+                  <i class="fe fe-trash"></i>
                 </button>
-              </div>
+
+              </div> --}}
+
             </div>
           </div>
         @endforeach

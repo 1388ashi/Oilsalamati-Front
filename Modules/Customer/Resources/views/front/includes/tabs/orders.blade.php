@@ -2,9 +2,9 @@
   <div class="orders-card mt-0 h-100">
     <div class="top-sec d-flex-justify-center justify-content-between mb-4">
       <h2 class="mb-0">سفارشات من</h2>
-      <button id="print-user-orders-button">
+      <a id="print-user-orders-button" target="_blank" href="{{ route('customer.print-orders') }}" style="cursor: pointer;">
         <span>چاپ تمام سفارشات</span>
-      </button>
+      </a>
     </div>
     <div class="table-bottom-brd table-responsive">
       <table class="table align-middle text-center order-table">
@@ -52,7 +52,7 @@
                 @include('customer::front.includes.orders.details')
               </td>
               <td>
-                <a style="cursor: pointer;"><i class="fe fe-printer text-purple fs-18"></i></a>
+                <a target="_blank" href="{{ route('customer.print-orders', ['order_id' => $order->id]) }}" style="cursor: pointer;"><i class="fe fe-printer text-purple fs-18"></i></a>
               </td>
             </tr>
             @empty
