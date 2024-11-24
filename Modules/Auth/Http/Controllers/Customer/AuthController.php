@@ -265,13 +265,9 @@ class AuthController extends Controller
     public function createPassword(Request $request){
         $customer = Customer::query()->where('mobile', $request->mobile)->first();  
         $customer->update([  
-            'password' => Hash::make($request->password)
+            'password' => bcrypt($request->password)
         ]); 
-        if (!Hash::check($request->password, $customer->password)) {  
-            return redirect()->route('home');
-        }else{
-            dd(1);
-        }
+        return redirect()->route('home');
     }
 
     public function showLoginForm($mobile){
