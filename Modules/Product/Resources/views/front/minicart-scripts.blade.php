@@ -7,14 +7,15 @@
                 carts = data;
             }
             let totalItems = carts.length;
+            $('.minicart-bottom').show();  
             $('#cart-count').text(`سبد خرید شما (${totalItems} مورد)`);
             $('#num-cart-count').text(`${totalItems}`);
 
             $('#output').empty();
             let totalPrice = 0;
             console.log(totalItems);
+            console.log(carts);
         
-            $('.minicart-bottom').show();  
             carts.forEach(function(cart) {
                 let varietyPrice = parseFloat(cart.price);
                 let quantity = parseInt(cart.quantity);
