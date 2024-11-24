@@ -130,14 +130,10 @@ class ProfileController extends Controller
     {
         $customer = Auth::guard('customer')->user();
         $orders = $customer->orders()
-            ->with([
-                'address' => fn($q) => $q->select(['id', 'first_name', 'last_name', 'mobile', 'address', 'postal_code', 'city_id']),
-                'address.city' => fn($q) => $q->select(['id', 'name', 'province_id']),
-                'address.city.province' => fn($q) => $q->select(['id', 'name']),
-                'items' => fn($q) => $q->select(['id', 'order_id', 'variety_id', 'amount', 'discount_amount', 'quantity']),
-            ])
+            ->with('items', fn($q) => $q->select(['id', 'order_id', 'variety_id', 'amount', 'discount_amount', 'quantity']))
             ->select([
                 'id',
+                'address',
                 'customer_id',
                 'address_id',
                 'status',
