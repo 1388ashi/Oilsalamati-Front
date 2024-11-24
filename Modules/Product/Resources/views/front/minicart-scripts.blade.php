@@ -13,11 +13,7 @@
             $('#output').empty();
             let totalPrice = 0;
             console.log(totalItems);
-            if (totalItems == 0) {
-                $('#output').append('<li>سبد خرید شما خالی است.</li>');
-                $('.minicart-bottom').hide();  
-                return
-            }
+        
             $('.minicart-bottom').show();  
             carts.forEach(function(cart) {
                 let varietyPrice = parseFloat(cart.price);
