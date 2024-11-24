@@ -111,7 +111,7 @@
     </div>
   </div>
 
-  <div class="d-flex justify-content-start mt-4">
+  <div class="d-flex justify-content-start my-4">
     <button type="button" class="btn btn-secondary ms-1" id="steps3-btnPrevious">مرحله قبل</button>
   </div>
 

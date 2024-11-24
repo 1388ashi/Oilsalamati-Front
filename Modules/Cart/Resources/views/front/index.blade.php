@@ -92,6 +92,9 @@
 
   const clonedAddressModal = $('#addNewAddressModal').clone();
 
+  let hideShippingsSection = () => $("#ShippingSection").hide();
+  let showShippingsSection = () => $("#ShippingSection").show();
+
   let allShippings = [];
   let allCarts = [];
   let couponCode = null;
@@ -99,6 +102,8 @@
   $(document).ready(function() {  
 
     allCarts = @json($user->carts);
+
+    hideShippingsSection();
 
     $('.qtyBtn').on('click', function() {
 
@@ -533,6 +538,9 @@
   function updateShippingBox(shippings) {
 
     $('#ShippingSection').empty();
+    showShippingsSection();
+
+    allShippings = shippings;
 
     shippings.forEach(shipping => {
 

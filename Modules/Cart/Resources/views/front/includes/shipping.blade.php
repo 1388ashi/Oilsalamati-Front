@@ -41,30 +41,17 @@
         </div>
         @foreach ($user->addresses as $address)
           <div class="address-select-box" id="AddressBox-{{ $address->id }}">
-            <div class="address-box bg-block" onclick="assignBorderToAddressBox(event)">
+            <div class="address-box bg-block">
               <div class="middle d-flex justify-content-between">
 
-                <div class="d-flex flex-column">
-                  <p class="col-12 address mb-1 d-flex align-items-center gap-2">
-                    <i class="fe fe-map"></i>
-                    <span class="text-muted">{{ $address->city->province->name }} - {{ $address->city->name }} - {{ $address->address }}</span>
-                  </p>
-                  <p class="col-12 address-receiver mb-1 d-flex align-items-center gap-2">
-                    <i class="fe fe-user"></i>
-                    <span class="text-muted">{{ $address->first_name .' '. $address->last_name }} - {{ $address->mobile }}</span>
-                  </p>
-                  <p class="col-12 address-postal-code d-flex align-items-center gap-2">
-                    <i class="fe fe-link"></i>
-                    <span class="text-muted">کد پستی : {{ $address->postal_code }}</span>
-                  </p>
-                </div>
+                
 
                 <input 
                   id="formcheckoutRadio-{{ $address->id }}" 
                   data-url="{{ route('customer.shippings.getShippableForAddress', ['address' => $address->id]) }}" 
                   value="{{ $address->id }}" 
                   name="address_id" 
-                  type="hidden" 
+                  type="radio" 
                   class="radio"
                 />
 
@@ -112,6 +99,21 @@
                   </div>
                 </div> --}}
 
+              </div>
+
+              <div class="d-flex flex-column">
+                <p class="col-12 address mb-1 d-flex align-items-center gap-2">
+                  <i class="fe fe-map"></i>
+                  <span class="text-muted">{{ $address->city->province->name }} - {{ $address->city->name }} - {{ $address->address }}</span>
+                </p>
+                <p class="col-12 address-receiver mb-1 d-flex align-items-center gap-2">
+                  <i class="fe fe-user"></i>
+                  <span class="text-muted">{{ $address->first_name .' '. $address->last_name }} - {{ $address->mobile }}</span>
+                </p>
+                <p class="col-12 address-postal-code d-flex align-items-center gap-2">
+                  <i class="fe fe-link"></i>
+                  <span class="text-muted">کد پستی : {{ $address->postal_code }}</span>
+                </p>
               </div>
 
               {{-- <div class="bottom d-flex-justify-left">
@@ -174,43 +176,14 @@
       </div>
     </div>
 
-    <div class="bank-book-section">
+    <div class="bank-book-section"> 
       <div class="row g-4 row-cols-lg-3 row-cols-md-2 row-cols-sm-2 row-cols-1" id="ShippingSection">
 
-        @foreach ($shippings as $shipping)
-          <div class="address-select-box active">
-            <div class="address-box bg-block h-100">
-              <div class="top bank-logo d-flex-justify-center justify-content-between mb-3">
-                {{-- <img src="{{asset($shipping->logo->url)}}" class="bank-logo" width="40"/> --}}
-              </div>
-              <div class="middle">
-                <div class="card-number mb-3">
-                  <div class="customRadio clearfix">
-                    <input id="formcheckoutRadio{{ $shipping->id }}" value="{{ $shipping->id }}" name="shipping_id" type="radio" class="radio"/>
-                    <label for="formcheckoutRadio{{ $shipping->id }}" class="mb-2">{{ $shipping->name }}</label>
-                    @if ($shipping->description)
-                      <p class="text-muted">{{ $shipping->description }}</p>
-                    @endif
-                  </div>
-                </div>
-                <div class="name-validity d-flex-justify-center justify-content-between">
-                  <div class="left">
-                    <h6>هزینه ارسال</h6>
-                  </div>
-                  <div class="right">
-                    <h6>ابتدا یک آدرس را انتخاب کنید</h6>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        @endforeach
-        
       </div>
     </div>
   </div>
 
-  <div class="d-flex justify-content-between mt-4">
+  <div class="d-flex justify-content-between my-4">
     <button type="button" class="btn btn-secondary ms-1" id="steps2-btnPrevious">مرحله قبل</button>
     <button type="button" class="btn btn-primary me-1" id="steps2-btnNext">مرحله بعد</button>
   </div>

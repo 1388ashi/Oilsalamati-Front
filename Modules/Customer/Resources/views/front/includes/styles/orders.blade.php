@@ -3,7 +3,7 @@
     background-color: #6f42c1;
     color: #FFFFFF;
     padding: 6px 12px;
-    border-radius: 12px;
+    border-radius: 22px;
     border: none;
   }
 
