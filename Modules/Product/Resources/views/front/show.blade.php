@@ -139,20 +139,20 @@
                         شناسه:<span class="text">{{ $product->id }}</span>
                         </p>
                     </div>
-                        <div class="product-price d-flex-center">
-                        @if($product->discount_type == 'percentage')
-                            <span class="price old-price">{{ number_format($product->unit_price) }} تومان </span>
-                            <div class="discount-product">
-                                <span class="text-white">{{ $product->discount }}%</span>
-                            </div>
-                        @else
-                            @if ($product->discount)
-                                <span class="price old-price">{{ number_format($product->unit_price) }} تومان </span>
-                                <span class="text-success">{{ number_format($product->discount) }}</span>
-                            @endif
-                        @endif
-                            <span class="price" id="price">{{ number_format($product->unit_price) }} تومان </span>
-                        </div>
+                    <div class="product-price d-flex-center">
+                        @if($product->discount_type == 'percentage')  
+                            <span class="price old-price">{{ number_format($product->final_price['base_amount']) }} تومان </span>  
+                            <div class="discount-product">  
+                                <span class="text-white">{{ $product->discount }}%</span>  
+                            </div>  
+                        @else  
+                            @if ($product->discount)  
+                                <span class="price old-price">{{ number_format($product->final_price['base_amount']) }} تومان </span>  
+                                <span class="text-success">{{ number_format($product->discount) }}</span>  
+                            @endif  
+                        @endif  
+                    </div> 
+                    <span class="price" id="price">{{ number_format($product->final_price['amount']) }} تومان </span>  
                 </div>
                 <form method="post" action="" class="product-form product-form-border hidedropdown">
                 @csrf
@@ -180,8 +180,8 @@
                         <!-- End Swatches Color -->
                         <!-- Swatches Size -->
                         <div class="product-item swatches-size w-100 mb-4 swatch-1 option2" data-option-index="1">
-                        {{-- <label class="label d-flex align-items-center"
-                            >اندازه:<span class="slVariant me-1 fw-bold">S</span>
+                        <label class="label d-flex align-items-center"
+                            >اندازه:<span id="showSize" class="slVariant me-1 fw-bold">انتخاب بکنید</span>
                             <a
                             href="#sizechart-modal"
                             class="text-link sizelink text-muted size-chart-modal"
@@ -189,7 +189,7 @@
                             data-bs-target="#sizechart_modal"
                             >راهنمای اندازه</a
                             ></label
-                        > --}}
+                        >
                             <input type="hidden" id="varietyPrice" name="varietyPrice" value="">
                             <input type="hidden" id="varietyValue" name="varietyValue" value="">
                             <input type="hidden" id="imageValue" name="imageValue" value="">
@@ -347,7 +347,6 @@
             </div>
         </div>
     @include('product::front.tabs-body')
-    <!--End Product Tabs-->
     </div>
     <div class="pswp" tabindex="-1" role="dialog">
         <div class="pswp__bg"></div>
@@ -462,13 +461,9 @@
                     var title = document.getElementById("title").value;
                     var selectedQuantity = document.getElementById("quantity").value;
                     $('#variety_id').val(selectedId);  
+                    $('#showSize').text(selectedValue);  
                 });  
                 let isLoggedIn = @json(auth()->guard('customer')->user());  
-                if (!isLoggedIn) {
-                    updateCartDisplay();  
-                }else{
-                    updateCartInfo();
-                }
 
                 $('.product-form-cart-submit').on('click', function(event) {  
                     event.preventDefault();  

@@ -1,28 +1,24 @@
 <script>
     @if (auth()->guard('customer')->user())
-        let carts = @json(auth()->guard('customer')->user()->carts()->with(['variety.product', 'variety.attributes'])->get()->map(function ($cart) {
-                    $cart->variety->product->setAppends(['images_showcase']);
-                    return $cart;
-                }));
+        let carts = @json(auth()->guard('customer')->user()->carts()->with(['variety.product', 'variety.attributes'])->get());
 
         function updateCartInfo(data) {
             if (data) {
                 carts = data;
             }
-            console.log(carts);
             let totalItems = carts.length;
             $('#cart-count').text(`سبد خرید شما (${totalItems} مورد)`);
             $('#num-cart-count').text(`${totalItems}`);
 
             $('#output').empty();
             let totalPrice = 0;
-
-            if (totalItems === 0) {
+            console.log(totalItems);
+            if (totalItems == 0) {
                 $('#output').append('<li>سبد خرید شما خالی است.</li>');
-                $('#cart-price').text('0 تومان');
+                $('.minicart-bottom').hide();  
                 return
             }
-
+            $('.minicart-bottom').show();  
             carts.forEach(function(cart) {
                 let varietyPrice = parseFloat(cart.price);
                 let quantity = parseInt(cart.quantity);
@@ -32,6 +28,7 @@
                 let attributesValue = cart.variety?.attributes?.[0]?.pivot?.value ?? cart.variety.title;
                 let imageValue = cart.variety.main_image_showcase?.url ?? cart.variety.product.images_showcase
                     .main_image.url;
+                // let imageValue = '';
 
                 let productHtml = `  
                 <li class="item d-flex justify-content-center align-items-center" data-variety-id="${cart.variety_id}">  
@@ -279,8 +276,6 @@
                 let totalPriceFormatted = formatPrice(totalPrice);
                 $('#cart-price').text(totalPriceFormatted);
             } else {  
-                console.log(productData,0);
-                
                 $('#output').append('<li>سبد خرید شما خالی است.</li>');  
                 $('#cart-count').text('سبد خرید شما (0 مورد)');  
                 $('#num-cart-count').text('0');  
@@ -351,6 +346,10 @@
             quantityInput.value = newVal;
             updateQuantityInCookie(variety_id, newVal);
             updateTotalPrice(newVal, variety_id);
+            Swal.fire({  
+                icon: "success",  
+                text: "تعداد محصول با موفقیت افزایش یافت."
+            });  
         }
 
         function decreaseQuantity(button) {
@@ -362,6 +361,10 @@
                 quantityInput.value = newVal;
                 updateQuantityInCookie(variety_id, newVal);
                 updateTotalPrice(newVal, variety_id);
+                Swal.fire({  
+                    icon: "success",  
+                    text: "تعداد محصول با موفقیت کاهش یافت."
+                });  
             }
         }
 
