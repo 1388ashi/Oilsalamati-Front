@@ -54,7 +54,7 @@
           <div class="px-4 py-2 border-print radius-8px" style="width: 93%; display: grid;">
 
             @php
-              $address = $order->address;
+              $address = json_decode($order->address);
               $city = $address->city->name;
               $province = $address->city->province->name;
             @endphp
