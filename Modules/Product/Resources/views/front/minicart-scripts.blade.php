@@ -1,7 +1,9 @@
 <script>
     @if (auth()->guard('customer')->user())
-        let carts = @json(auth()->guard('customer')->user()->carts()->with(['variety.product', 'variety.attributes'])->get());
-
+    let carts = @json(auth()->guard('customer')->user()->carts()->with(['variety.product', 'variety.attributes'])->get()->map(function ($cart) {
+            $cart->variety->product->setAppends(['images_showcase']);
+            return $cart;
+        }));
         function updateCartInfo(data) {
             if (data) {
                 carts = data;
