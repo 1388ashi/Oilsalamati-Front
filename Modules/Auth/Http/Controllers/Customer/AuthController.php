@@ -244,8 +244,6 @@ class AuthController extends Controller
             if ($customer->password) {
                 return response()->error('این شماره همراه قبلا انتخاب شده است');
             }
-            $customer->password = $request->password;
-            $customer->save();
         }
         if ($request->newsletter){
             UsersNewsletters::query()->firstOrCreate($request->only('email'));
@@ -265,11 +263,15 @@ class AuthController extends Controller
     }
 
     public function createPassword(Request $request){
-        $customer = Customer::query()->where('mobile',$request->mobile)->first();
-        $customer->update([
-            'password' => bcrypt($request->password)
-        ]);
-        return redirect()->route('home');
+        $customer = Customer::query()->where('mobile', $request->mobile)->first();  
+        $customer->update([  
+            'password' => Hash::make($request->password)
+        ]); 
+        if (!Hash::check($request->password, $customer->password)) {  
+            return redirect()->route('home');
+        }else{
+            dd(1);
+        }
     }
 
     public function showLoginForm($mobile){
@@ -295,10 +297,10 @@ class AuthController extends Controller
             'mobile' => 'required',  
             'password' => 'nullable',  
         ]);  
-    
-        if ($request->password && !Hash::check($request->password, $customer->password)) {  
+        if (!Hash::check($request->password, $customer->password)) {  
             return $this->redirectWithMessage('موبایل یا رمز عبور نادرست است', 'danger');  
         }  
+        
     
         $request->session()->regenerate();  
         Auth::guard('customer')->login($customer);  
