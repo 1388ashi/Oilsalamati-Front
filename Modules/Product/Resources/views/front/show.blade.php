@@ -251,18 +251,30 @@
                     <div class="product-action w-50 d-flex-wrap my-3 my-md-4">
                         <div class="product-form-quantity d-flex-center">
                             <div class="qtyField">
-                                <a class="qtyBtn minus" href="#;"
-                                ><i class="icon anm anm-minus-r"></i
-                              ></a>
-                              <input
+                                <a class="qtyBtn minus" onclick="decrease()">
+                                    <i style="cursor: pointer" class="icon anm anm-minus-r"></i>
+                                </a>
+                                <input
                                 type="text"
                                 name="quantity"
                                 value="1"
                                 class="product-form-input qty"
-                              />
-                              <a class="qtyBtn plus" href="#;"
-                                ><i class="icon anm anm-plus-r"></i
-                              ></a>
+                            />
+                                                            <a class="qtyBtn plus" onclick="increase()">
+                                    <i style="cursor: pointer" class="icon anm anm-plus-r"></i>
+                                </a>
+                                {{-- <a class="qtyBtn minus" href="#;"
+                                ><i class="icon anm anm-minus-r"></i
+                                ></a>
+                                <input
+                                    type="text"
+                                    name="quantity"
+                                    value="1"
+                                    class="product-form-input qty"
+                                />
+                                <a class="qtyBtn plus" href="#;"
+                                    ><i class="icon anm anm-plus-r"></i
+                                ></a> --}}
                             </div>
                         </div>
                         <div class="product-form-submit addcart fl-1">  
