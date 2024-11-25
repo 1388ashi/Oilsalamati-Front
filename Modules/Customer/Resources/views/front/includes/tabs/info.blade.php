@@ -100,7 +100,7 @@
                   </div>
                   <div class="col-12">
                     <div class="form-group">
-                      <button type="button" class="btn btn-primary form-control w-100">بروزرسانی</button>
+                      <button class="btn btn-primary form-control w-100">بروزرسانی</button>
                     </div>
                   </div>
                 </div>
