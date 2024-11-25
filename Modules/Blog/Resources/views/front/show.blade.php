@@ -29,7 +29,7 @@
                     <div class="widget-content">
                         <ul class="sidebar-categories scrollspy clearfix">
                             @foreach ($post['category'] as $category)
-                                @if ($category->countPosts() == 0)
+                                @if ($category->countPosts() != 0)
                                     <li class="lvl-1">
                                         <a href="{{route('category.posts',$category->id)}}" class="site-nav lvl-1">{{ $category->name }}
                                         <span class="count">({{ $category->countPosts() }})</span></a>
@@ -46,7 +46,7 @@
                                 @foreach ($post['lastPost'] as $item)
                                     <div class="mini-list-item d-flex align-items-center w-100 clearfix">
                                         <div class="mini-image">
-                                            <a class="item-link" href="blog-details.html">
+                                            <a class="item-link" href="{{route('posts.show',$post->id)}}">
                                             <img
                                                 class="featured-image blur-up lazyload"
                                                 data-src="{{ $item->image->url }}"
@@ -58,7 +58,7 @@
                                             </a>
                                         </div>
                                         <div class="me-3 details">
-                                            <a class="item-title" href="blog-details.html">{{ $item->title }}</a>
+                                            <a class="item-title" href="{{route('posts.show',$post->id)}}">{{ $item->title }}</a>
                                             <div class="item-meta opacity-75">
                                                 <time datetime="2023-01-02">{{ verta($item->created_at)->format('%d %B %Y') }}</time>
                                             </div>
