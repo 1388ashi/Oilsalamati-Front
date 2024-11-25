@@ -138,7 +138,7 @@
                                             <i class="icon anm anm-clock-r"></i>
                                             <time>{{ verta($post->created_at)->format('%d %B %Y') }}</time> 
                                             </li>
-                                            <li><i class="icon anm anm-comments-l"></i><a href="#">{{$post->countComment()}} نظر</a></li>
+                                            <li><i class="icon anm anm-comments-l"></i><a href="#">{{ $post->comments()->active()->count() }} نظر</a></li>
                                     </ul>
                                     <p class="content">{{ Str::limit($post->summary, 150) }}</p>
                                     <a
