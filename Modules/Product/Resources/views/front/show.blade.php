@@ -260,19 +260,19 @@
                                 </a>
                             </div>
                         </div>
-                        <div class="product-form-submit addcart fl-1 me-3 me-sm-0">  
-                            @if($product->status == 'available')
-                        <button type="button" class="btn btn-secondary product-form-cart-submit" data-bs-dismiss="offcanvas" aria-label="Close">
-                            <span>افزودن به سبد</span>  
-                        </button>  
-                        @else
-                        <button
-                            type="button"
-                            class="btn btn-secondary product-form-sold-out"
-                            disabled="disabled">
-                            <span>ناموجود</span>
-                        </button>
-                        @endif
+                        <div class="product-form-submit addcart fl-1 me-3 me-md-0">  
+                            @if($product->status == 'available')  
+                            <button type="button" class="btn btn-secondary product-form-cart-submit" data-bs-dismiss="offcanvas" aria-label="Close">  
+                                <span>افزودن به سبد</span>  
+                            </button>  
+                            @else  
+                            <button  
+                                type="button"  
+                                class="btn btn-secondary product-form-sold-out"  
+                                disabled="disabled">  
+                                <span>ناموجود</span>  
+                            </button>  
+                            @endif  
                         </div>
                     </div>
                     <p class="infolinks d-flex-center justify-content-between">
