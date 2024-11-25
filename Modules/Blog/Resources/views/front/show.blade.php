@@ -123,7 +123,7 @@
                     <!-- نظرات وبلاگ -->
                     @if (isset($post['post']->comments))
                     <div class="blog-comment section">
-                        <h2 class="mb-4">نظرات ({{$post['post']->commentCount()->active()}})</h2>
+                        <h2 class="mb-4">نظرات ({{$post['post']->comments()->active()->count() }})</h2>
                         <ol class="comments-list">
                             <li class="comments-items">
                                 @foreach ($post['post']->comments()->active()->latest()->get() as $comment)
