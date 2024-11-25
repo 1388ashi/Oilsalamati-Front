@@ -115,7 +115,7 @@
                         @for ($i = $averageStar; $i < 5; $i++)
                             <i class="icon anm anm-star"></i>  
                         @endfor  
-                        <span class="caption me-2">24 بررسی ها</span>
+                        <span class="caption me-2">{{count($product->productComments)}} بررسی ها</span>
                         </div>
                         <a class="reviewLink d-flex-center" href="#reviews">یک نظر بنویسید</a>
                     </div>
