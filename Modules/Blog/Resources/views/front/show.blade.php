@@ -29,10 +29,12 @@
                     <div class="widget-content">
                         <ul class="sidebar-categories scrollspy clearfix">
                             @foreach ($post['category'] as $category)
-                            <li class="lvl-1">
-                                <a href="{{route('category.posts',$category->id)}}" class="site-nav lvl-1">{{ $category->name }}
-                                <span class="count">({{ $category->countPosts() }})</span></a>
-                            </li>
+                                @if ($category->countPosts() == 0)
+                                    <li class="lvl-1">
+                                        <a href="{{route('category.posts',$category->id)}}" class="site-nav lvl-1">{{ $category->name }}
+                                        <span class="count">({{ $category->countPosts() }})</span></a>
+                                    </li>
+                                @endif
                             @endforeach
                         </ul>
                     </div>
@@ -212,7 +214,7 @@
                             </div>  
                             <div class="row">  
                                 <div class="col-12">  
-                                    <input type="submit" class="btn btn-lg" value="ارسال نظر" />  
+                                    <input type="button" class="btn btn-lg" value="ارسال نظر" />  
                                 </div>  
                             </div>  
                         </form>  

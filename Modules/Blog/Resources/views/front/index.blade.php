@@ -27,10 +27,12 @@
                     <div class="widget-content">
                         <ul class="sidebar-categories scrollspy clearfix">
                             @foreach ($data['category'] as $category)
-                            <li class="lvl-1">
-                                <a href="{{route('category.posts',$category->id)}}" class="site-nav lvl-1">{{ $category->name }}
-                                <span class="count">({{ $category->countPosts() }})</span></a>
-                            </li>
+                                @if ($category->countPosts() == 0)
+                                    <li class="lvl-1">
+                                        <a href="{{route('category.posts',$category->id)}}" class="site-nav lvl-1">{{ $category->name }}
+                                        <span class="count">({{ $category->countPosts() }})</span></a>
+                                    </li>
+                                @endif
                             @endforeach
                         </ul>
                     </div>
