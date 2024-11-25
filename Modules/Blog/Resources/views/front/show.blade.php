@@ -214,7 +214,8 @@
                             </div>  
                             <div class="row">  
                                 <div class="col-12">  
-                                    <input type="button" class="btn btn-lg" value="ارسال نظر" />  
+                                    <button class="btn btn-lg" type="submit">ارسال نظر</button>  
+                                    {{-- <input type="submit" class="btn btn-lg" value="ارسال نظر" />   --}}
                                 </div>  
                             </div>  
                         </form>  
@@ -240,13 +241,14 @@
                     footer: '<button class="btn btn-danger"><a href="{{route('pageRegisterLogin')}}">ورود به اکانت</a></button>'  
                 });  
             }else{
+                const formData = $(this).serialize();
                 var submitBtn = $(this).find('input[type="submit"]');   
                 submitBtn.prop('disabled', true); 
 
                 $.ajax({  
                     url: $(this).attr('action'),   
                     type: 'POST',  
-                    data: $(this).serialize(),   
+                    data: formData, 
                     success: function(response) {  
                         $('#commentForm')[0].reset();  
                         Swal.fire({  
