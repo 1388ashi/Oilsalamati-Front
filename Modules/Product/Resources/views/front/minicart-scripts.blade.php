@@ -1,7 +1,9 @@
 <script>
     @if (auth()->guard('customer')->user())
-        let carts = @json(auth()->guard('customer')->user()->carts()->with(['variety.product', 'variety.attributes'])->get());
-
+    let carts = @json(auth()->guard('customer')->user()->carts()->with(['variety.product', 'variety.attributes'])->get()->map(function ($cart) {
+            $cart->variety->product->setAppends(['images_showcase']);
+            return $cart;
+        }));
         function updateCartInfo(data) {
             if (data) {
                 carts = data;
@@ -26,6 +28,7 @@
                 totalPrice += productTotalPrice;
                 let title = cart.variety.product?.title ?? cart.variety.title;
                 let attributesValue = cart.variety?.attributes?.[0]?.pivot?.value ?? cart.variety.title;
+                console.log(cart);
                 let imageValue = cart.variety.main_image_showcase?.url ?? cart.variety.product.images_showcase
                     .main_image.url;
                 // let imageValue = '';
@@ -208,25 +211,31 @@
             updateCartDisplay();
         });
 
-        function updateCartDisplay() {
-            let productData = getCookie('productData');
-            $('#output').empty();
-            productData = JSON.parse(decodeURIComponent(productData));
-            console.log(productData);
-            if (productData.length > 0) {
+        function updateCartDisplay() {  
+            let productData = getCookie('productData');  
+
+            if (!productData) {  
+                productData = null;
+            } else {  
+                productData = JSON.parse(decodeURIComponent(productData));  
+            }  
+
+            $('#output').empty();  
+            console.log(productData);  
+
+            if (productData && productData.length > 0) {  
                 $('.minicart-bottom').show();  
-                let totalItems = productData.length;
-                console.log(productData,1);
-                $('#cart-count').text(`سبد خرید شما (${totalItems} مورد)`);
-                $('#num-cart-count').text(`${totalItems}`);
+                let totalItems = productData.length;  
+                $('#cart-count').text(`سبد خرید شما (${totalItems} مورد)`);  
+                $('#num-cart-count').text(`${totalItems}`);  
 
-                $('#output').empty();
-                let totalPrice = 0;
+                $('#output').empty();  
+                let totalPrice = 0;  
 
-                productData.forEach(function(product) {
-                    let quantity = parseInt(product.variety_quantity);
-                    let productTotalPrice = Math.floor(parseFloat(product.variety_price) * 1000 * quantity);
-                    totalPrice += productTotalPrice;
+                productData.forEach(function(product) {  
+                    let quantity = parseInt(product.variety_quantity);  
+                    let productTotalPrice = Math.floor(parseFloat(product.variety_price) * 1000 * quantity);  
+                    totalPrice += productTotalPrice;  
 
                     let productHtml = `  
                         <li class="item d-flex justify-content-center align-items-center" data-variety-id="${product.variety_id}">  
@@ -268,20 +277,17 @@
                                     <i class="icon anm anm-times-r" data-bs-toggle="tooltip" data-bs-placement="top" title="حذف"></i>  
                                 </a>  
                             </div>  
-                        </li>`;
+                        </li>`;  
 
-                    $('#output').append(productHtml);
-                });
+                    $('#output').append(productHtml);  
+                });  
 
-                let totalPriceFormatted = formatPrice(totalPrice);
-                $('#cart-price').text(totalPriceFormatted);
+                let totalPriceFormatted = formatPrice(totalPrice);  
+                $('#cart-price').text(totalPriceFormatted);  
             } else {  
                 $('#output').append('<li>سبد خرید شما خالی است.</li>');  
                 $('#cart-count').text('سبد خرید شما (0 مورد)');  
-                $('#num-cart-count').text('0');  
-                $('#cart-price').text('0');  
                 $('.minicart-bottom').hide();  
-
             }  
         }
 

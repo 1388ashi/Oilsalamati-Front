@@ -244,8 +244,6 @@ class AuthController extends Controller
             if ($customer->password) {
                 return response()->error('این شماره همراه قبلا انتخاب شده است');
             }
-            $customer->password = $request->password;
-            $customer->save();
         }
         if ($request->newsletter){
             UsersNewsletters::query()->firstOrCreate($request->only('email'));
@@ -265,10 +263,11 @@ class AuthController extends Controller
     }
 
     public function createPassword(Request $request){
-        $customer = Customer::query()->where('mobile',$request->mobile)->first();
-        $customer->update([
-            'password' => bcrypt($request->password)
-        ]);
+        $customer = Customer::query()->where('mobile', $request->mobile)->first();  
+        $customer->update($request->only('password'));
+
+        Helpers::actingAs($customer);
+
         return redirect()->route('home');
     }
 
@@ -295,11 +294,10 @@ class AuthController extends Controller
             'mobile' => 'required',  
             'password' => 'nullable',  
         ]);  
-    
-        if ($request->password && !Hash::check($request->password, $customer->password)) {  
+        
+        if ($request->password && !Hash::check($credentials['password'], $customer->password)) {  
             return $this->redirectWithMessage('موبایل یا رمز عبور نادرست است', 'danger');  
         }  
-    
         $request->session()->regenerate();  
         Auth::guard('customer')->login($customer);  
         if ($request->forget_password == 1) {
@@ -380,8 +378,8 @@ class AuthController extends Controller
                 throw Helpers::makeValidationException('توکن اشتباه است مججدا نلاش کنید');
             }
         }
-        $customer = Customer::where('mobile', $request  ->mobile)->first();
-        $customer->password = Hash::make($request->password);
+        $customer = Customer::where('mobile', $request->mobile)->first();
+        $customer->update($request->only('password'));
 
         Helpers::actingAs($customer);
         $warnings = CartFromRequest::addToCartFromRequest($request);
