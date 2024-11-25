@@ -121,9 +121,9 @@
                     <hr/>
 
                     <!-- نظرات وبلاگ -->
-                    @if ($post['post']->comments)
+                    @if ($post['post']->comments[0])
                     <div class="blog-comment section">
-                        <h2 class="mb-4">نظرات ({{$post['post']->commentCount()}})</h2>
+                        <h2 class="mb-4">نظرات ({{$post['post']->commentCount()->active()}})</h2>
                         <ol class="comments-list">
                             <li class="comments-items">
                                 @foreach ($post['post']->comments()->active()->latest()->get() as $comment)
@@ -185,6 +185,8 @@
                             </li>
                         </ol>
                     </div>
+                    @else
+                    <h3>تا‌کنون نظری ثبت نشده است</h3>
                     @endif
                     <div class="formFeilds comment-form form-vertical">  
                         <form id="commentForm" method="post" action="{{ route('comments.store', $post['post']) }}">  
