@@ -46,7 +46,7 @@
                                 @foreach ($post['lastPost'] as $item)
                                     <div class="mini-list-item d-flex align-items-center w-100 clearfix">
                                         <div class="mini-image">
-                                            <a class="item-link" href="{{route('posts.show',$post->id)}}">
+                                            <a class="item-link" href="{{route('posts.show',$item->id)}}">
                                             <img
                                                 class="featured-image blur-up lazyload"
                                                 data-src="{{ $item->image->url }}"
@@ -58,7 +58,7 @@
                                             </a>
                                         </div>
                                         <div class="me-3 details">
-                                            <a class="item-title" href="{{route('posts.show',$post->id)}}">{{ $item->title }}</a>
+                                            <a class="item-title" href="{{route('posts.show',$item->id)}}">{{ $item->title }}</a>
                                             <div class="item-meta opacity-75">
                                                 <time datetime="2023-01-02">{{ verta($item->created_at)->format('%d %B %Y') }}</time>
                                             </div>
