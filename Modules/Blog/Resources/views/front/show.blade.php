@@ -262,7 +262,7 @@
                             icon: "error",  
                             text: "خطا در ثبت نظر."  
                         });
-                    }  
+                    },
                     complete: function() {  
                         submitBtn.prop('disabled', false);  
                     }  
