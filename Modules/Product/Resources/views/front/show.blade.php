@@ -177,8 +177,8 @@
                             </ul> --}}
                         </div>
                         <div class="product-item swatches-size w-100 mb-4 swatch-1 option2" data-option-index="1">
-                        <div class="d-flex justify-content-between">
-                            <label class="label d-flex align-items-center"
+                        <div></div>
+                        <label class="label d-flex align-items-center"
                             >اندازه:<span id="showSize" class="slVariant me-1 fw-bold">انتخاب بکنید</span>
                             <a
                             href="#sizechart-modal"
@@ -186,8 +186,8 @@
                             data-bs-toggle="modal"
                             data-bs-target="#sizechart_modal"
                             >راهنمای اندازه</a
-                            ></label>
-                        </div>
+                            ></label
+                        >
                             <input type="hidden" id="varietyPrice" name="varietyPrice" value="">
                             <input type="hidden" id="varietyValue" name="varietyValue" value="">
                             <input type="hidden" id="imageValue" name="imageValue" value="">
@@ -260,7 +260,7 @@
                                 </a>
                             </div>
                         </div>
-                        <div class="product-form-submit addcart fl-1">
+                        <div class="product-form-submit addcart fl-1 me-3">
                         @if($product->status == 'available')
                         <button type="button" class="btn btn-secondary product-form-cart-submit" data-bs-dismiss="offcanvas" aria-label="Close">
                             <span>افزودن به سبد</span>  
@@ -268,7 +268,6 @@
                         @else
                         <button
                             type="button"
-                            name="add"
                             class="btn btn-secondary product-form-sold-out"
                             disabled="disabled">
                             <span>ناموجود</span>
