@@ -281,8 +281,10 @@
 
                     $('#output').append(productHtml);  
                 });  
-
+                console.log(totalPrice);
+                
                 let totalPriceFormatted = formatPrice(totalPrice);  
+                console.log(totalPriceFormatted);
                 $('#cart-price').text(totalPriceFormatted);  
             } else {  
                 $('#output').append('<li>سبد خرید شما خالی است.</li>');  
