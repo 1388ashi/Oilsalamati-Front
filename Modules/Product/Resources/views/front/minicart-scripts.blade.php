@@ -292,7 +292,11 @@
                 $('.minicart-bottom').hide();  
             }  
         }
+        function formatPrice(price) {  
+            let result = '';
 
+            return result || (price + ' تومان');
+        }
         function getCookie(name) {
             let cookieArr = document.cookie.split(";");
 
