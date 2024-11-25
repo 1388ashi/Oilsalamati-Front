@@ -254,13 +254,8 @@
                                 <a class="qtyBtn minus" onclick="decrease()">
                                     <i style="cursor: pointer" class="icon anm anm-minus-r"></i>
                                 </a>
-                                <input
-                                type="text"
-                                name="quantity"
-                                value="1"
-                                class="product-form-input qty"
-                            />
-                                                            <a class="qtyBtn plus" onclick="increase()">
+                                <input class="product-form-input qty" type="number" id="quantity" value="1" min="1" readonly>
+                                <a class="qtyBtn plus" onclick="increase()">
                                     <i style="cursor: pointer" class="icon anm anm-plus-r"></i>
                                 </a>
                                 {{-- <a class="qtyBtn minus" href="#;"
