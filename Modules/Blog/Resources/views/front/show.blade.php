@@ -121,7 +121,7 @@
                     <hr/>
 
                     <!-- نظرات وبلاگ -->
-                    @if (isset($post['post']->comments))
+                    @if ($post['post']->comments()->active()->count() != 0 && $post['post']->comments())
                     <div class="blog-comment section">
                         <h2 class="mb-4">نظرات ({{$post['post']->comments()->active()->count() }})</h2>
                         <ol class="comments-list">
