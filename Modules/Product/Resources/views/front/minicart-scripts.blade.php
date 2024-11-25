@@ -295,7 +295,7 @@
         function formatPrice(price) {  
             let result = '';
 
-            return result || (price + ' تومان');
+            return result || (price.toLocaleString() + ' تومان');
         }
         function getCookie(name) {
             let cookieArr = document.cookie.split(";");
