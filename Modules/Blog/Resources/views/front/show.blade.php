@@ -7,7 +7,7 @@
             <div class="col-12 col-sm-12 col-md-12 col-lg-12">
                 <div class="breadcrumbs">
                     <a href="/" title="Back to the home page">صفحه اصلی</a>
-                    <a href="{{route('products.index')}}" title="Back to the home page">
+                    <a href="{{route('posts.index')}}" title="Back to the home page">
                         <i class="icon anm anm-angle-left-l"></i>
                         وبلاگ</a>
                     <span class="main-title fw-bold">
@@ -122,8 +122,8 @@
 
                     <!-- نظرات وبلاگ -->
                     @if ($post['post']->comments()->active()->count() != 0 && $post['post']->comments())
-                    <div class="blog-comment section">
-                        <h2 class="mb-4">نظرات ({{$post['post']->comments()->active()->count() }})</h2>
+                    <div class="blog-comment section pt-0">
+                        <h2 class="mb-2">نظرات ({{$post['post']->comments()->active()->count() }})</h2>
                         <ol class="comments-list">
                             <li class="comments-items">
                                 @foreach ($post['post']->comments()->active()->latest()->get() as $comment)
