@@ -283,7 +283,8 @@
                 });  
                 console.log(totalPrice);
                 
-                $('#cart-price').text(totalPrice.toLocaleString + 'تومان');  
+                $('#cart-price').text(totalPrice.toLocaleString() + ' تومان');  
+
             } else {  
                 $('#output').append('<li>سبد خرید شما خالی است.</li>');  
                 $('#cart-count').text('سبد خرید شما (0 مورد)');  
