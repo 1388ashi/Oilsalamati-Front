@@ -260,7 +260,7 @@
                                 </a>
                             </div>
                         </div>
-                        <div class="product-form-submit addcart fl-1 me-3">  
+                        <div class="product-form-submit addcart fl-1">  
                         @if($product->status == 'available')
                         <button type="button" class="btn btn-secondary product-form-cart-submit" data-bs-dismiss="offcanvas" aria-label="Close">
                             <span>افزودن به سبد</span>  
