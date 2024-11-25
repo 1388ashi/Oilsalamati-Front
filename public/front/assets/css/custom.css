@@ -2,7 +2,11 @@
 .user-name-icon-box span {
   display: none;
 }
-
+@media (max-width: 768px) {  
+  .product-form-submit {  
+      margin-right: 0;
+  }  
+}  
 @media only screen and (min-width: 580px) {
 
   .user-name-icon-box {
