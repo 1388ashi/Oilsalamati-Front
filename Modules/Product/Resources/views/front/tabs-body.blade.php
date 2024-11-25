@@ -39,6 +39,7 @@
                 <div class="table-responsive">
                     <table class="table table-bordered align-middle table-part mb-0">
                     @forelse ($product->specifications as $specification)
+                    @if ($specification->values)
                     <tr>
                         <th>{{ $specification->label }}</th>
                         <td>
@@ -47,6 +48,7 @@
                             @endforeach
                         </td>
                     </tr>
+                    @endif
                     @empty
                     @endforelse
                     </table>

@@ -117,7 +117,6 @@
                         @endfor  
                         <span class="caption me-2">{{count($product->productComments)}} بررسی ها</span>
                         </div>
-                        <a class="reviewLink d-flex-center" href="#reviews">یک نظر بنویسید</a>
                     </div>
                     <div class="product-info">
                         <p class="product-stock d-flex">
@@ -177,10 +176,9 @@
                             @endforeach
                             </ul> --}}
                         </div>
-                        <!-- End Swatches Color -->
-                        <!-- Swatches Size -->
                         <div class="product-item swatches-size w-100 mb-4 swatch-1 option2" data-option-index="1">
-                        <label class="label d-flex align-items-center"
+                        <div class="d-flex justify-content-between">
+                            <label class="label d-flex align-items-center"
                             >اندازه:<span id="showSize" class="slVariant me-1 fw-bold">انتخاب بکنید</span>
                             <a
                             href="#sizechart-modal"
@@ -188,8 +186,8 @@
                             data-bs-toggle="modal"
                             data-bs-target="#sizechart_modal"
                             >راهنمای اندازه</a
-                            ></label
-                        >
+                            ></label>
+                        </div>
                             <input type="hidden" id="varietyPrice" name="varietyPrice" value="">
                             <input type="hidden" id="varietyValue" name="varietyValue" value="">
                             <input type="hidden" id="imageValue" name="imageValue" value="">
