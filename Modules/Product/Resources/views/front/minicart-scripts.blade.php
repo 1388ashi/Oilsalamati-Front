@@ -283,19 +283,12 @@
                 });  
                 console.log(totalPrice);
                 
-                let totalPriceFormatted = formatPrice(totalPrice);  
-                console.log(totalPriceFormatted);
-                $('#cart-price').text(totalPriceFormatted);  
+                $('#cart-price').text(totalPrice.toLocaleString + 'تومان');  
             } else {  
                 $('#output').append('<li>سبد خرید شما خالی است.</li>');  
                 $('#cart-count').text('سبد خرید شما (0 مورد)');  
                 $('.minicart-bottom').hide();  
             }  
-        }
-        function formatPrice(price) {  
-            let result = '';
-
-            return result || (price.toLocaleString() + ' تومان');
         }
         function getCookie(name) {
             let cookieArr = document.cookie.split(";");
