@@ -86,52 +86,52 @@
             </div>
             <hr />
             <div class="spr-reviews">
-            <h3 class="spr-form-title">نظرات مشتریان</h3>
-            <div class="review-inner">
-                @forelse ($product->productComments as $comment)
-                <div class="spr-review d-flex w-100">
-                <div class="spr-review-profile flex-shrink-0">
-                    <img
-                    class="blur-up lazyload"
-                    data-src="{{asset('front/assets/images/c2487b8c-09ed-4d59-81f0-971ddd5586d9')}}"
-                    src="{{asset('front/assets/images/c2487b8c-09ed-4d59-81f0-971ddd5586d9')}}"
-                    alt=""
-                    width="200"
-                    height="200"
-                    />
-                </div>
-                <div class="spr-review-content flex-grow-1">
-                    <div
-                    class="d-flex justify-content-between flex-column mb-2"
-                    >
-                    <div
-                        class="title-review d-flex align-items-center justify-content-between"
-                    >
-                        <h5 class="spr-review-header-title text-transform-none mb-0">
-                        {{$comment->creator->first_name || $comment->creator->last_name ? $comment->creator->first_name . ' ' . $comment->creator->last_name : '...' }}
-                        </h5>
-                        <span class="product-review spr-starratings m-0">
-                            <span class="reviewLink">
-                                @php($maxStars = 5)  
-                                @for ($i = 0; $i < $maxStars; $i++)  
-                                    @if ($i < $comment->rate)  
-                                        <i class="icon anm anm-star"></i>  <!-- ستاره پر -->  
-                                    @else  
-                                        <i class="icon anm anm-star-o"></i> <!-- ستاره خالی -->  
-                                    @endif  
-                                @endfor  
+                <h3 class="spr-form-title">نظرات مشتریان</h3>
+                <div class="review-inner">
+                    @forelse ($product->productComments as $comment)
+                    <div class="spr-review d-flex w-100">
+                    <div class="spr-review-profile flex-shrink-0">
+                        <img
+                        class="blur-up lazyload"
+                        data-src="{{asset('front/assets/images/c2487b8c-09ed-4d59-81f0-971ddd5586d9')}}"
+                        src="{{asset('front/assets/images/c2487b8c-09ed-4d59-81f0-971ddd5586d9')}}"
+                        alt=""
+                        width="200"
+                        height="200"
+                        />
+                    </div>
+                    <div class="spr-review-content flex-grow-1">
+                        <div
+                        class="d-flex justify-content-between flex-column mb-2"
+                        >
+                        <div
+                            class="title-review d-flex align-items-center justify-content-between"
+                        >
+                            <h5 class="spr-review-header-title text-transform-none mb-0">
+                            {{$comment->creator->first_name || $comment->creator->last_name ? $comment->creator->first_name . ' ' . $comment->creator->last_name : '...' }}
+                            </h5>
+                            <span class="product-review spr-starratings m-0">
+                                <span class="reviewLink">
+                                    @php($maxStars = 5)  
+                                    @for ($i = 0; $i < $maxStars; $i++)  
+                                        @if ($i < $comment->rate)  
+                                            <i class="icon anm anm-star"></i>
+                                        @else  
+                                            <i class="icon anm anm-star-o"></i>
+                                        @endif  
+                                    @endfor  
+                                </span>
                             </span>
-                        </span>
+                            </div>
+                        </div>
+                        <b class="head-font">{{$comment->title}}</b>
+                        <p class="spr-review-body">{{$comment->body}}</p>
                         </div>
                     </div>
-                    <b class="head-font">{{$comment->title}}</b>
-                    <p class="spr-review-body">{{$comment->body}}</p>
-                    </div>
+                    @empty
+                    <p>نظری برای این محصول ثبت نشده.</p>
+                    @endforelse
                 </div>
-                @empty
-                <p>نظری برای این محصول ثبت نشده.</p>
-                @endforelse
-            </div>
             </div>
         </div>
 
