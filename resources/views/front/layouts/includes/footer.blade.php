@@ -1,4 +1,4 @@
-<div class="footer footer-6">
+<div class="footer footer-6 mt-4">
   <div class="footer-top clearfix">
     <div class="container container-1330">
       <div class="row">

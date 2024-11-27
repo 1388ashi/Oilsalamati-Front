@@ -150,12 +150,10 @@
                             </div>
                         </div>
                     @empty
-                        <p>بلاگی پیدا نشد</p>
+                    <h4 class="text-danger d-flex justify-content-sm-end">بلاگی پیدا نشد</h4>
                     @endforelse
                 </div>
-
                 <!-- صفحه بندی -->
-                
                 <nav class="clearfix pagination-bottom">
                     <ul class="pagination justify-content-center">
                         {{ $data['posts']->onEachSide(0)->links('vendor.pagination.bootstrap-4') }}
@@ -163,7 +161,6 @@
                 </nav>
             <!-- پایان صفحه بندی -->
             </div>
-            <!--End Blog Grid-->
         </div>
     </div>
 </div>
