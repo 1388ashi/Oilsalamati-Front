@@ -2,23 +2,23 @@
 @section('body_class') template-product product-layout1 @endsection
 @section('styles')
 <style>
-.modal-content {  
-    border-radius: 8px; 
-    padding: 20px;
-}  
-.modal-header {  
-    border-bottom: none;   
-}  
-.modal-body {  
-    padding: 20px;
-}  
-.btn-auth {  
-    background-color: #007bff;
-    border-color: #007bff;
-}  
-.mt-3 {  
-    margin-top: 15px; 
-}  
+    .modal-content {  
+        border-radius: 8px; 
+        padding: 20px;
+    }  
+    .modal-header {  
+        border-bottom: none;   
+    }  
+    .modal-body {  
+        padding: 20px;
+    }  
+    .btn-auth {  
+        background-color: #007bff;
+        border-color: #007bff;
+    }  
+    .mt-3 {  
+        margin-top: 15px; 
+    }  
 </style>
 @endsection
 @section('content')
@@ -50,8 +50,8 @@
                         <img
                             id="zoompro"
                             class="zoompro"
-                            src="{{$product->varieties[0]->images_showcase[0]->url }}"
-                            data-zoom-image="{{$product->varieties[0]->images_showcase[0]->url }}"
+                            {{-- src="{{$product->varieties[0]->images_showcase[0]->url }}"
+                            data-zoom-image="{{$product->varieties[0]->images_showcase[0]->url }}" --}}
                             alt="محصول"
                             width="625"
                             height="808"
@@ -78,27 +78,27 @@
                             @foreach ($product->varieties as $variety)  
                                 <a  
                                     onclick="imageProduct(this)"   
-                                    data-zoom-image="{{ $variety->images_showcase[0]->url }}"
-                                    data-image="{{ $variety->images_showcase[0]->url }}"  
+                                    {{-- data-zoom-image="{{ $variety->images_showcase[0]->url }}"
+                                    data-image="{{ $variety->images_showcase[0]->url }}"   --}}
                                     class="slick-slide slick-cloned @if ($loop->first) active @endif">  
-                                    <img  
+                                    {{-- <img  
                                         class="blur-up lazyload"  
                                         data-src="{{ $variety->images_showcase[0]->url }}"  
                                         src="{{ $variety->images_showcase[0]->url }}"   
                                         alt="محصول"  
                                         width="625"  
                                         height="808"  
-                                    />  
+                                    />   --}}
                                 </a>  
                             @endforeach 
                         </div>
                     </div>
                     <div class="lightboximages">
                         @foreach ($product->varieties as $variety)  
-                        <a
+                        {{-- <a
                             href="{{ $variety->images_showcase[0]->url }}"
                             data-size="1000x1280">
-                        </a>
+                        </a> --}}
                         @endforeach  
                     </div>
                 </div>
@@ -177,17 +177,19 @@
                             </ul> --}}
                         </div>
                         <div class="product-item swatches-size w-100 mb-4 swatch-1 option2" data-option-index="1">
-                        <div></div>
-                        <label class="label d-flex align-items-center"
-                            >اندازه:<span id="showSize" class="slVariant me-1 fw-bold">انتخاب بکنید</span>
-                            <a
-                            href="#sizechart-modal"
-                            class="text-link sizelink text-muted size-chart-modal"
-                            data-bs-toggle="modal"
-                            data-bs-target="#sizechart_modal"
-                            >راهنمای اندازه</a
-                            ></label
-                        >
+                            <div class="div-specification-size d-flex justify-content-between align-items-center">  
+                                <label class="label d-flex align-items-center mb-0">اندازه:
+                                    <span id="showSize" class="slVariant me-1 fw-bold">انتخاب بکنید</span>  
+                                </label>  
+                                <div class="d-flex align-items-center">  
+                                    <a  
+                                        href="#sizechart-modal"  
+                                        class="text-link sizelink text-muted"  
+                                        data-bs-toggle="modal"  
+                                        data-bs-target="#sizechart_modal"  
+                                    >راهنمای اندازه</a>  
+                                </div>  
+                            </div>  
                             <input type="hidden" id="varietyPrice" name="varietyPrice" value="">
                             <input type="hidden" id="varietyValue" name="varietyValue" value="">
                             <input type="hidden" id="imageValue" name="imageValue" value="">

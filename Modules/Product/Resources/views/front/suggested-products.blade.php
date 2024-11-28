@@ -10,7 +10,7 @@
                 <div class="product-box">
                     <div class="product-image">
                         <a href="{{route('products.show',$product->id)}}" class="product-img">
-                            <img
+                            {{-- <img
                                 class="primary blur-up lazyload"
                                 data-src="{{ url('/storage') . '/' . $product->images[0] }}"
                                 src="{{url('/storage') . '/' . $product->images[0] }}"
@@ -27,7 +27,7 @@
                                 title="محصول"
                                 width="625"
                                 height="703"
-                            />
+                            /> --}}
                         </a>
                         @php($finalPrice = $product->major_final_price)
                         @php($hasDiscount = $finalPrice->discount_price > 0 ? true : false)
