@@ -50,8 +50,8 @@
                         <img
                             id="zoompro"
                             class="zoompro"
-                            {{-- src="{{$product->varieties[0]->images_showcase[0]->url }}"
-                            data-zoom-image="{{$product->varieties[0]->images_showcase[0]->url }}" --}}
+                            src="{{$product->varieties[0]->images_showcase[0]->url }}"
+                            data-zoom-image="{{$product->varieties[0]->images_showcase[0]->url }}"
                             alt="محصول"
                             width="625"
                             height="808"
@@ -78,27 +78,27 @@
                             @foreach ($product->varieties as $variety)  
                                 <a  
                                     onclick="imageProduct(this)"   
-                                    {{-- data-zoom-image="{{ $variety->images_showcase[0]->url }}"
-                                    data-image="{{ $variety->images_showcase[0]->url }}"   --}}
+                                    data-zoom-image="{{ $variety->images_showcase[0]->url }}"
+                                    data-image="{{ $variety->images_showcase[0]->url }}"  
                                     class="slick-slide slick-cloned @if ($loop->first) active @endif">  
-                                    {{-- <img  
+                                    <img  
                                         class="blur-up lazyload"  
                                         data-src="{{ $variety->images_showcase[0]->url }}"  
                                         src="{{ $variety->images_showcase[0]->url }}"   
                                         alt="محصول"  
                                         width="625"  
                                         height="808"  
-                                    />   --}}
+                                    />  
                                 </a>  
                             @endforeach 
                         </div>
                     </div>
                     <div class="lightboximages">
                         @foreach ($product->varieties as $variety)  
-                        {{-- <a
+                        <a
                             href="{{ $variety->images_showcase[0]->url }}"
                             data-size="1000x1280">
-                        </a> --}}
+                        </a>
                         @endforeach  
                     </div>
                 </div>
