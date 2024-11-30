@@ -212,85 +212,97 @@
         });
 
         function updateCartDisplay() {  
-            let productData = getCookie('productData');  
+    let productData = getCookie('productData');  
 
-            if (!productData) {  
-                productData = null;
+    if (!productData) {  
+        productData = null;  
+    } else {  
+        productData = JSON.parse(decodeURIComponent(productData));  
+    }  
+
+    $('#output').empty();  
+    console.log(productData);  
+
+    if (productData && productData.length > 0) {  
+        $('.minicart-bottom').show();  
+
+        // ایجاد یک شیء موقت برای جمع‌آوری محصولات بر اساس variety_id  
+        const groupedProducts = {};  
+        productData.forEach(product => {  
+            if (!groupedProducts[product.variety_id]) {  
+                groupedProducts[product.variety_id] = { ...product }; // کپی محصول  
             } else {  
-                productData = JSON.parse(decodeURIComponent(productData));  
+                // جمع کردن تعداد و محاسبه قیمت  
+                groupedProducts[product.variety_id].variety_quantity += parseInt(product.variety_quantity);  
             }  
+        });  
 
-            $('#output').empty();  
-            console.log(productData);  
+        const uniqueProducts = Object.values(groupedProducts);  
+        let totalItems = uniqueProducts.length;  
+        $('#cart-count').text(`سبد خرید شما (${totalItems} مورد)`);  
+        $('#num-cart-count').text(`${totalItems}`);  
 
-            if (productData && productData.length > 0) {  
-                $('.minicart-bottom').show();  
-                let totalItems = productData.length;  
-                $('#cart-count').text(`سبد خرید شما (${totalItems} مورد)`);  
-                $('#num-cart-count').text(`${totalItems}`);  
+        let totalPrice = 0;  
 
-                $('#output').empty();  
-                let totalPrice = 0;  
+        uniqueProducts.forEach(function(product) {  
+            let quantity = parseInt(product.variety_quantity);  
+            let productTotalPrice = Math.floor(parseFloat(product.variety_price) * 1000 * quantity);  
+            totalPrice += productTotalPrice;  
 
-                productData.forEach(function(product) {  
-                    let quantity = parseInt(product.variety_quantity);  
-                    let productTotalPrice = Math.floor(parseFloat(product.variety_price) * 1000 * quantity);  
-                    totalPrice += productTotalPrice;  
-
-                    let productHtml = `  
-                        <li class="item d-flex justify-content-center align-items-center" data-variety-id="${product.variety_id}">  
-                            <a class="product-image rounded-0" href="product-layout1.html">  
-                                <img  
-                                    class="rounded-0 blur-up lazyload"  
-                                    data-src="${product.product_image}"  
-                                    src="${product.product_image}"  
-                                    alt="product"  
-                                    title="محصول"  
-                                    width="120"  
-                                    height="170"  
-                                />  
+            let productHtml = `  
+                <li class="item d-flex justify-content-center align-items-center" data-variety-id="${product.variety_id}">  
+                    <a class="product-image rounded-0" href="product-layout1.html">  
+                        <img  
+                            class="rounded-0 blur-up lazyload"  
+                            data-src="${product.product_image}"  
+                            src="${product.product_image}"  
+                            alt="product"  
+                            title="محصول"  
+                            width="120"  
+                            height="170"  
+                        />  
+                    </a>  
+                    <div class="product-details">  
+                        <a class="product-title" href="product-layout1.html">${product.title_product}</a>  
+                        <div class="variant-cart my-2">${product.variety_value}</div>  
+                        <div class="priceRow">  
+                            <div class="product-price">  
+                                <span class="price">${product.variety_price}</span>  
+                            </div>  
+                        </div>  
+                    </div>  
+                    <div class="qtyDetail text-center">  
+                        <div class="qtyField">  
+                            <a class="qtyBtn minus" onclick="decreaseQuantity(this)">  
+                                <i style="cursor: pointer" class="icon anm anm-minus-r"></i>  
                             </a>  
-                            <div class="product-details">  
-                                <a class="product-title" href="product-layout1.html">${product.title_product}</a>  
-                                <div class="variant-cart my-2">${product.variety_value}</div>  
-                                <div class="priceRow">  
-                                    <div class="product-price">  
-                                        <span class="price">${product.variety_price}</span>  
-                                    </div>  
-                                </div>  
-                            </div>  
-                            <div class="qtyDetail text-center">  
-                                <div class="qtyField">  
-                                    <a class="qtyBtn minus" onclick="decreaseQuantity(this)">  
-                                        <i style="cursor: pointer" class="icon anm anm-minus-r"></i>  
-                                    </a>  
-                                    <input type="text" name="quantity"   
-                                        value="${product.variety_quantity}"   
-                                        class="qty"   
-                                        data-key="${product.variety_id}"   
-                                        readonly/>  
-                                    <a class="qtyBtn plus" onclick="increaseQuantity(this)">  
-                                        <i style="cursor: pointer" class="icon anm anm-plus-r"></i>  
-                                    </a>  
-                                </div>  
-                                <a href="#" class="edit-i remove" onclick="removeVariety(event, '${product.variety_id}')" data-variety-id="${product.variety_id}">  
-                                    <i class="icon anm anm-times-r" data-bs-toggle="tooltip" data-bs-placement="top" title="حذف"></i>  
-                                </a>  
-                            </div>  
-                        </li>`;  
+                            <input type="text" name="quantity"   
+                                value="${product.variety_quantity}"   
+                                class="qty"   
+                                data-key="${product.variety_id}"   
+                                readonly/>  
+                            <a class="qtyBtn plus" onclick="increaseQuantity(this)">  
+                                <i style="cursor: pointer" class="icon anm anm-plus-r"></i>  
+                            </a>  
+                        </div>  
+                        <a href="#" class="edit-i remove" onclick="removeVariety(event, '${product.variety_id}')" data-variety-id="${product.variety_id}">  
+                            <i class="icon anm anm-times-r" data-bs-toggle="tooltip" data-bs-placement="top" title="حذف"></i>  
+                        </a>  
+                    </div>  
+                </li>`;  
 
-                    $('#output').append(productHtml);  
-                });  
-                console.log(totalPrice);
-                
-                $('#cart-price').text(totalPrice.toLocaleString() + ' تومان');  
+            $('#output').append(productHtml);  
+        });  
+        console.log(totalPrice);  
+        
+        $('#cart-price').text(totalPrice.toLocaleString() + ' تومان');  
 
-            } else {  
-                $('#output').append('<li>سبد خرید شما خالی است.</li>');  
-                $('#cart-count').text('سبد خرید شما (0 مورد)');  
-                $('.minicart-bottom').hide();  
-            }  
-        }
+    } else {  
+        $('#output').append('<li>سبد خرید شما خالی است.</li>');  
+        $('#cart-count').text('سبد خرید شما (0 مورد)');  
+        $('.minicart-bottom').hide();  
+    }  
+}
         function getCookie(name) {
             let cookieArr = document.cookie.split(";");
 
