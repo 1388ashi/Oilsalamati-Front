@@ -7,6 +7,11 @@
 
 
 <script>
+    $(document).ready(function() {  
+        if (window.location.href.indexOf("cart") !== -1) {  
+            $('.header-cart').addClass('d-none');  
+        }  
+    });  
     let typingTimer;
 
     $('#SearchProductInput').on('input', function() {
