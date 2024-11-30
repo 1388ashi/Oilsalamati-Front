@@ -12,8 +12,8 @@
                         <a href="{{route('products.show',$product->id)}}" class="product-img">
                             <img
                                 class="primary blur-up lazyload"
-                                data-src="{{ url('/storage') . '/' . $product->images[0] }}"
-                                src="{{url('/storage') . '/' . $product->images[0] }}"
+                                {{-- data-src="{{ url('/storage') . '/' . $product->images[0] }}"
+                                src="{{url('/storage') . '/' . $product->images[0] }}" --}}
                                 alt="محصول"
                                 title="محصول"
                                 width="625"
@@ -21,8 +21,8 @@
                             />
                             <img
                                 class="hover blur-up lazyload"
-                                data-src="{{url('/storage') . '/' . $product->images[0] }}"
-                                src="{{url('/storage') . '/' . $product->images[0] }}"
+                                {{-- data-src="{{url('/storage') . '/' . $product->images[0] }}"
+                                src="{{url('/storage') . '/' . $product->images[0] }}" --}}
                                 alt=" محصول"
                                 title="محصول"
                                 width="625"
