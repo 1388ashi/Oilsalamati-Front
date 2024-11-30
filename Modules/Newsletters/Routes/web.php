@@ -2,6 +2,8 @@
 use Illuminate\Support\Facades\Route;
 use Modules\Newsletters\Http\Controllers\Admin\NewslettersController;
 use Modules\Newsletters\Http\Controllers\Admin\UsersNewslettersController;
+use Modules\Newsletters\Http\Controllers\Front\NewslettersController as FrontNewslettersController;
+
 
 Route::webSuperGroup('admin', function () {
     Route::get('/newsletters', [NewslettersController::class,'index'])->name('newsletters.index');
@@ -12,4 +14,4 @@ Route::webSuperGroup('admin', function () {
     Route::get('/newsletters/users', [UsersNewslettersController::class,'index'])->name('newsletters.users.index');
     Route::delete('/newsletters/delete/{users_newsletters}', [UsersNewslettersController::class,'destroy'])->name('newsletters.users.destroy');
 });
-
+Route::post('newsletters', [FrontNewslettersController::class, 'store'])->name('front.newsletters.store');

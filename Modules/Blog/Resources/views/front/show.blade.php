@@ -217,7 +217,6 @@
                             <div class="row">  
                                 <div class="col-12">  
                                     <button class="btn btn-lg" type="submit">ارسال نظر</button>  
-                                    {{-- <input type="submit" class="btn btn-lg" value="ارسال نظر" />   --}}
                                 </div>  
                             </div>  
                         </form>  

@@ -13,7 +13,7 @@ use Modules\Newsletters\Entities\UsersNewsletters;
 class NewslettersController extends Controller
 {
 
-    public function store(Request $request): JsonResponse
+    public function store(Request $request)
     {
         $phoneNumberRules = [
             'unique:users_newsletters,phone_number',
@@ -30,7 +30,10 @@ class NewslettersController extends Controller
         $user = UsersNewsletters::query()->create($request->only(['email', 'phone_number']));
         $m = $request->email ? 'ایمیل' : 'شماره تماس';
 
-        return response()->success("$m شما با موفقیت به خبرنامه افزوده شد.", compact('user'));
+        if (request()->header('Accept') == 'application/json') {
+            return response()->success("$m شما با موفقیت به خبرنامه افزوده شد.", compact('user'));
+        }
+        return redirect()->back()->with('success', 'ایمیل شما با موفقیت ثبت شد.');
     }
 
 

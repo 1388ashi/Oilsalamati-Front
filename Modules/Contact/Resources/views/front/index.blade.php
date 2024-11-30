@@ -25,7 +25,7 @@
                 <div class="section-header">
                     <h2>بیایید با هم تماس بگیریم!</h2>
                     <p>
-                        {{ $settings[4]['value'] }}
+                        {{ $settings['site']['footer_about'] }}
                     </p>
                 </div>
 
@@ -88,18 +88,18 @@
                         <strong class="d-block mb-2">آدرس :</strong>
                         <p>
                             <i class="icon anm anm-map-marker-al ms-2 d-none"></i>
-                            {{ $settings[7]['value'] }}
+                            {{ $settings['site']['address'] }}
                         </p>
                         </li>
                         <li class="mb-2 phone">
                         <strong>تلفن :</strong
                         ><i class="icon anm anm-phone ms-2 d-none"></i>
-                        <a dir="ltr">{{ $settings[2]['value'] }}</a>
+                        <a dir="ltr">{{ $settings['site']['mobile_support'] }}</a>
                         </li>
                         <li class="mb-0 email">
                         <strong dir="ltr">:ایمیل </strong
                         ><i class="icon anm anm-envelope-l ms-2 d-none"></i>
-                        <a href="mailto:{{ $settings[6]['value'] }}">{{ $settings[6]['value'] }}</a>
+                        <a href="mailto:{{ $settings['site']['email'] }}">{{ $settings['site']['email'] }}</a>
                         </li>
                     </ul>
                 <hr />
@@ -108,60 +108,31 @@
                         ><strong>در ارتباط بمانید</strong></label
                         >
                         <ul class="list-inline social-icons">
-                        <li class="list-inline-item">
-                            <a
-                            href="#"
-                            data-bs-toggle="tooltip"
-                            data-bs-placement="top"
-                            title="فیس بوک"
-                            ><i class="icon anm anm-facebook-f"></i
-                            ></a>
-                        </li>
-                        <li class="list-inline-item">
-                            <a
-                            href="#"
-                            data-bs-toggle="tooltip"
-                            data-bs-placement="top"
-                            title="توییتر"
-                            ><i class="icon anm anm-twitter"></i
-                            ></a>
-                        </li>
-                        <li class="list-inline-item">
-                            <a
-                            href="#"
-                            data-bs-toggle="tooltip"
-                            data-bs-placement="top"
-                            title="پینترست"
-                            ><i class="icon anm anm-pinterest-p"></i
-                            ></a>
-                        </li>
-                        <li class="list-inline-item">
-                            <a
-                            href="#"
-                            data-bs-toggle="tooltip"
-                            data-bs-placement="top"
-                            title="لینکدین"
-                            ><i class="icon anm anm-linkedin-in"></i
-                            ></a>
-                        </li>
-                        <li class="list-inline-item">
-                            <a
-                            href="#"
-                            data-bs-toggle="tooltip"
-                            data-bs-placement="top"
-                            title="گوگل پلاس"
-                            ><i class="icon anm anm-google-plus-g"></i
-                            ></a>
-                        </li>
-                        <li class="list-inline-item">
-                            <a
-                            href="#"
-                            data-bs-toggle="tooltip"
-                            data-bs-placement="top"
-                            title="واتس اپ"
-                            ><i class="icon anm anm-whatsapp"></i
-                            ></a>
-                        </li>
+                            @if ($settings['social']['facebook'])
+                            <li class="list-inline-item">
+                                <a href="{{ $settings['social']['facebook'] }}" data-bs-toggle="tooltip" data-bs-placement="top" title="فیسبوک" ><i class="icon anm anm-facebook-f"></i></a>
+                            </li>
+                            @endif
+                            @if ($settings['social']['twitter'])
+                            <li class="list-inline-item">
+                                <a href="{{ $settings['social']['twitter'] }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="توییتر" ><i class="icon anm anm-facebook-f"></i></a>
+                            </li>
+                            @endif
+                            @if ($settings['social']['linkedin'])
+                            <li class="list-inline-item">
+                                <a href="{{ $settings['social']['linkedin'] }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="لینکدین" ><i class="icon anm anm-facebook-f"></i></a>
+                            </li>
+                            @endif
+                            @if ($settings['social']['instagram'])
+                            <li class="list-inline-item">
+                                <a href="{{ $settings['social']['instagram'] }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="اینستاگرام" ><i class="icon anm anm-instagram"></i></a>
+                            </li>
+                            @endif
+                            @if ($settings['social']['youtube'])
+                            <li class="list-inline-item">
+                                <a href="{{ $settings['social']['youtube'] }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="یوتوب" ><i class="icon anm anm-facebook-f"></i></a>
+                            </li>
+                            @endif
                         </ul>
                     </div>
                 </div>

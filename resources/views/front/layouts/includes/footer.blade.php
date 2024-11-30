@@ -24,7 +24,7 @@
                 >سوالی دارید؟ 24 ساعته با ما تماس بگیرید</label
               >
               <a href="tel:+801234564790" class="w-100"
-                ><span dir="ltr">(+80) 123 456 4790</span></a
+                ><span dir="ltr">{{ $settings['site']['mobile'] }}</span></a
               >
             </div>
           </div>
@@ -48,7 +48,8 @@
             @endforeach
             <div class="col-12 col-sm-12 col-md-12 col-lg-4 mt-1 mt-md-4 mt-lg-0">
               <div class="footer-newsletter icon-arrow">
-                <form action="#" method="post">
+                <form action="{{ route('front.newsletters.store') }}" method="post">
+                  @csrf
                   <label class="h4 mb-2">در خبرنامه ما ثبت نام کنید</label>
                   <p>مطمئن شوید که هرگز اخبار جالب و تبلیغات انحصاری ما را از دست ندهید.</p>
                   <div class="input-group">
@@ -76,7 +77,7 @@
                   @endif
                   @if ($settings['social']['instagram'])
                     <li class="list-inline-item">
-                      <a href="{{ $settings['social']['instagram'] }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="اینستاگرام" ><i class="icon anm anm-facebook-f"></i></a>
+                      <a href="{{ $settings['social']['instagram'] }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="اینستاگرام" ><i class="icon anm anm-instagram"></i></a>
                     </li>
                   @endif
                   @if ($settings['social']['youtube'])

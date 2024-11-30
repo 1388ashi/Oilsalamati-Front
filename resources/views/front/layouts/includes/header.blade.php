@@ -28,7 +28,7 @@
             @endif
             @if ($settings['social']['instagram'])
               <li class="list-inline-item">
-                <a href="{{ $settings['social']['instagram'] }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="اینستاگرام" ><i class="icon anm anm-facebook-f"></i></a>
+                <a href="{{ $settings['social']['instagram'] }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="اینستاگرام" ><i class="icon anm anm-instagram"></i></a>
               </li>
             @endif
             @if ($settings['social']['youtube'])

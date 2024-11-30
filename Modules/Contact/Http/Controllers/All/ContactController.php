@@ -3,6 +3,7 @@
 namespace Modules\Contact\Http\Controllers\All;
 
 use Modules\Setting\Entities\Setting;
+use Modules\Home\Services\BaseService;
 use Shetabit\Shopit\Modules\Contact\Http\Controllers\All\ContactController as BaseContactController;
 
 use Illuminate\Http\JsonResponse;
@@ -27,8 +28,9 @@ class ContactController extends Controller
     }
     public function index()
     {
-        $settings = Setting::query()->where('private', false)->where('group','site')->groupBy('id')->get()->toArray();
-
+        $baseService = new BaseService();
+        $response = $baseService->getBaseRouteCacheData();
+        $settings = $response['settings'];
         return view('contact::front.index',compact('settings'));
     }
     /**
