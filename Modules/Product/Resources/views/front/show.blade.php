@@ -50,8 +50,8 @@
                         <img
                             id="zoompro"
                             class="zoompro"
-                            {{-- src="{{$product->varieties[0]->images_showcase[0]->url }}"
-                            data-zoom-image="{{$product->varieties[0]->images_showcase[0]->url }}" --}}
+                            src="{{$product->varieties[0]->images_showcase[0]->url }}"
+                            data-zoom-image="{{$product->varieties[0]->images_showcase[0]->url }}"
                             alt="محصول"
                             width="625"
                             height="808"
@@ -78,13 +78,13 @@
                             @foreach ($product->varieties as $variety)  
                                 <a  
                                     onclick="imageProduct(this)"   
-                                    {{-- data-zoom-image="{{ $variety->images_showcase[0]->url }}"
-                                    data-image="{{ $variety->images_showcase[0]->url }}"   --}}
+                                    data-zoom-image="{{ $variety->images_showcase[0]->url }}"
+                                    data-image="{{ $variety->images_showcase[0]->url }}"  
                                     class="slick-slide slick-cloned @if ($loop->first) active @endif">  
                                     <img  
                                         class="blur-up lazyload"  
-                                        {{-- data-src="{{ $variety->images_showcase[0]->url }}"  
-                                        src="{{ $variety->images_showcase[0]->url }}"    --}}
+                                        data-src="{{ $variety->images_showcase[0]->url }}"  
+                                        src="{{ $variety->images_showcase[0]->url }}"   
                                         alt="محصول"  
                                         width="625"  
                                         height="808"  
@@ -94,12 +94,12 @@
                         </div>
                     </div>
                     <div class="lightboximages">
-                        {{-- @foreach ($product->varieties as $variety)  
+                        @foreach ($product->varieties as $variety)  
                         <a
                             href="{{ $variety->images_showcase[0]->url }}"
                             data-size="1000x1280">
                         </a>
-                        @endforeach   --}}
+                        @endforeach  
                     </div>
                 </div>
             </div>
@@ -191,7 +191,6 @@
                                 </div>  
                             </div>  
                             <input type="hidden" id="varietyPrice" name="varietyPrice" value="">
-                            <input type="hidden" id="varietyValue" name="varietyValue" value="">
                             <input type="hidden" id="imageValue" name="imageValue" value="">
                             <ul class="variants-size size-swatches d-flex-center pt-1 clearfix">
                             @if ($product->varieties_showcase['attributes'])
@@ -211,43 +210,8 @@
                                     </li>  
                                 @endforeach 
                                 @endif
-                                {{-- <li class="swatch x-large available active">
-                                <span
-                                    class="swatchLbl"
-                                    data-bs-toggle="tooltip"
-                                    data-bs-placement="top"
-                                    title="S"
-                                    >S</span
-                                >
-                                </li>
-                                <li class="swatch x-large available">
-                                <span
-                                    class="swatchLbl"
-                                    data-bs-toggle="tooltip"
-                                    data-bs-placement="top"
-                                    title="M"
-                                    >M</span
-                                >
-                                </li>
-                                <li class="swatch x-large available">
-                                <span
-                                    class="swatchLbl"
-                                    data-bs-toggle="tooltip"
-                                    data-bs-placement="top"
-                                    title="L"
-                                    >L</span
-                                >
-                                </li>
-                                <li class="swatch x-large available">
-                                <span
-                                    class="swatchLbl"
-                                    data-bs-toggle="tooltip"
-                                    data-bs-placement="top"
-                                    title="XL"
-                                    >XL</span
-                                >
-                                </li> --}}
                             </ul>
+                            <input type="hidden" id="varietyValue" name="varietyValue" value="">
                         </div>
                     </div>
                     <div class="product-action w-50 d-flex-wrap my-3 my-md-4">
@@ -442,6 +406,7 @@
                         document.getElementById('price').innerText = formatPrice(itemPrice);  
                         document.getElementById("varietyValue").value = itemValue;  
                         document.getElementById("varietyPrice").value = itemPrice;  
+                        document.getElementById("showSize").innerText = itemValue;  
                     });  
                 });  
             });  
@@ -457,25 +422,27 @@
                 }
             }
             $(document).ready(function () {
-                $('.swatch').on('click', function() {  
-                    var $this = $(this);  
-                    var selectedId = $this.data('item-id');
-                    var selectedPrice = document.getElementById("varietyPrice").value;
-                    var selectedValue = document.getElementById("varietyValue").value;
-                    var title = document.getElementById("title").value;
-                    var selectedQuantity = document.getElementById("quantity").value;
-                    $('#variety_id').val(selectedId);  
-                    $('#showSize').text(selectedValue);  
-                });  
+                // $('.swatch').on('click', function() {  
+                //     var $this = $(this);  
+                //     var selectedId =  $this.data('item-id');
+                //     var selectedPrice = document.getElementById("varietyPrice").value;
+                //     var selectedValue = document.getElementById("varietyValue").value;
+                //     var title = document.getElementById("title").value;
+                //     var selectedQuantity = document.getElementById("quantity").value;
+                //     $('#variety_id').val(selectedId);  
+                //     console.log(selectedValue);
+                    
+                //     $('#showSize').text(selectedValue);  
+                // });  
                 let isLoggedIn = @json(auth()->guard('customer')->user());  
 
                 $('.product-form-cart-submit').on('click', function(event) {  
                     event.preventDefault();  
-                    let variety_id = $('#variety_id').val();  
+                    let varietyValue = $('#varietyValue').val();  
                     let isLoggedIn = @json(auth()->guard('customer')->user());  
 
                     if (!isLoggedIn) {  
-                        if (variety_id) {
+                        if (varietyValue) {
                             let varietyQuantity = $('#quantity').val();  
                             let titleProduct = $('#title').text();  
                             let productImage = $('#imageValue').val();  
