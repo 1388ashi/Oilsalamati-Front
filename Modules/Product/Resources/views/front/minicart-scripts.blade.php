@@ -1,6 +1,6 @@
 <script>
     @if (auth()->guard('customer')->user())
-    let carts = @json(auth()->guard('customer')->user()->carts()->with(['variety.product', 'variety.attributes'])->get()->map(function ($cart) {
+        let carts = @json(auth()->guard('customer')->user()->carts()->with(['variety.product', 'variety.attributes'])->get()->map(function ($cart) {
             $cart->variety->product->setAppends(['images_showcase']);
             return $cart;
         }));
@@ -191,244 +191,235 @@
             updateCartInfo();
         });
     @else
-        $(document).ready(function() {
-            $('.cart-remove').on('click', function(event) {
-                event.preventDefault();
-                const variety_id = $(this).data('variety');
+        $(document).ready(function() {  
+            $('.cart-remove').on('click', function(event) {  
+                event.preventDefault();  
+                const variety_id = $(this).data('variety');  
+                const variety_value = $(this).data('value');
 
-                let productData = getCookie('productData');
-                if (productData) {
-                    productData = JSON.parse(decodeURIComponent(productData));
+                let productData = getCookie('productData');  
+                if (productData) {  
+                    productData = JSON.parse(decodeURIComponent(productData));  
 
-                    productData = productData.filter(product => product.variety_id !== String(
-                        variety_id));
-                    document.cookie =
-                        `productData=${encodeURIComponent(JSON.stringify(productData))}; path=/;`;
+                    productData = productData.filter(product =>   
+                        !(product.variety_id === String(variety_id) && product.variety_value === variety_value)  
+                    );  
+                    document.cookie = `productData=${encodeURIComponent(JSON.stringify(productData))}; path=/;`;  
 
-                    updateCartDisplay();
-                }
-            });
-            updateCartDisplay();
-        });
+                    updateCartDisplay();  
+                }  
+            });  
+            updateCartDisplay();  
+        });  
 
         function updateCartDisplay() {  
-    let productData = getCookie('productData');  
+            let productData = getCookie('productData');  
 
-    if (!productData) {  
-        productData = null;  
-    } else {  
-        productData = JSON.parse(decodeURIComponent(productData));  
-    }  
-
-    $('#output').empty();  
-    console.log(productData);  
-
-    if (productData && productData.length > 0) {  
-        $('.minicart-bottom').show();  
-
-        // ایجاد یک شیء موقت برای جمع‌آوری محصولات بر اساس variety_id  
-        const groupedProducts = {};  
-        productData.forEach(product => {  
-            if (!groupedProducts[product.variety_id]) {  
-                groupedProducts[product.variety_id] = { ...product }; // کپی محصول  
+            if (!productData) {  
+                productData = [];  
             } else {  
-                // جمع کردن تعداد و محاسبه قیمت  
-                groupedProducts[product.variety_id].variety_quantity += parseInt(product.variety_quantity);  
+                productData = JSON.parse(decodeURIComponent(productData));  
             }  
-        });  
 
-        const uniqueProducts = Object.values(groupedProducts);  
-        let totalItems = uniqueProducts.length;  
-        $('#cart-count').text(`سبد خرید شما (${totalItems} مورد)`);  
-        $('#num-cart-count').text(`${totalItems}`);  
+            $('#output').empty();  
+            console.log(productData);  
 
-        let totalPrice = 0;  
+            if (productData.length > 0) {  
+                $('.minicart-bottom').show();  
 
-        uniqueProducts.forEach(function(product) {  
-            let quantity = parseInt(product.variety_quantity);  
-            let productTotalPrice = Math.floor(parseFloat(product.variety_price) * 1000 * quantity);  
-            totalPrice += productTotalPrice;  
+                let totalPrice = 0;  
+                let totalItems = 0; 
+                let productsByVarietyId = {};   
 
-            let productHtml = `  
-                <li class="item d-flex justify-content-center align-items-center" data-variety-id="${product.variety_id}">  
-                    <a class="product-image rounded-0" href="product-layout1.html">  
-                        <img  
-                            class="rounded-0 blur-up lazyload"  
-                            data-src="${product.product_image}"  
-                            src="${product.product_image}"  
-                            alt="product"  
-                            title="محصول"  
-                            width="120"  
-                            height="170"  
-                        />  
-                    </a>  
-                    <div class="product-details">  
-                        <a class="product-title" href="product-layout1.html">${product.title_product}</a>  
-                        <div class="variant-cart my-2">${product.variety_value}</div>  
-                        <div class="priceRow">  
-                            <div class="product-price">  
-                                <span class="price">${product.variety_price}</span>  
+                productData.forEach(function(product) {  
+                    let quantity = parseInt(product.variety_quantity);  
+                    let varietyPrice = product.variety_price;  
+                    
+                    if (typeof varietyPrice === 'string') {  
+                        varietyPrice = varietyPrice.replace(/,/g, '');   
+                    } else if (typeof varietyPrice === 'number') {  
+                        varietyPrice = varietyPrice.toString();   
+                    } else {  
+                        console.error('variety_price has an unexpected type:', varietyPrice);  
+                        return;  
+                    }  
+                    
+                    let productTotalPrice = Math.floor(parseFloat(varietyPrice) * quantity);  
+                    totalPrice += productTotalPrice;  
+
+                    totalItems += quantity;   
+
+                    let key = `${product.variety_id}_${product.variety_value}`;  
+
+                    if (!productsByVarietyId[key]) {  
+                        productsByVarietyId[key] = { ...product };  
+                    } else {  
+                        productsByVarietyId[key].variety_quantity += quantity;  
+                    }  
+                });  
+                let i = 0;
+                for (let key in productsByVarietyId) {  
+                    let product = productsByVarietyId[key];
+                    i += 1  
+                    
+                    let productHtml = `  
+                        <li class="item d-flex justify-content-center align-items-center" data-variety-id="${product.variety_id}">  
+                            <a class="product-image rounded-0" href="product-layout1.html">  
+                                <img  
+                                    class="rounded-0 blur-up lazyload"  
+                                    data-src="${product.product_image}"  
+                                    src="${product.product_image}"  
+                                    alt="product"  
+                                    title="محصول"  
+                                    width="120"  
+                                    height="170"  
+                                />  
+                            </a>  
+                            <div class="product-details">  
+                                <a class="product-title" href="product-layout1.html">${product.title_product}</a>  
+                                <div class="variant-cart my-2">${product.variety_value}</div>  
+                                <div class="priceRow">  
+                                    <div class="product-price">  
+                                        <span class="price">${product.variety_price}</span>  
+                                    </div>  
+                                </div>  
                             </div>  
-                        </div>  
-                    </div>  
-                    <div class="qtyDetail text-center">  
-                        <div class="qtyField">  
-                            <a class="qtyBtn minus" onclick="decreaseQuantity(this)">  
-                                <i style="cursor: pointer" class="icon anm anm-minus-r"></i>  
-                            </a>  
-                            <input type="text" name="quantity"   
-                                value="${product.variety_quantity}"   
-                                class="qty"   
-                                data-key="${product.variety_id}"   
-                                readonly/>  
-                            <a class="qtyBtn plus" onclick="increaseQuantity(this)">  
-                                <i style="cursor: pointer" class="icon anm anm-plus-r"></i>  
-                            </a>  
-                        </div>  
-                        <a href="#" class="edit-i remove" onclick="removeVariety(event, '${product.variety_id}')" data-variety-id="${product.variety_id}">  
-                            <i class="icon anm anm-times-r" data-bs-toggle="tooltip" data-bs-placement="top" title="حذف"></i>  
-                        </a>  
-                    </div>  
-                </li>`;  
+                            <div class="qtyDetail text-center">  
+                                <div class="qtyField">  
+                                    <a class="qtyBtn minus" onclick="decreaseQuantity(this)">  
+                                        <i style="cursor: pointer" class="icon anm anm-minus-r"></i>  
+                                    </a>  
+                                    <input type="text" name="quantity"   
+                                        value="${product.variety_quantity}"   
+                                        class="qty"   
+                                        data-key="${product.variety_value}"   
+                                        readonly/>  
+                                    <a class="qtyBtn plus" onclick="increaseQuantity(this)">  
+                                        <i style="cursor: pointer" class="icon anm anm-plus-r"></i>  
+                                    </a>  
+                                </div>  
+                                <a href="#" class="edit-i remove" onclick="removeVariety(event, '${product.variety_id}', '${product.variety_value}')" data-variety-id="${product.variety_id}" data-value="${product.variety_value}">  
+                                    <i class="icon anm anm-times-r" data-bs-toggle="tooltip" data-bs-placement="top" title="حذف"></i>  
+                                </a>  
+                            </div>  
+                        </li>`;  
 
-            $('#output').append(productHtml);  
-        });  
-        console.log(totalPrice);  
-        
-        $('#cart-price').text(totalPrice.toLocaleString() + ' تومان');  
+                    $('#output').append(productHtml);  
+                }  
+                $('#cart-count').text(`سبد خرید شما (${i} مورد)`);  
+                $('#num-cart-count').text(`${i}`);
+                $('#cart-price').text(totalPrice.toLocaleString() + ' تومان');  
 
-    } else {  
-        $('#output').append('<li>سبد خرید شما خالی است.</li>');  
-        $('#cart-count').text('سبد خرید شما (0 مورد)');  
-        $('.minicart-bottom').hide();  
-    }  
-}
-        function getCookie(name) {
-            let cookieArr = document.cookie.split(";");
-
-            for (let i = 0; i < cookieArr.length; i++) {
-                let cookiePair = cookieArr[i].split("=");
-                if (name == cookiePair[0].trim()) {
-                    return decodeURIComponent(cookiePair[1]);
-                }
-            }
-
-            return null;
+            } else {  
+                $('#output').append('<li>سبد خرید شما خالی است.</li>');  
+                $('#cart-count').text('سبد خرید شما (0 مورد)');  
+                $('.minicart-bottom').hide();  
+            }  
         }
 
-        function updateQuantityInCookie(key, newVal) {
-            let productData = getCookie('productData');
-            productData = productData ? JSON.parse(decodeURIComponent(productData)) : [];
+        function getCookie(name) {  
+            let cookieArr = document.cookie.split(";");  
 
-            const productIndex = productData.findIndex(product => product.variety_id === key);
-            if (productIndex !== -1) {
-                productData[productIndex].variety_quantity = newVal;
-            }
-            document.cookie = `productData=${encodeURIComponent(JSON.stringify(productData))}; path=/;`;
-        }
+            for (let i = 0; i < cookieArr.length; i++) {  
+                let cookiePair = cookieArr[i].split("=");  
+                if (name == cookiePair[0].trim()) {  
+                    return decodeURIComponent(cookiePair[1]);  
+                }  
+            }  
 
-        function removeVariety(event, variety_id) {
-            Swal.fire({
-                text: 'آیا تمایل دارید محصول را از سبد خرید حذف کنید؟',
-                icon: "warning",
-                confirmButtonText: 'حذف کن',
-                showDenyButton: true,
-                denyButtonText: 'انصراف',
-                dangerMode: true,
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    event.preventDefault();
-                    let productData = getCookie('productData');
+            return null;  
+        }   
+        function removeVariety(event, variety_id, variety_value) {  
+            Swal.fire({  
+                text: 'آیا تمایل دارید محصول را از سبد خرید حذف کنید؟',  
+                icon: "warning",  
+                confirmButtonText: 'حذف کن',  
+                showDenyButton: true,  
+                denyButtonText: 'انصراف',  
+                dangerMode: true,  
+            }).then((result) => {  
+                if (result.isConfirmed) {  
+                    event.preventDefault();  
+                    let productData = getCookie('productData');  
 
-                    if (productData) {
+                    if (productData) {  
                         productData = JSON.parse(decodeURIComponent(productData));
-                        productData = productData.filter(product => product.variety_id !== String(variety_id));
-                        document.cookie =
-                            `productData=${encodeURIComponent(JSON.stringify(productData))}; path=/;`;
+                        productData = productData.filter(product =>   
+                            !(product.variety_value === variety_value)  
+                        );  
+                        document.cookie =  
+                            `productData=${encodeURIComponent(JSON.stringify(productData))}; path=/;`;  
 
-                        Swal.fire({
-                            icon: "success",
-                            text: "محصول با موفقیت از سبد خرید حذف شد."
-                        });
+                        Swal.fire({  
+                            icon: "success",  
+                            text: "محصول با موفقیت از سبد خرید حذف شد."  
+                        });  
 
-                        updateCartDisplay(); // به‌روزرسانی سبد خرید  
-                    }
-                }
-            });
-        }
+                        updateCartDisplay();
+                    }  
+                }  
+            });  
+        }   
 
-        function increaseQuantity(button) {
-            const quantityInput = button.previousElementSibling;
-            let newVal = parseInt(quantityInput.value) + 1;
-            let variety_id = quantityInput.dataset.key;
-            quantityInput.value = newVal;
-            updateQuantityInCookie(variety_id, newVal);
-            updateTotalPrice(newVal, variety_id);
+        function updateQuantityInCookie(variety_value, newVal) {  
+            let productData = getCookie('productData');  
+            productData = productData ? JSON.parse(decodeURIComponent(productData)) : [];  
+
+            const productIndex = productData.findIndex(product => String(product.variety_value) === variety_value);  
+            if (productIndex !== -1) {  
+                productData[productIndex].variety_quantity = newVal;  
+            }  
+            document.cookie = `productData=${encodeURIComponent(JSON.stringify(productData))}; path=/;`;  
+        }  
+
+        function increaseQuantity(button) {  
+            const quantityInput = button.previousElementSibling;  
+            let newVal = parseInt(quantityInput.value) + 1;  
+            let variety_value = quantityInput.dataset.key;  
+            quantityInput.value = newVal;  
+            updateQuantityInCookie(variety_value, newVal);  
+            updateTotalPrice(newVal, variety_value);  
             Swal.fire({  
                 icon: "success",  
-                text: "تعداد محصول با موفقیت افزایش یافت."
+                text: "تعداد محصول با موفقیت افزایش یافت."  
             });  
-        }
+        }  
 
-        function decreaseQuantity(button) {
-            const quantityInput = button.nextElementSibling;
-            let newVal = parseInt(quantityInput.value);
-            let variety_id = quantityInput.dataset.key;
-            if (newVal > 1) {
-                newVal--;
-                quantityInput.value = newVal;
-                updateQuantityInCookie(variety_id, newVal);
-                updateTotalPrice(newVal, variety_id);
+        function decreaseQuantity(button) {  
+            const quantityInput = button.nextElementSibling;  
+            let newVal = parseInt(quantityInput.value);  
+            let variety_value = quantityInput.dataset.key;  
+            if (newVal > 1) {  
+                newVal--;  
+                quantityInput.value = newVal;  
+                updateQuantityInCookie(variety_value, newVal);  
+                updateTotalPrice(newVal, variety_value);  
                 Swal.fire({  
                     icon: "success",  
-                    text: "تعداد محصول با موفقیت کاهش یافت."
+                    text: "تعداد محصول با موفقیت کاهش یافت."  
                 });  
-            }
-        }
+            }  
+        }  
 
-        function updateTotalPrice(newVal, inputVarietyId) {
-            let totalPrice = 0;
-            let totalItems = 0;
-            let productData = getCookie('productData');
+        function updateTotalPrice(newVal, variety_value) {  
+            let totalPrice = 0;  
+            let productData = getCookie('productData');  
 
-            if (productData) {
-                productData = JSON.parse(decodeURIComponent(productData));
-            }
+            if (productData) {  
+                productData = JSON.parse(decodeURIComponent(productData));  
+            }  
 
-            $('.qtyField').each(function() {
-                let quantity = parseInt($(this).find('.qty').val());
-                let varietyId = $(this).find('.qty').data('key');
+            let product = productData.find(product => product.variety_value === String(variety_value));  
 
-                let product = productData.find(product => product.variety_id === String(varietyId));
+            if (product) {  
+                let price = parseFloat(product.variety_price);  
+                totalPrice = Math.floor(price);  
+            }  
 
-                if (product) {
-                    console.log(product.variety_price);
-                    let price = parseFloat(product.variety_price);
-                    totalPrice += Math.floor(price * quantity);
-                }
-                if (quantity === 0) {
-                    productData = productData.filter(product => product.variety_id !== String(varietyId));
-                }
-            });
-
-            document.cookie = `productData=${encodeURIComponent(JSON.stringify(productData))}; path=/;`;
-            totalPrice += '000';
-            totalPrice = parseInt(totalPrice);
-            totalPrice = totalPrice.toLocaleString();
-
-            $('#cart-price').text(totalPrice + ' تومان');
-        }
-
-        function updateQuantityInCookie(key, newVal) {
-            let productData = getCookie('productData');
-            productData = productData ? JSON.parse(decodeURIComponent(productData)) : [];
-
-            const productIndex = productData.findIndex(product => product.variety_id === key);
-            if (productIndex !== -1) {
-                productData[productIndex].variety_quantity = newVal;
-            }
-            document.cookie = `productData=${encodeURIComponent(JSON.stringify(productData))}; path=/;`;
-        }
+            document.cookie = `productData=${encodeURIComponent(JSON.stringify(productData))}; path=/;`;  
+            totalPrice *= 1000; 
+            $('#cart-price').text(totalPrice.toLocaleString() + ' تومان');  
+        }  
     @endif
     $('#proceed-to-checkout').on('click', function() {
         let isLoggedIn = @json(auth()->guard('customer')->user());
