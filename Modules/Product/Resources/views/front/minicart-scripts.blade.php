@@ -228,8 +228,8 @@
                 $('.minicart-bottom').show();  
 
                 let totalPrice = 0;  
-                let totalItems = 0; 
-                let productsByVarietyId = {};   
+                let totalItems = 0;   
+                let productsByVarietyValue = {};   
 
                 productData.forEach(function(product) {  
                     let quantity = parseInt(product.variety_quantity);  
@@ -249,18 +249,21 @@
 
                     totalItems += quantity;   
 
-                    let key = `${product.variety_id}_${product.variety_value}`;  
+                    let key = product.variety_value;  
 
-                    if (!productsByVarietyId[key]) {  
-                        productsByVarietyId[key] = { ...product };  
+                    if (!productsByVarietyValue[key]) {  
+                        productsByVarietyValue[key] = { ...product };  
                     } else {  
-                        productsByVarietyId[key].variety_quantity += quantity;  
+                        productsByVarietyValue[key].variety_quantity += quantity;  
+                        removeFromCookie(product.variety_id);
                     }  
                 });  
-                let i = 0;
-                for (let key in productsByVarietyId) {  
-                    let product = productsByVarietyId[key];
-                    i += 1  
+
+                let i = 0;  
+                for (let key in productsByVarietyValue) {  
+                    
+                    let product = productsByVarietyValue[key];  
+                    i += 1;  
                     
                     let productHtml = `  
                         <li class="item d-flex justify-content-center align-items-center" data-variety-id="${product.variety_id}">  
@@ -306,17 +309,42 @@
 
                     $('#output').append(productHtml);  
                 }  
+
                 $('#cart-count').text(`سبد خرید شما (${i} مورد)`);  
-                $('#num-cart-count').text(`${i}`);
+                $('#num-cart-count').text(`${i}`);  
                 $('#cart-price').text(totalPrice.toLocaleString() + ' تومان');  
 
             } else {  
                 $('#output').append('<li>سبد خرید شما خالی است.</li>');  
                 $('#cart-count').text('سبد خرید شما (0 مورد)');  
+                $('#num-cart-count').text(`0`);  
                 $('.minicart-bottom').hide();  
             }  
-        }
+        }  
 
+        function setCookie(name, value, days) {  
+            const d = new Date();  
+            d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+            const expires = "expires=" + d.toUTCString();  
+            document.cookie = name + "=" + (value || "") + ";" + expires + ";path=/";  
+        }  
+        function addProductToData(product) {  
+            let productData = getCookie('productData') ? JSON.parse(decodeURIComponent(getCookie('productData'))) : [];  
+
+            let productImage = product.product_image ? product.product_image : 'path/to/default_image.png';  
+
+            let newProduct = {  
+                title_product: product.title_product,  
+                variety_id: product.variety_id,  
+                variety_price: product.variety_price,  
+                variety_quantity: product.variety_quantity,  
+                variety_value: product.variety_value,  
+                product_image: productImage 
+            };  
+
+            productData.push(newProduct);  
+            setCookie('productData', JSON.stringify(productData), 18);
+        }
         function getCookie(name) {  
             let cookieArr = document.cookie.split(";");  
 
@@ -328,6 +356,14 @@
             }  
 
             return null;  
+        }  
+        function removeFromCookie(varietyId) {  
+            let productData = getCookie('productData');  
+            if (productData) {  
+                productData = JSON.parse(decodeURIComponent(productData));  
+                productData = productData.filter(product => product.variety_id !== varietyId);  
+                setCookie('productData', JSON.stringify(productData), 7); 
+            }  
         }   
         function removeVariety(event, variety_id, variety_value) {  
             Swal.fire({  
@@ -362,64 +398,79 @@
         }   
 
         function updateQuantityInCookie(variety_value, newVal) {  
-            let productData = getCookie('productData');  
-            productData = productData ? JSON.parse(decodeURIComponent(productData)) : [];  
+    let productData = getCookie('productData');  
+    productData = productData ? JSON.parse(decodeURIComponent(productData)) : [];  
 
-            const productIndex = productData.findIndex(product => String(product.variety_value) === variety_value);  
-            if (productIndex !== -1) {  
-                productData[productIndex].variety_quantity = newVal;  
-            }  
-            document.cookie = `productData=${encodeURIComponent(JSON.stringify(productData))}; path=/;`;  
+    const productIndex = productData.findIndex(product => String(product.variety_value) === variety_value);  
+    if (productIndex !== -1) {  
+        productData[productIndex].variety_quantity = newVal;  
+
+        // اگر کمیت صفر شود، محصول را حذف کنیم  
+        if (newVal <= 0) {  
+            productData.splice(productIndex, 1); // حذف محصول  
         }  
+    } else if (newVal > 0) {  
+        // اگر محصولی جدید باشد، آن را اضافه کنیم  
+        // کد شما برای اضافه کردن محصول جدید به آرایه باید در اینجا قرار گیرد  
+    }  
 
-        function increaseQuantity(button) {  
-            const quantityInput = button.previousElementSibling;  
-            let newVal = parseInt(quantityInput.value) + 1;  
-            let variety_value = quantityInput.dataset.key;  
-            quantityInput.value = newVal;  
-            updateQuantityInCookie(variety_value, newVal);  
-            updateTotalPrice(newVal, variety_value);  
+    // به‌روزرسانی کوکی  
+    document.cookie = `productData=${encodeURIComponent(JSON.stringify(productData))}; path=/;`;  
+}  
+
+function increaseQuantity(button) {  
+    const quantityInput = button.previousElementSibling;  
+    let newVal = parseInt(quantityInput.value) + 1;  
+    let variety_value = quantityInput.dataset.key;  
+    quantityInput.value = newVal;  
+    updateQuantityInCookie(variety_value, newVal);  
+    updateTotalPrice();  
+    
+    Swal.fire({  
+        icon: "success",  
+        text: "تعداد محصول با موفقیت افزایش یافت."  
+    });  
+}  
+
+function decreaseQuantity(button) {  
+    const quantityInput = button.nextElementSibling;  
+    let newVal = parseInt(quantityInput.value) - 1; // کاهش مقدار یک واحد  
+    let variety_value = quantityInput.dataset.key;  
+
+    if (newVal >= 0) { // فقط اگر کمیت >= 0 باشد  
+        quantityInput.value = newVal;  
+        updateQuantityInCookie(variety_value, newVal);  
+        updateTotalPrice();  
+
+        if (newVal === 0) {  
+            Swal.fire({  
+                icon: "warning",  
+                text: "تعداد محصول صفر شده و از سبد خرید حذف شد."  
+            });  
+        } else {  
             Swal.fire({  
                 icon: "success",  
-                text: "تعداد محصول با موفقیت افزایش یافت."  
+                text: "تعداد محصول با موفقیت کاهش یافت."  
             });  
         }  
+    }  
+}  
 
-        function decreaseQuantity(button) {  
-            const quantityInput = button.nextElementSibling;  
-            let newVal = parseInt(quantityInput.value);  
-            let variety_value = quantityInput.dataset.key;  
-            if (newVal > 1) {  
-                newVal--;  
-                quantityInput.value = newVal;  
-                updateQuantityInCookie(variety_value, newVal);  
-                updateTotalPrice(newVal, variety_value);  
-                Swal.fire({  
-                    icon: "success",  
-                    text: "تعداد محصول با موفقیت کاهش یافت."  
-                });  
-            }  
-        }  
+function updateTotalPrice() {  
+    let totalPrice = 0;  
+    let productData = getCookie('productData');  
 
-        function updateTotalPrice(newVal, variety_value) {  
-            let totalPrice = 0;  
-            let productData = getCookie('productData');  
+    if (productData) {  
+        productData = JSON.parse(decodeURIComponent(productData));  
+        productData.forEach(product => {  
+            let quantity = parseInt(product.variety_quantity) || 0; // در نظر گرفتن مقدار صفر  
+            let price = parseFloat(product.variety_price.replace(/,/g, '')) || 0; // در نظر گرفتن قیمت صفر  
+            totalPrice += quantity * price; // قیمت کل محاسبه می‌شود  
+        });  
+    }  
 
-            if (productData) {  
-                productData = JSON.parse(decodeURIComponent(productData));  
-            }  
-
-            let product = productData.find(product => product.variety_value === String(variety_value));  
-
-            if (product) {  
-                let price = parseFloat(product.variety_price);  
-                totalPrice = Math.floor(price);  
-            }  
-
-            document.cookie = `productData=${encodeURIComponent(JSON.stringify(productData))}; path=/;`;  
-            totalPrice *= 1000; 
-            $('#cart-price').text(totalPrice.toLocaleString() + ' تومان');  
-        }  
+    $('#cart-price').text(totalPrice.toLocaleString() + ' تومان');  
+}
     @endif
     $('#proceed-to-checkout').on('click', function() {
         let isLoggedIn = @json(auth()->guard('customer')->user());
